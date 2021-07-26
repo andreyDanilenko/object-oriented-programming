@@ -1,6 +1,6 @@
 # Проект «Киноман»
 
-* Студент: [Андрей Даниленко](https://up.htmlacademy.ru/ecmascript/15/user/1205385).
+* Студент: [Андрей Данилленко](https://up.htmlacademy.ru/ecmascript/15/user/1205385).
 * Наставник: [Иван Тимошенко](https://htmlacademy.ru/profile/itimoshenko).
 
 ---
