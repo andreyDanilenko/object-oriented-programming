@@ -7,5 +7,3 @@ const render = (container, template, place) => {
 const siteMainElement = document.querySelector('.main');
 
 render(siteMainElement, createSiteNavTemplate(), 'afterbegin');
-
-
