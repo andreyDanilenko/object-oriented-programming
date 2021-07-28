@@ -5,6 +5,7 @@ import { createFilmListTemplate } from './view/films-list.js';
 import { createFilmCardTemplate } from './view/film-card.js';
 import { createFilmListExtraTemplate } from './view/films-list-extra.js';
 import { createButtonMoreTemplate } from './view/button-more.js';
+import { createStatisticsTemplate } from './view/statistics.js';
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -39,4 +40,8 @@ filmsListExtra.forEach((item) => {
     render(filmsListContainerExtra, createFilmCardTemplate(), 'beforeend');
   }
 });
+
+const siteFooterElement = document.querySelector('.footer');
+const siteFooterStatisticsElement = siteFooterElement.querySelector('.footer__statistics');
+render(siteFooterStatisticsElement, createStatisticsTemplate(), 'beforeend');
 
