@@ -22,31 +22,9 @@ const siteMainElement = document.querySelector('.main');
 const siteFooterElement = document.querySelector('.footer');
 
 render(siteHeaderElement, createSiteProfileTemplate(), 'beforeend');
-render(siteMainElement, createSiteNavTemplate(), 'beforeend');
+render(siteMainElement, createSiteNavTemplate(dataCard), 'beforeend');
 
 const navFilms = document.querySelectorAll('.main-navigation__item');
-
-const watch = [];
-const favorites = [];
-const history = [];
-
-const categoryConditions = (key, arr, letter, element) => {
-  if (key) {
-    arr.push(key);
-    element.forEach((nav) => {
-      if (nav.textContent[0] === letter) {
-        const span = nav.querySelector('span');
-        span.textContent = arr.length;
-      }
-    });
-  }
-};
-
-dataCard.forEach((objCard) => {
-  categoryConditions(objCard.user_details.watchlist, watch, 'W', navFilms);
-  categoryConditions(objCard.user_details.favorite, favorites, 'F', navFilms);
-  categoryConditions(objCard.user_details.already_watched, history, 'H', navFilms);
-});
 
 navFilms.forEach((link) => {
   link.addEventListener('click', () => {
@@ -61,7 +39,6 @@ navFilms.forEach((link) => {
     link.classList.add('main-navigation__item--active');
   });
 });
-
 
 render(siteMainElement, createSiteSortTemplate(), 'beforeend');
 render(siteMainElement, createFilmListTemplate(), 'beforeend');
@@ -98,7 +75,6 @@ const renderCard = () => {
 };
 
 buttonShowMore.addEventListener('click', renderCard);
-
 
 const titleExtra = [{ title: 'Top rated' }, { title: 'Most commented' }];
 for (let i = 0; i < 2; i++) {
