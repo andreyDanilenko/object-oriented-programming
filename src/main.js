@@ -30,7 +30,6 @@ const watch = [];
 const favorites = [];
 const history = [];
 
-
 const categoryConditions = (key, arr, letter, element) => {
   if (key) {
     arr.push(key);
