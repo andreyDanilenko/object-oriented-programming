@@ -22,7 +22,34 @@ const siteMainElement = document.querySelector('.main');
 const siteFooterElement = document.querySelector('.footer');
 
 render(siteHeaderElement, createSiteProfileTemplate(), 'beforeend');
-render(siteMainElement, createSiteNavTemplate(dataCard[0]), 'afterbegin');
+render(siteMainElement, createSiteNavTemplate(), 'beforeend');
+
+const navfilms = document.querySelectorAll('.main-navigation__item');
+
+const watch = [];
+const favorites = [];
+const history = [];
+
+
+const categoryConditions = (key, arr, letter, element) => {
+  if (key) {
+    arr.push(key);
+    element.forEach((nav) => {
+      if (nav.textContent[0] === letter) {
+        const span = nav.querySelector('span');
+        span.textContent = arr.length;
+      }
+    });
+  }
+};
+
+dataCard.forEach((objCard) => {
+  categoryConditions(objCard.user_details.watchlist, watch, 'W', navfilms);
+  categoryConditions(objCard.user_details.favorite, favorites, 'F', navfilms);
+  categoryConditions(objCard.user_details.already_watched, history, 'H', navfilms);
+});
+
+
 render(siteMainElement, createSiteSortTemplate(), 'beforeend');
 render(siteMainElement, createFilmListTemplate(), 'beforeend');
 
