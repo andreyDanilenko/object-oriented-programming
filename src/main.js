@@ -7,7 +7,7 @@ import { createFilmListExtraTemplate } from './view/films-list-extra.js';
 import { createButtonMoreTemplate } from './view/button-more.js';
 import { createStatisticsTemplate } from './view/statistics.js';
 
-import { createPopupTemplate } from './view/popup.js';
+//import { createPopupTemplate } from './view/popup.js';
 
 import { dataCard } from './mock/data-card.js';
 // eslint-disable-next-line no-console
@@ -22,7 +22,7 @@ const siteMainElement = document.querySelector('.main');
 const siteFooterElement = document.querySelector('.footer');
 
 render(siteHeaderElement, createSiteProfileTemplate(), 'beforeend');
-render(siteMainElement, createSiteNavTemplate(), 'afterbegin');
+render(siteMainElement, createSiteNavTemplate(dataCard[0]), 'afterbegin');
 render(siteMainElement, createSiteSortTemplate(), 'beforeend');
 render(siteMainElement, createFilmListTemplate(), 'beforeend');
 
