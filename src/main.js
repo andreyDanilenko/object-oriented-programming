@@ -24,7 +24,7 @@ const siteFooterElement = document.querySelector('.footer');
 render(siteHeaderElement, createSiteProfileTemplate(), 'beforeend');
 render(siteMainElement, createSiteNavTemplate(), 'beforeend');
 
-const navfilms = document.querySelectorAll('.main-navigation__item');
+const navFilms = document.querySelectorAll('.main-navigation__item');
 
 const watch = [];
 const favorites = [];
@@ -43,9 +43,23 @@ const categoryConditions = (key, arr, letter, element) => {
 };
 
 dataCard.forEach((objCard) => {
-  categoryConditions(objCard.user_details.watchlist, watch, 'W', navfilms);
-  categoryConditions(objCard.user_details.favorite, favorites, 'F', navfilms);
-  categoryConditions(objCard.user_details.already_watched, history, 'H', navfilms);
+  categoryConditions(objCard.user_details.watchlist, watch, 'W', navFilms);
+  categoryConditions(objCard.user_details.favorite, favorites, 'F', navFilms);
+  categoryConditions(objCard.user_details.already_watched, history, 'H', navFilms);
+});
+
+navFilms.forEach((link) => {
+  link.addEventListener('click', () => {
+    const navFilmsNew = document.querySelectorAll('.main-navigation__item');
+
+    navFilmsNew.forEach(((btn) => {
+      if (btn.classList.contains('main-navigation__item--active')) {
+        btn.classList.remove('main-navigation__item--active');
+      }
+    }));
+
+    link.classList.add('main-navigation__item--active');
+  });
 });
 
 
