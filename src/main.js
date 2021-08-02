@@ -71,6 +71,7 @@ const buttonShowMore = document.querySelector('.films-list__show-more');
 const renderCard = () => {
   const filmsItem = document.querySelectorAll('.film-card');
   countCard += 5;
+  // eslint-disable-next-line no-console
   console.log(filmsItem);
   if (filmsItem.length >= dataCard.length) {
     buttonShowMore.style.display = 'none';
