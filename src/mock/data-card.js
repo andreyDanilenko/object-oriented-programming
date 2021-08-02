@@ -1,4 +1,5 @@
 import { generateComment } from './data-comments';
+//import { dayjs } from 'dayjs';
 export const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 const generatePoster = () => ({
@@ -10,6 +11,13 @@ const generatePoster = () => ({
   5: 'the-great-flamarion.jpg',
   6: 'the-man-with-the-golden-arm.jpg',
 }[getRandomInt(0, 6)]);
+
+const generateAgeRating = () => ({
+  0: '0',
+  1: '3',
+  2: '12',
+  3: '18',
+}[getRandomInt(0, 3)]);
 
 const generateGenres = () => ({
   0: ['Drama', 'Thriller', 'Horrors'],
@@ -74,7 +82,7 @@ const generateObject = () => (
       'alternative_title': generateTitle(),
       'total_rating': getRandomInt(4, 9).toFixed(1),
       'poster': generatePoster(),
-      'age_rating': 0,
+      'age_rating': generateAgeRating(),
       'director': 'Tom Ford',
       'writers': generateWriters(),
       'actors': generateActors().join(' '),
