@@ -73,13 +73,33 @@ const buttonShowMore = document.querySelector('.films-list__show-more');
 const renderCard = () => {
   const filmsItem = document.querySelectorAll('.film-card');
   countCard += 5;
+
   if (filmsItem.length >= dataCard.length) {
     buttonShowMore.style.display = 'none';
   }
 
-  for (newCard; newCard < countCard; newCard++) {
-    render(filmsListContainer, createFilmCardTemplate(dataCard[newCard]), 'beforeend');
+  if (dataCard.length - (filmsItem.length - 4) >= 5) {
+    for (newCard; newCard < countCard; newCard++) {
+      render(filmsListContainer, createFilmCardTemplate(dataCard[newCard]), 'beforeend');
+    }
+  } else {
+    for (newCard = (filmsItem.length - 4); newCard < dataCard.length; newCard++) {
+      render(filmsListContainer, createFilmCardTemplate(dataCard[newCard]), 'beforeend');
+    }
   }
+
+  const linkCommentNew = document.querySelectorAll('.film-card__comments');
+
+  linkCommentNew.forEach((link, i) => {
+    link.addEventListener('click', () => {
+      render(siteFooterElement, createPopupTemplate(dataCard[i]), 'afterend');
+      const closePopup = document.querySelector('.film-details__close-btn');
+      const popupDetails = document.querySelector('.film-details');
+      closePopup.addEventListener('click', () => {
+        popupDetails.style.display = 'none';
+      });
+    });
+  });
 };
 
 buttonShowMore.addEventListener('click', renderCard);
