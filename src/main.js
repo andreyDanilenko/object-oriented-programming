@@ -41,7 +41,7 @@ const filmsList = document.querySelector('.films-list');
 const filmsListContainer = films.querySelector('.films-list__container');
 
 let cardCount = 5;
-let newCard = 5;
+let cardNew = 5;
 
 for (let i = 0; i < cardCount; i++) {
   render(filmsListContainer, createFilmCardTemplate(cardData[i]), 'beforeend');
@@ -73,12 +73,12 @@ const renderCard = () => {
   }
 
   if (cardData.length - (filmsItem.length - 4) >= 5) {
-    for (newCard; newCard < cardCount; newCard++) {
-      render(filmsListContainer, createFilmCardTemplate(cardData[newCard]), 'beforeend');
+    for (cardNew; cardNew < cardCount; cardNew++) {
+      render(filmsListContainer, createFilmCardTemplate(cardData[cardNew]), 'beforeend');
     }
   } else {
-    for (newCard = (filmsItem.length - 4); newCard < cardData.length; newCard++) {
-      render(filmsListContainer, createFilmCardTemplate(cardData[newCard]), 'beforeend');
+    for (cardNew = (filmsItem.length - 4); cardNew < cardData.length; cardNew++) {
+      render(filmsListContainer, createFilmCardTemplate(cardData[cardNew]), 'beforeend');
     }
   }
 
