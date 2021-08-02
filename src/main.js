@@ -8,8 +8,8 @@ import { createButtonMoreTemplate } from './view/button-more.js';
 import { createStatisticsTemplate } from './view/statistics.js';
 
 import { createPopupTemplate } from './view/popup.js';
-
 import { dataCard } from './mock/data-card.js';
+
 // eslint-disable-next-line no-console
 console.log(dataCard);
 
@@ -109,15 +109,16 @@ for (let i = 0; i < 2; i++) {
   render(films, createFilmListExtraTemplate(titleExtra[i]), 'beforeend');
 }
 
-const filmsListExtra = films.querySelectorAll('.films-list--extra');
-if (filmsListExtra) {
-  filmsListExtra.forEach((item) => {
-    const filmsListContainerExtra = item.querySelector('.films-list__container');
-    for (let i = 0; i < 2; i++) {
-      render(filmsListContainerExtra, createFilmCardTemplate(dataCard[i]), 'beforeend');
-    }
-  });
-}
+const filmsExtra = document.querySelector('.films');
+const filmsListExtra = filmsExtra.querySelectorAll('.films-list--extra');
+//const filmsTitleExtra = filmsListExtra.querySelector('.films-list__title');
+
+filmsListExtra.forEach((item) => {
+  const filmsListContainerExtra = item.querySelector('.films-list__container');
+  for (let i = 0; i < 2; i++) {
+    render(filmsListContainerExtra, createFilmCardTemplate(dataCard[i]), 'beforeend');
+  }
+});
 
 const siteFooterStatisticsElement = siteFooterElement.querySelector('.footer__statistics');
 render(siteFooterStatisticsElement, createStatisticsTemplate(dataCard), 'beforeend');
