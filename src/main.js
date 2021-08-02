@@ -22,11 +22,11 @@ const siteFooterElement = document.querySelector('.footer');
 render(siteHeaderElement, createSiteProfileTemplate(), 'beforeend');
 render(siteMainElement, createSiteNavTemplate(cardData), 'beforeend');
 
-const navFilms = document.querySelectorAll('.main-navigation__item');
+const navFilmsElement = document.querySelectorAll('.main-navigation__item');
 
-navFilms.forEach((link) => {
+navFilmsElement.forEach((link) => {
   link.addEventListener('click', () => {
-    navFilms.forEach(((btn) => {
+    navFilmsElement.forEach(((btn) => {
       btn.classList.remove('main-navigation__item--active');
     }));
     link.classList.add('main-navigation__item--active');
