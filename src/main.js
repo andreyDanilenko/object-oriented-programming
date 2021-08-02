@@ -9,7 +9,8 @@ import { createStatisticsTemplate } from './view/statistics.js';
 
 import { createPopupTemplate } from './view/popup.js';
 import { cardData } from './mock/data-card.js';
-//import { dayjs } from 'dayjs';
+
+console.log(cardData);
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -47,9 +48,9 @@ for (let i = 0; i < cardCount; i++) {
   render(filmsListContainer, createFilmCardTemplate(cardData[i]), 'beforeend');
 }
 
-const linkComment = document.querySelectorAll('.film-card__comments');
+const linkCommentElement = document.querySelectorAll('.film-card__comments');
 
-linkComment.forEach((link, i) => {
+linkCommentElement.forEach((link, i) => {
   link.addEventListener('click', () => {
     render(siteFooterElement, createPopupTemplate(cardData[i]), 'afterend');
     const closePopup = document.querySelector('.film-details__close-btn');
@@ -82,9 +83,9 @@ const renderCard = () => {
     }
   }
 
-  const linkCommentNew = document.querySelectorAll('.film-card__comments');
+  const linkNewCommentElement = document.querySelectorAll('.film-card__comments');
 
-  linkCommentNew.forEach((link, i) => {
+  linkNewCommentElement.forEach((link, i) => {
     link.addEventListener('click', () => {
       render(siteFooterElement, createPopupTemplate(cardData[i]), 'afterend');
       const closePopup = document.querySelector('.film-details__close-btn');
@@ -105,7 +106,6 @@ for (let i = 0; i < 2; i++) {
 
 const filmsExtra = document.querySelector('.films');
 const filmsListExtra = filmsExtra.querySelectorAll('.films-list--extra');
-//const filmsTitleExtra = filmsListExtra.querySelector('.films-list__title');
 
 filmsListExtra.forEach((item) => {
   const filmsListContainerExtra = item.querySelector('.films-list__container');

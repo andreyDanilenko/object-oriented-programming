@@ -61,7 +61,7 @@ const generateDescription = () => ({
 
 function createId() {
   const random = Math.random();
-  return random.toString(36).substr(2);
+  return random.toString(16).substr(2);
 }
 
 const generateObject = () => (
