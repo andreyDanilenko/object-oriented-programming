@@ -94,4 +94,4 @@ const generateObject = () => (
   });
 
 const countCard = 23;
-export const dataCard = new Array(countCard).fill().map(() => generateObject());
+export const cardData = new Array(countCard).fill().map(() => generateObject());
