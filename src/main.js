@@ -7,7 +7,7 @@ import { createFilmListExtraTemplate } from './view/films-list-extra.js';
 import { createButtonMoreTemplate } from './view/button-more.js';
 import { createStatisticsTemplate } from './view/statistics.js';
 
-//import { createPopupTemplate } from './view/popup.js';
+import { createPopupTemplate } from './view/popup.js';
 
 import { dataCard } from './mock/data-card.js';
 // eslint-disable-next-line no-console
@@ -53,6 +53,19 @@ let newCard = 5;
 for (let i = 0; i < countCard; i++) {
   render(filmsListContainer, createFilmCardTemplate(dataCard[i]), 'beforeend');
 }
+
+const linkComment = document.querySelectorAll('.film-card__comments');
+
+linkComment.forEach((link, i) => {
+  link.addEventListener('click', () => {
+    render(siteFooterElement, createPopupTemplate(dataCard[i]), 'afterend');
+    const closePopup = document.querySelector('.film-details__close-btn');
+    const popupDetails = document.querySelector('.film-details');
+    closePopup.addEventListener('click', () => {
+      popupDetails.style.display = 'none';
+    });
+  });
+});
 
 render(filmsList, createButtonMoreTemplate(), 'beforeend');
 const buttonShowMore = document.querySelector('.films-list__show-more');

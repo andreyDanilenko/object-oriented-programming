@@ -7,7 +7,7 @@ export const createPopupTemplate = (param) => (
         </div>
         <div class="film-details__info-wrap">
           <div class="film-details__poster">
-            <img class="film-details__poster-img" src="./images/posters/${param.poster}" alt="">
+            <img class="film-details__poster-img" src="./images/posters/${param.film_info.poster}" alt="">
 
             <p class="film-details__age">18+</p>
           </div>
@@ -15,12 +15,12 @@ export const createPopupTemplate = (param) => (
           <div class="film-details__info">
             <div class="film-details__info-head">
               <div class="film-details__title-wrap">
-                <h3 class="film-details__title">${param.title}</h3>
+                <h3 class="film-details__title">${param.film_info.title}</h3>
                 <p class="film-details__title-original">Original: The Great Flamarion</p>
               </div>
 
               <div class="film-details__rating">
-                <p class="film-details__total-rating">${param.rating}</p>
+                <p class="film-details__total-rating">${param.film_info.total_rating}</p>
               </div>
             </div>
 
