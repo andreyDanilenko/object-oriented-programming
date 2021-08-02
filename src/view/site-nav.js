@@ -4,14 +4,14 @@ export const createSiteNavTemplate = (param) => {
   const history = [];
 
   param.forEach((objCard) => {
-    if (objCard.user_details.watchlist) {
-      watch.push(objCard.user_details.watchlist);
+    if (objCard.userDetails.watchlist) {
+      watch.push(objCard.userDetails.watchlist);
     }
-    if (objCard.user_details.favorite) {
-      favorites.push(objCard.user_details.favorite);
+    if (objCard.userDetails.favorite) {
+      favorites.push(objCard.userDetails.favorite);
     }
-    if (objCard.user_details.already_watched) {
-      history.push(objCard.user_details.already_watched);
+    if (objCard.userDetails.history) {
+      history.push(objCard.userDetails.history);
     }
   });
 

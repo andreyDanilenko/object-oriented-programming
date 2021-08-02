@@ -10,8 +10,6 @@ import { createStatisticsTemplate } from './view/statistics.js';
 import { createPopupTemplate } from './view/popup.js';
 import { cardData } from './mock/data-card.js';
 
-console.log(cardData);
-
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };

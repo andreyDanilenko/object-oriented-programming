@@ -53,8 +53,8 @@ const formatDate = (param) => {
   return `${dd}/${mm}/${yy} ${hh}:${mt}`;
 };
 
-const dateCom = new Date(2018, 5, 24);
-const newDate = formatDate(dateCom);
+const dateComment = new Date();
+const newDate = formatDate(dateComment);
 
 export const generateComment = () => ({
   text: generateText(),

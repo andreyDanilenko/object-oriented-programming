@@ -51,6 +51,22 @@ const generateTitle = () => ({
   4: 'Popeye the Sailor Meets Sindbad the Sailor',
 }[getRandomInt(0, 4)]);
 
+const generateDirector = () => ({
+  0: 'Christopher Nolan',
+  1: 'Guy Ritchie',
+  2: 'Clinton Eastwood',
+  3: 'Quentin Tarantino',
+  4: 'Wesley Anderson',
+}[getRandomInt(0, 4)]);
+
+const generateCountry = () => ({
+  0: 'Russia',
+  1: 'USA',
+  2: 'Great Britain',
+  3: 'Spain',
+  4: 'Italy',
+}[getRandomInt(0, 4)]);
+
 const generateDescription = () => ({
   0: 'Lorem ipsum dolor sit amet consectetur adipiscing elit sed senectus aliquet mollis, eleifend pellentesque ligula euismod justo blandit class at purus. Molestie placerat elementum mi porta dolor imperdiet non per consectetur, hendrerit egestas quam nullam eros class diam lobortis. Nullam morbi sem massa sociosqu sapien vel dictum, ex fermentum congue torquent ipsum volutpat, nibh mattis feugiat suscipit ridiculus penatibus.',
   1: 'Lorem ipsum dolor sit amet consectetur adipiscing elit, maximus dui magnis ac etiam justo. Dictumst suspendisse arcu ut praesent dapibus ligula inceptos diam magna accumsan leo sociosqu rhoncus pretium luctus, platea nec justo mauris volutpat est id lacus sit porta congue malesuada vehicula. Integer rhoncus suscipit nostra dignissim hendrerit odio porta interdum quam, a habitant enim eu ligula natoque tristique felis maximus, etiam euismod nulla tortor vestibulum urna in id.',
@@ -68,30 +84,30 @@ const generateObject = () => (
   {
     'id': createId(),
     'comments': new Array(getRandomInt(10, 40)).fill().map(() => generateComment()),
-    'film_info': {
+    'filmInfo': {
       'title': generateTitle(),
-      'alternative_title': generateTitle(),
-      'total_rating': getRandomInt(4, 9).toFixed(1),
+      'alternativeTitle': generateTitle(),
+      'totalRating': getRandomInt(4, 9).toFixed(1),
       'poster': generatePoster(),
-      'age_rating': generateAgeRating(),
-      'director': 'Tom Ford',
+      'ageRating': generateAgeRating(),
+      'director': generateDirector(),
       'writers': generateWriters(),
       'actors': generateActors().join(' '),
       'release': {
         'date': getRandomInt(1925, 1975).toString(),
-        'release_country': 'Finland',
+        'releaseCountry': generateCountry(),
       },
       'runtime': `1h ${getRandomInt(10, 50)}m`,
       'genre': generateGenres(),
       'description': generateDescription(),
     },
-    'user_details': {
+    'userDetails': {
       'watchlist': Boolean(getRandomInt(0, 1)),
-      'already_watched': Boolean(getRandomInt(0, 1)),
-      'watching_date': '2019-04-12T16:12:32.554Z',
+      'history': Boolean(getRandomInt(0, 1)),
+      'watchingDate': '2019-04-12T16:12:32.554Z',
       'favorite': Boolean(getRandomInt(0, 1)),
     },
   });
 
-const countCard = 23;
-export const cardData = new Array(countCard).fill().map(() => generateObject());
+const CARD_COUNT = 23;
+export const cardData = new Array(CARD_COUNT).fill().map(() => generateObject());
