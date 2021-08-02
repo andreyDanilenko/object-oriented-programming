@@ -1,4 +1,4 @@
-export const createPopupTemplate = (param) => (
+export const createPopupTemplate = (params) => (
   `<section class="film-details">
     <form class="film-details__inner" action="" method="get">
       <div class="film-details__top-container">
@@ -7,7 +7,7 @@ export const createPopupTemplate = (param) => (
         </div>
         <div class="film-details__info-wrap">
           <div class="film-details__poster">
-            <img class="film-details__poster-img" src="./images/posters/${param.film_info.poster}" alt="">
+            <img class="film-details__poster-img" src="./images/posters/${params.film_info.poster}" alt="">
 
             <p class="film-details__age">18+</p>
           </div>
@@ -15,39 +15,39 @@ export const createPopupTemplate = (param) => (
           <div class="film-details__info">
             <div class="film-details__info-head">
               <div class="film-details__title-wrap">
-                <h3 class="film-details__title">${param.film_info.title}</h3>
-                <p class="film-details__title-original">Original: ${param.film_info.alternative_title}</p>
+                <h3 class="film-details__title">${params.film_info.title}</h3>
+                <p class="film-details__title-original">Original: ${params.film_info.alternative_title}</p>
               </div>
 
               <div class="film-details__rating">
-                <p class="film-details__total-rating">${param.film_info.total_rating}</p>
+                <p class="film-details__total-rating">${params.film_info.total_rating}</p>
               </div>
             </div>
 
             <table class="film-details__table">
               <tr class="film-details__row">
                 <td class="film-details__term">Director</td>
-                <td class="film-details__cell">${param.film_info.director}</td>
+                <td class="film-details__cell">${params.film_info.director}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Writers</td>
-                <td class="film-details__cell">${param.film_info.writers.join(', ')}</td>
+                <td class="film-details__cell">${params.film_info.writers.join(', ')}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Actors</td>
-                <td class="film-details__cell">${param.film_info.actors}</td>
+                <td class="film-details__cell">${params.film_info.actors}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Release Date</td>
-                <td class="film-details__cell">${param.film_info.release.date}</td>
+                <td class="film-details__cell">${params.film_info.release.date}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Runtime</td>
-                <td class="film-details__cell">${param.film_info.runtime}</td>
+                <td class="film-details__cell">${params.film_info.runtime}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Country</td>
-                <td class="film-details__cell">${param.film_info.release.release_country}</td>
+                <td class="film-details__cell">${params.film_info.release.release_country}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Geners</td>
@@ -58,7 +58,7 @@ export const createPopupTemplate = (param) => (
               </tr>
             </table>
 
-            <p class="film-details__film-description">${param.film_info.description}</p>
+            <p class="film-details__film-description">${params.film_info.description}</p>
           </div>
         </div>
 
