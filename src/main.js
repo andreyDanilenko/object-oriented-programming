@@ -8,10 +8,8 @@ import { createButtonMoreTemplate } from './view/button-more.js';
 import { createStatisticsTemplate } from './view/statistics.js';
 
 import { createPopupTemplate } from './view/popup.js';
-import { dataCard } from './mock/data-card.js';
-
-// eslint-disable-next-line no-console
-console.log(dataCard);
+import { cardData } from './mock/data-card.js';
+//import { dayjs } from 'dayjs';
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -22,18 +20,15 @@ const siteMainElement = document.querySelector('.main');
 const siteFooterElement = document.querySelector('.footer');
 
 render(siteHeaderElement, createSiteProfileTemplate(), 'beforeend');
-render(siteMainElement, createSiteNavTemplate(dataCard), 'beforeend');
+render(siteMainElement, createSiteNavTemplate(cardData), 'beforeend');
 
 const navFilms = document.querySelectorAll('.main-navigation__item');
 
 navFilms.forEach((link) => {
   link.addEventListener('click', () => {
     navFilms.forEach(((btn) => {
-      if (btn.classList.contains('main-navigation__item--active')) {
-        btn.classList.remove('main-navigation__item--active');
-      }
+      btn.classList.remove('main-navigation__item--active');
     }));
-
     link.classList.add('main-navigation__item--active');
   });
 });
@@ -45,18 +40,18 @@ const films = document.querySelector('.films');
 const filmsList = document.querySelector('.films-list');
 const filmsListContainer = films.querySelector('.films-list__container');
 
-let countCard = 5;
+let cardCount = 5;
 let newCard = 5;
 
-for (let i = 0; i < countCard; i++) {
-  render(filmsListContainer, createFilmCardTemplate(dataCard[i]), 'beforeend');
+for (let i = 0; i < cardCount; i++) {
+  render(filmsListContainer, createFilmCardTemplate(cardData[i]), 'beforeend');
 }
 
 const linkComment = document.querySelectorAll('.film-card__comments');
 
 linkComment.forEach((link, i) => {
   link.addEventListener('click', () => {
-    render(siteFooterElement, createPopupTemplate(dataCard[i]), 'afterend');
+    render(siteFooterElement, createPopupTemplate(cardData[i]), 'afterend');
     const closePopup = document.querySelector('.film-details__close-btn');
     const popupDetails = document.querySelector('.film-details');
     closePopup.addEventListener('click', () => {
@@ -70,20 +65,20 @@ const buttonShowMore = document.querySelector('.films-list__show-more');
 
 const renderCard = () => {
   const filmsItem = document.querySelectorAll('.film-card');
-  countCard += 5;
+  cardCount += 5;
   // eslint-disable-next-line no-console
   console.log(filmsItem);
-  if (filmsItem.length >= dataCard.length) {
+  if (filmsItem.length >= cardData.length) {
     buttonShowMore.style.display = 'none';
   }
 
-  if (dataCard.length - (filmsItem.length - 4) >= 5) {
-    for (newCard; newCard < countCard; newCard++) {
-      render(filmsListContainer, createFilmCardTemplate(dataCard[newCard]), 'beforeend');
+  if (cardData.length - (filmsItem.length - 4) >= 5) {
+    for (newCard; newCard < cardCount; newCard++) {
+      render(filmsListContainer, createFilmCardTemplate(cardData[newCard]), 'beforeend');
     }
   } else {
-    for (newCard = (filmsItem.length - 4); newCard < dataCard.length; newCard++) {
-      render(filmsListContainer, createFilmCardTemplate(dataCard[newCard]), 'beforeend');
+    for (newCard = (filmsItem.length - 4); newCard < cardData.length; newCard++) {
+      render(filmsListContainer, createFilmCardTemplate(cardData[newCard]), 'beforeend');
     }
   }
 
@@ -91,7 +86,7 @@ const renderCard = () => {
 
   linkCommentNew.forEach((link, i) => {
     link.addEventListener('click', () => {
-      render(siteFooterElement, createPopupTemplate(dataCard[i]), 'afterend');
+      render(siteFooterElement, createPopupTemplate(cardData[i]), 'afterend');
       const closePopup = document.querySelector('.film-details__close-btn');
       const popupDetails = document.querySelector('.film-details');
       closePopup.addEventListener('click', () => {
@@ -115,9 +110,9 @@ const filmsListExtra = filmsExtra.querySelectorAll('.films-list--extra');
 filmsListExtra.forEach((item) => {
   const filmsListContainerExtra = item.querySelector('.films-list__container');
   for (let i = 0; i < 2; i++) {
-    render(filmsListContainerExtra, createFilmCardTemplate(dataCard[i]), 'beforeend');
+    render(filmsListContainerExtra, createFilmCardTemplate(cardData[i]), 'beforeend');
   }
 });
 
 const siteFooterStatisticsElement = siteFooterElement.querySelector('.footer__statistics');
-render(siteFooterStatisticsElement, createStatisticsTemplate(dataCard), 'beforeend');
+render(siteFooterStatisticsElement, createStatisticsTemplate(cardData), 'beforeend');
