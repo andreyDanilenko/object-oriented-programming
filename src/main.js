@@ -28,9 +28,7 @@ const navFilms = document.querySelectorAll('.main-navigation__item');
 
 navFilms.forEach((link) => {
   link.addEventListener('click', () => {
-    const navFilmsNew = document.querySelectorAll('.main-navigation__item');
-
-    navFilmsNew.forEach(((btn) => {
+    navFilms.forEach(((btn) => {
       if (btn.classList.contains('main-navigation__item--active')) {
         btn.classList.remove('main-navigation__item--active');
       }
@@ -73,7 +71,7 @@ const buttonShowMore = document.querySelector('.films-list__show-more');
 const renderCard = () => {
   const filmsItem = document.querySelectorAll('.film-card');
   countCard += 5;
-
+  console.log(filmsItem);
   if (filmsItem.length >= dataCard.length) {
     buttonShowMore.style.display = 'none';
   }
