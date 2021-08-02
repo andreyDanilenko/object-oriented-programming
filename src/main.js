@@ -60,17 +60,12 @@ const buttonShowMore = document.querySelector('.films-list__show-more');
 const renderCard = () => {
   const filmsItem = document.querySelectorAll('.film-card');
   countCard += 5;
-
-  if ((dataCard.length - filmsItem.length + 5) >= 5 && newCard + 5 <= dataCard.length) {
-    for (newCard; newCard < countCard; newCard++) {
-      render(filmsListContainer, createFilmCardTemplate(dataCard[newCard]), 'beforeend');
-    }
-
-  } else {
-    for (let i = filmsItem.length - 4; i < dataCard.length; i++) {
-      render(filmsListContainer, createFilmCardTemplate(dataCard[i]), 'beforeend');
-    }
+  if (filmsItem.length >= dataCard.length) {
     buttonShowMore.style.display = 'none';
+  }
+
+  for (newCard; newCard < countCard; newCard++) {
+    render(filmsListContainer, createFilmCardTemplate(dataCard[newCard]), 'beforeend');
   }
 };
 
