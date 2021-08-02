@@ -59,15 +59,6 @@ const generateDescription = () => ({
   4: 'Lorem ipsum dolor sit amet consectetur adipiscing elit aptent est, ultricies hendrerit rhoncus nunc pulvinar diam euismod eu cubilia suscipit, eget habitant nullam torquent vitae hac varius congue. Praesent litora congue donec pulvinar varius consequat nulla dignissim, proin nascetur nibh id sed porttitor et, pretium faucibus curae semper vel lobortis viverra. Fames leo quam turpis bibendum sodales blandit varius magna, justo laoreet venenatis nulla vivamus placerat rutrum adipiscing, odio arcu senectus pharetra cubilia feugiat conubia.',
 }[getRandomInt(0, 4)]);
 
-const generateCommentList = (numberOfItems) => {
-  const data = [];
-
-  for (let i = 0; i < numberOfItems; i++) {
-    data.push(generateComment());
-  }
-  return data;
-};
-
 function createId() {
   const random = Math.random();
   return random.toString(36).substr(2);
@@ -76,7 +67,7 @@ function createId() {
 const generateObject = () => (
   {
     'id': createId(),
-    'comments': generateCommentList(getRandomInt(5, 40)),
+    'comments': new Array(getRandomInt(10, 40)).fill().map(() => generateComment()),
     'film_info': {
       'title': generateTitle(),
       'alternative_title': generateTitle(),
@@ -102,15 +93,5 @@ const generateObject = () => (
     },
   });
 
-
-const generateData = (numberOfItems) => {
-  const data = [];
-
-  for (let i = 0; i < numberOfItems; i++) {
-    data.push(generateObject());
-  }
-  return data;
-};
-
 const countCard = 23;
-export const dataCard = generateData(countCard);
+export const dataCard = new Array(countCard).fill().map(() => generateObject());
