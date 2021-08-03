@@ -1,5 +1,5 @@
 import { generateComment } from './data-comments';
-//import { dayjs } from 'dayjs';
+import * as dayjs from 'dayjs';
 export const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 const generatePoster = () => ({
@@ -13,11 +13,10 @@ const generatePoster = () => ({
 }[getRandomInt(0, 6)]);
 
 const generateAgeRating = () => ({
-  0: '0',
-  1: '3',
-  2: '12',
-  3: '18',
-}[getRandomInt(0, 3)]);
+  0: '3+',
+  1: '12+',
+  2: '18+',
+}[getRandomInt(0, 2)]);
 
 const generateGenres = () => ({
   0: ['Drama', 'Thriller', 'Horrors'],
@@ -80,6 +79,16 @@ function createId() {
   return random.toString(16).substr(2);
 }
 
+const generateReleaseDate = () => {
+  const dayGap = getRandomInt(-35040, -16790);
+  return dayjs().add(dayGap, 'day').toDate();
+};
+
+const generateWatchList = () => {
+  const dayGap = getRandomInt(-1095, 0);
+  return dayjs().add(dayGap, 'day').toDate();
+};
+
 const generateObject = () => (
   {
     'id': createId(),
@@ -92,9 +101,9 @@ const generateObject = () => (
       'ageRating': generateAgeRating(),
       'director': generateDirector(),
       'writers': generateWriters(),
-      'actors': generateActors().join(' '),
+      'actors': generateActors(),
       'release': {
-        'date': getRandomInt(1925, 1975).toString(),
+        'date': generateReleaseDate(),
         'releaseCountry': generateCountry(),
       },
       'runtime': `1h ${getRandomInt(10, 50)}m`,
@@ -104,7 +113,7 @@ const generateObject = () => (
     'userDetails': {
       'watchlist': Boolean(getRandomInt(0, 1)),
       'history': Boolean(getRandomInt(0, 1)),
-      'watchingDate': '2019-04-12T16:12:32.554Z',
+      'watchingDate': generateWatchList(),
       'favorite': Boolean(getRandomInt(0, 1)),
     },
   });

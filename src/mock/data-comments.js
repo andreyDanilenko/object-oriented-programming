@@ -1,4 +1,5 @@
 import { getRandomInt } from './data-card';
+import * as dayjs from 'dayjs';
 
 const generateText = () => ({
   0: 'The Dance of Life',
@@ -34,31 +35,14 @@ const generateEmoji = () => ({
   3: 'smile.png',
 }[getRandomInt(0, 3)]);
 
-const formatDate = (param) => {
-  let dd = param.getDate();
-  if (dd < 10) { dd = `0${dd}`; }
-
-  let mm = param.getMonth() + 1;
-  if (mm < 10) { mm = `0${mm}`; }
-
-  let yy = param.getFullYear() % 100;
-  if (yy < 10) { yy = `0${yy}`; }
-
-  let hh = param.getHours() % 100;
-  if (hh < 10) { hh = `0${hh}`; }
-
-  let mt = param.getMinutes() % 100;
-  if (mt < 10) { mt = `0${mt}`; }
-
-  return `${dd}/${mm}/${yy} ${hh}:${mt}`;
+const generateCommentDate = () => {
+  const dayGap = getRandomInt(-1095, 0);
+  return dayjs().add(dayGap, 'day').toDate();
 };
-
-const dateComment = new Date();
-const newDate = formatDate(dateComment);
 
 export const generateComment = () => ({
   text: generateText(),
   authorName: generateName(),
   emoji: generateEmoji(),
-  date: newDate,
+  date: generateCommentDate(),
 });
