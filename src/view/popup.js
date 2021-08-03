@@ -1,5 +1,17 @@
-export const createPopupTemplate = (params) => (
-  `<section class="film-details">
+import * as dayjs from 'dayjs';
+
+export const createPopupTemplate = (params) => {
+  const date = dayjs(params.filmInfo.release.date).format('DD MMMM YYYY');
+  const { releaseCountry } = params.filmInfo.release;
+  const { title, alternativeTitle, totalRating, poster, ageRating, runtime, description, director, genres } = params.filmInfo;
+  const { writers, actors } = params.filmInfo;
+  const genreTitle = genres.length > 1 ? 'Genres' : 'Genre';
+  const getGenres = (genresFilm) => genresFilm.map(
+    (genre) =>
+      `<span class="film-details__genre">${genre}</span>`,
+  ).join('');
+
+  return `<section class="film-details">
     <form class="film-details__inner" action="" method="get">
       <div class="film-details__top-container">
         <div class="film-details__close">
@@ -7,58 +19,55 @@ export const createPopupTemplate = (params) => (
         </div>
         <div class="film-details__info-wrap">
           <div class="film-details__poster">
-            <img class="film-details__poster-img" src="./images/posters/${params.filmInfo.poster}" alt="">
+            <img class="film-details__poster-img" src="./images/posters/${poster}" alt="">
 
-            <p class="film-details__age">18+</p>
+            <p class="film-details__age">${ageRating}</p>
           </div>
 
           <div class="film-details__info">
             <div class="film-details__info-head">
               <div class="film-details__title-wrap">
-                <h3 class="film-details__title">${params.filmInfo.title}</h3>
-                <p class="film-details__title-original">Original: ${params.filmInfo.alternativeTitle}</p>
+                <h3 class="film-details__title">${title}</h3>
+                <p class="film-details__title-original">Original: ${alternativeTitle}</p>
               </div>
 
               <div class="film-details__rating">
-                <p class="film-details__total-rating">${params.filmInfo.totalRating}</p>
+                <p class="film-details__total-rating">${totalRating}</p>
               </div>
             </div>
 
             <table class="film-details__table">
               <tr class="film-details__row">
                 <td class="film-details__term">Director</td>
-                <td class="film-details__cell">${params.filmInfo.director}</td>
+                <td class="film-details__cell">${director}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Writers</td>
-                <td class="film-details__cell">${params.filmInfo.writers.join(', ')}</td>
+                <td class="film-details__cell">${writers.join(', ')}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Actors</td>
-                <td class="film-details__cell">${params.filmInfo.actors}</td>
+                <td class="film-details__cell">${actors.join(', ')}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Release Date</td>
-                <td class="film-details__cell">${params.filmInfo.release.date}</td>
+                <td class="film-details__cell">${date}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Runtime</td>
-                <td class="film-details__cell">${params.filmInfo.runtime}</td>
+                <td class="film-details__cell">${runtime}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Country</td>
-                <td class="film-details__cell">${params.filmInfo.release.releaseCountry}</td>
+                <td class="film-details__cell">${releaseCountry}</td>
               </tr>
               <tr class="film-details__row">
-                <td class="film-details__term">Geners</td>
-                <td class="film-details__cell">
-                  <span class="film-details__genre">Drama</span>
-                  <span class="film-details__genre">Film-Noir</span>
-                  <span class="film-details__genre">Mystery</span></td>
+                <td class="film-details__term">${genreTitle}</td>
+                <td class="film-details__cell">${getGenres(genres)}</td>
               </tr>
             </table>
 
-            <p class="film-details__film-description">${params.filmInfo.description}</p>
+            <p class="film-details__film-description">${description}</p>
           </div>
         </div>
 
@@ -161,5 +170,5 @@ export const createPopupTemplate = (params) => (
       </div>
     </form>
     </section>
-`
-);
+`;
+};
