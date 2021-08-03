@@ -13,6 +13,10 @@ const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
+const RATED_COUNT = 8;
+const FILM_COUNT_STEP = 5;
+const FILM_COUNT_EXTRA = 4;
+
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
 const siteFooterElement = document.querySelector('.footer');
@@ -70,12 +74,12 @@ const renderCard = () => {
     buttonShowMore.style.display = 'none';
   }
 
-  if (cardData.length - (filmsItem.length - 4) >= 5) {
+  if (cardData.length - (filmsItem.length - FILM_COUNT_EXTRA) >= FILM_COUNT_STEP) {
     for (cardNew; cardNew < cardCount; cardNew++) {
       render(filmsListContainer, createFilmCardTemplate(cardData[cardNew]), 'beforeend');
     }
   } else {
-    for (cardNew = (filmsItem.length - 4); cardNew < cardData.length; cardNew++) {
+    for (cardNew = (filmsItem.length - FILM_COUNT_EXTRA); cardNew < cardData.length; cardNew++) {
       render(filmsListContainer, createFilmCardTemplate(cardData[cardNew]), 'beforeend');
     }
   }
@@ -105,7 +109,7 @@ const filmsExtra = document.querySelector('.films');
 const filmsExtraList = filmsExtra.querySelectorAll('.films-list--extra');
 
 const ratedFilms = cardData
-  .filter((card) => card.filmInfo.totalRating > 8)
+  .filter((card) => card.filmInfo.totalRating > RATED_COUNT)
   .sort((a, b) => (b.filmInfo.totalRating > a.filmInfo.totalRating) ? 1 : -1)
   .slice(0, 2);
 ratedFilms.forEach((card) => {
