@@ -21,9 +21,9 @@ const generateAgeRating = () => ({
 const generateGenres = () => ({
   0: ['Drama', 'Thriller', 'Horrors'],
   1: ['Western', 'Horrors', 'Mystery'],
-  2: ['Drama', 'Family', 'Mystery'],
+  2: ['Drama'],
   3: ['Detective', 'Film-Noir', 'Mystery'],
-  4: ['Comedy', 'Film-Noir', 'Mystery'],
+  4: ['Comedy'],
 }[getRandomInt(0, 4)]);
 
 const generateWriters = () => ({
@@ -107,7 +107,7 @@ const generateObject = () => (
         'releaseCountry': generateCountry(),
       },
       'runtime': `1h ${getRandomInt(10, 50)}m`,
-      'genre': generateGenres(),
+      'genres': generateGenres(),
       'description': generateDescription(),
     },
     'userDetails': {

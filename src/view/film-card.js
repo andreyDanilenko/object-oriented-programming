@@ -2,7 +2,7 @@ import * as dayjs from 'dayjs';
 
 export const createFilmCardTemplate = (params) => {
   const getFirstElement = (arr) => arr[0];
-  const { title, runtime, genre, poster, description } = params.filmInfo;
+  const { title, runtime, genres, poster, description } = params.filmInfo;
   const rating = params.filmInfo.totalRating;
   const date = dayjs(params.filmInfo.release.date).format('YYYY');
   const comments = params.comments.length;
@@ -22,7 +22,7 @@ export const createFilmCardTemplate = (params) => {
     <p class="film-card__info">
       <span class="film-card__year">${date}</span>
       <span class="film-card__duration">${runtime}</span>
-      <span class="film-card__genre">${getFirstElement(genre)}</span>
+      <span class="film-card__genre">${getFirstElement(genres)}</span>
     </p>
     <img src="./images/posters/${poster}" alt="" class="film-card__poster">
     <p class="film-card__description">${getSliceText(description)}</p>
