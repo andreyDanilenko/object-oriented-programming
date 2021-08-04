@@ -1,4 +1,4 @@
-import { getRandomInt } from './data-card';
+import { getRandomInt } from '../utils/util';
 import * as dayjs from 'dayjs';
 
 const generateText = () => ({

@@ -7,15 +7,13 @@ import { createFilmListExtraTemplate } from './view/films-list-extra.js';
 import { createButtonMoreTemplate } from './view/button-more.js';
 import { createStatisticsTemplate } from './view/statistics.js';
 import { createPopupTemplate } from './view/popup.js';
+
 import { cardData } from './mock/data-card.js';
+import { RATED_COUNT, FILM_COUNT_EXTRA, FILM_COUNT_STEP } from './utils/util.js';
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
-
-const RATED_COUNT = 8;
-const FILM_COUNT_STEP = 5;
-const FILM_COUNT_EXTRA = 4;
 
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');

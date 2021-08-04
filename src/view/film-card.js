@@ -1,22 +1,12 @@
 import * as dayjs from 'dayjs';
+import { getFirstElement, getClassName, getSliceText } from '../utils/util';
 
 export const createFilmCardTemplate = (params) => {
-  const MAX_LENGTH_TEXT = 139;
-
-  const getFirstElement = (arr) => arr[0];
   const { title, runtime, genres, poster, description } = params.filmInfo;
   const rating = params.filmInfo.totalRating;
   const date = dayjs(params.filmInfo.release.date).format('YYYY');
   const comments = params.comments.length;
   const { watchlist, favorite, history } = params.userDetails;
-  const getClassName = (variable) => variable ? 'film-card__controls-item film-card__controls-item--active' : 'film-card__controls-item';
-  const getSliceText = (text) => {
-    let newText = text.slice(0, MAX_LENGTH_TEXT);
-    if (text.length > newText.length) {
-      newText += '...';
-    }
-    return newText;
-  };
 
   return `<article class="film-card">
     <h3 class="film-card__title">${title}</h3>

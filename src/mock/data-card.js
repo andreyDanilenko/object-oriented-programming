@@ -1,6 +1,6 @@
 import { generateComment } from './data-comments';
 import * as dayjs from 'dayjs';
-export const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+import { getRandomInt } from '../utils/util';
 
 const generatePoster = () => ({
   0: 'made-for-each-other.png',
