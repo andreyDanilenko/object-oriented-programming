@@ -52,7 +52,6 @@ for (let i = 0; i < cardCount; i++) {
 const linkCommentElement = document.querySelectorAll('.film-card__comments');
 
 linkCommentElement.forEach((link, i) => {
-
   link.addEventListener('click', () => {
     render(siteFooterElement, createPopupTemplate(cardData[i]), 'afterend');
     const closePopup = document.querySelector('.film-details__close-btn');
@@ -84,14 +83,13 @@ const renderCard = () => {
     }
   }
 
-  const linkNewCommentElement = document.querySelectorAll('.film-card__comments');
-
-  linkNewCommentElement.forEach((link, i) => {
+  const newCommentLinkElement = document.querySelectorAll('.film-card__comments');
+  newCommentLinkElement.forEach((link, i) => {
     link.addEventListener('click', () => {
       render(siteFooterElement, createPopupTemplate(cardData[i]), 'afterend');
       const closePopup = document.querySelector('.film-details__close-btn');
-      const popupDetails = document.querySelector('.film-details');
       closePopup.addEventListener('click', () => {
+        const popupDetails = document.querySelector('.film-details');
         popupDetails.remove();
       });
     });
