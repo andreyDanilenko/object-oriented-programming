@@ -9,7 +9,7 @@ import { createStatisticsTemplate } from './view/statistics.js';
 import { createPopupTemplate } from './view/popup.js';
 
 import { cardData } from './mock/data-card.js';
-import { RATED_COUNT, FILM_COUNT_EXTRA, FILM_COUNT_STEP } from './utils/util.js';
+import { RATED_COUNT, FILM_COUNT_EXTRA, FILM_COUNT_STEP } from './utils/const.js';
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
