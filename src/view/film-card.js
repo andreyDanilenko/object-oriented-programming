@@ -1,5 +1,5 @@
 import * as dayjs from 'dayjs';
-import { getFirstElement, getClassName, getSliceText } from '../utils/util';
+import { getFirstElement, getCardClassName, getSliceText } from '../utils/util';
 
 export const createFilmCardTemplate = (params) => {
   const { title, runtime, genres, poster, description } = params.filmInfo;
@@ -20,9 +20,9 @@ export const createFilmCardTemplate = (params) => {
     <p class="film-card__description">${getSliceText(description)}</p>
     <a class="film-card__comments">${comments} comments</a>
     <div class="film-card__controls">
-      <button class="${getClassName(watchlist)} film-card__controls-item--add-to-watchlist" type="button">Add to watchlist</button>
-      <button class="${getClassName(history)} film-card__controls-item--mark-as-watched" type="button">Mark as watched</button>
-      <button class="${getClassName(favorite)} film-card__controls-item--favorite" type="button">Mark as favorite</button>
+      <button class="${getCardClassName(watchlist)} film-card__controls-item--add-to-watchlist" type="button">Add to watchlist</button>
+      <button class="${getCardClassName(history)} film-card__controls-item--mark-as-watched" type="button">Mark as watched</button>
+      <button class="${getCardClassName(favorite)} film-card__controls-item--favorite" type="button">Mark as favorite</button>
     </div>
   </article>`;
 };
