@@ -1,7 +1,7 @@
 import * as dayjs from 'dayjs';
-import { getFirstElement, getCardClassName, getSliceText } from '../utils/util';
+import { getFirstElement, getCardClassName, getSliceText, createElement } from '../utils/util';
 
-export const createFilmCardTemplate = (params) => {
+const createFilmCardTemplate = (params) => {
   const { title, runtime, genres, poster, description } = params.filmInfo;
   const rating = params.filmInfo.totalRating;
   const date = dayjs(params.filmInfo.release.date).format('YYYY');
@@ -26,3 +26,25 @@ export const createFilmCardTemplate = (params) => {
     </div>
   </article>`;
 };
+
+export default class SiteFilmCard {
+  constructor(params) {
+    this._params = params;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmCardTemplate(this._params);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
