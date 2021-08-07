@@ -7,20 +7,21 @@ import { createFilmListExtraTemplate } from './view/films-list-extra.js';
 import { createButtonMoreTemplate } from './view/button-more.js';
 import { createStatisticsTemplate } from './view/statistics.js';
 import { createPopupTemplate } from './view/popup.js';
-
-import { cardData } from './mock/data-card.js';
 import { RATED_COUNT, FILM_COUNT_PER_STEP } from './utils/const.js';
+import { cardData } from './mock/data-card.js';
+import { generateFilter } from './utils/filters.js';
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
+const filters = generateFilter(cardData);
 
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
 const siteFooterElement = document.querySelector('.footer');
 
 render(siteHeaderElement, createSiteProfileTemplate(), 'beforeend');
-render(siteMainElement, createSiteNavTemplate(cardData), 'beforeend');
+render(siteMainElement, createSiteNavTemplate(filters), 'beforeend');
 
 const navFilmsElement = document.querySelectorAll('.main-navigation__item');
 navFilmsElement.forEach((link) => {
