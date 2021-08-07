@@ -1,3 +1,3 @@
-export const createStatisticsTemplate = () => (
-  '<p>130 291 movies inside</p>'
+export const createStatisticsTemplate = (param) => (
+  `<p>${param.length} movies inside</p>`
 );
