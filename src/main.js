@@ -24,36 +24,50 @@ const renderFilmCard = (container, data) => {
   const filmCardComponent = new SiteFilmCardView(data);
   const popupCardComponent = new SitePopupCardView(data);
 
-  const openPopupCard = () => {
-    render(siteFooterElement, popupCardComponent.getElement());
-  };
-
   const onEscKeyDown = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       document.querySelector('.film-details').remove();
       document.removeEventListener('keydown', onEscKeyDown);
+      document.querySelector('body').classList.remove('hide-overflow');
     }
   };
 
-  filmCardComponent.getElement().querySelector('.film-card__comments').addEventListener('click', () => {
+  const openPopupCard = () => {
     if (document.querySelector('.film-details')) {
       document.querySelector('.film-details').remove();
     }
-    openPopupCard();
+    siteFooterElement.appendChild(popupCardComponent.getElement());
+    document.querySelector('body').classList.add('hide-overflow');
     document.addEventListener('keydown', onEscKeyDown);
+  };
+
+  const filmCard = filmCardComponent.getElement();
+
+  filmCard.querySelector('.film-card__poster').addEventListener('click', () => {
+    openPopupCard();
   });
+
+  filmCard.querySelector('.film-card__comments').addEventListener('click', () => {
+    openPopupCard();
+  });
+
+  filmCard.querySelector('.film-card__title').addEventListener('click', () => {
+    openPopupCard();
+  });
+
 
   popupCardComponent.getElement().querySelector('.film-details__close-btn').addEventListener('click', () => {
     document.querySelector('.film-details').remove();
     document.removeEventListener('keydown', onEscKeyDown);
+    document.querySelector('body').classList.remove('hide-overflow');
   });
 
   render(container, filmCardComponent.getElement());
 };
 
-render(siteMainElement, new SiteNavView(filters).getElement());
-render(siteMainElement, new SiteSortView().getElement());
-render(siteMainElement, new SiteFilmsListView().getElement());
+siteMainElement.appendChild(new SiteNavView(filters).getElement());
+siteMainElement.appendChild(new SiteSortView().getElement());
+siteMainElement.appendChild(new SiteFilmsListView().getElement());
 
 const films = document.querySelector('.films');
 const filmsListContainer = films.querySelector('.films-list__container');
