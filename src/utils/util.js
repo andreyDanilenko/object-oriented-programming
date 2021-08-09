@@ -14,7 +14,7 @@ export const getSliceText = (text) => {
 };
 
 export const createElement = (template) => {
-  const newElement = document.createElement('template');
+  const newElement = document.createElement('div');
   newElement.innerHTML = template;
-  return newElement.content;
+  return newElement.firstChild;
 };
