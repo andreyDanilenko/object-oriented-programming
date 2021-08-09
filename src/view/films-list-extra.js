@@ -7,7 +7,7 @@ export const createFilmListExtraTemplate = (params) => (
     </section>`
 );
 
-export default class SiteFilmsListExtra {
+export default class FilmsListExtra {
   constructor(params) {
     this._params = params;
     this._element = null;

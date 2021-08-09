@@ -1,13 +1,13 @@
-import SiteProfileView from './view/header-profile';
-import SiteNavView from './view/site-nav';
-import SiteSortView from './view/films-sort';
-import SiteFilmsListView from './view/films-list';
-import SiteFilmCardView from './view/film-card';
-import SiteFilmsListExtraView from './view/films-list-extra';
+import ProfileView from './view/header-profile';
+import NavView from './view/site-nav';
+import SortView from './view/films-sort';
+import FilmsListView from './view/films-list';
+import FilmCardView from './view/film-card';
+import FilmsListExtraView from './view/films-list-extra';
 import LoadMoreButtonView from './view/button-more';
-import SiteStatisticView from './view/statistics';
-import SitePopupCardView from './view/popup';
-import SiteFilmNoCardView from './view/film-no-card';
+import StatisticView from './view/statistics';
+import PopupCardView from './view/popup';
+import FilmNoCardView from './view/film-no-card';
 
 import { RATED_COUNT, FILM_COUNT_PER_STEP } from './utils/const';
 import { cardData } from './mock/data-card';
@@ -21,8 +21,8 @@ const siteFooterElement = document.querySelector('.footer');
 const siteFooterStatisticsElement = siteFooterElement.querySelector('.footer__statistics');
 
 const renderFilmCard = (container, data) => {
-  const filmCardComponent = new SiteFilmCardView(data);
-  const popupCardComponent = new SitePopupCardView(data);
+  const filmCardComponent = new FilmCardView(data);
+  const popupCardComponent = new PopupCardView(data);
 
   const onEscKeyDown = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
@@ -65,13 +65,13 @@ const renderFilmCard = (container, data) => {
 };
 
 const renderFilmsList = (listContainer, data) => {
-  listContainer.appendChild(new SiteFilmsListView().getElement());
+  listContainer.appendChild(new FilmsListView().getElement());
   const films = document.querySelector('.films');
   const filmsList = films.querySelector('.films-list');
   const filmsListContainer = films.querySelector('.films-list__container');
 
   if (data.length === 0) {
-    filmsList.appendChild(new SiteFilmNoCardView().getElement());
+    filmsList.appendChild(new FilmNoCardView().getElement());
     return;
   }
 
@@ -81,7 +81,7 @@ const renderFilmsList = (listContainer, data) => {
 
   const titleExtra = [{ title: 'Top rated' }, { title: 'Most commented' }];
   for (let i = 0; i < 2; i++) {
-    films.appendChild(new SiteFilmsListExtraView(titleExtra[i]).getElement());
+    films.appendChild(new FilmsListExtraView(titleExtra[i]).getElement());
   }
 
   const filmsExtraList = films.querySelectorAll('.films-list--extra');
@@ -125,8 +125,8 @@ const renderFilmsList = (listContainer, data) => {
   }
 };
 
-siteHeaderElement.appendChild(new SiteProfileView().getElement());
-siteMainElement.appendChild(new SiteNavView(filters).getElement());
-siteMainElement.appendChild(new SiteSortView().getElement());
+siteHeaderElement.appendChild(new ProfileView().getElement());
+siteMainElement.appendChild(new NavView(filters).getElement());
+siteMainElement.appendChild(new SortView().getElement());
 renderFilmsList(siteMainElement, cardData);
-siteFooterStatisticsElement.appendChild(new SiteStatisticView(cardData).getElement());
+siteFooterStatisticsElement.appendChild(new StatisticView(cardData).getElement());

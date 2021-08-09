@@ -27,7 +27,7 @@ const createFilmCardTemplate = (params) => {
   </article>`;
 };
 
-export default class SiteFilmCard {
+export default class FilmCard {
   constructor(params) {
     this._params = params;
     this._element = null;

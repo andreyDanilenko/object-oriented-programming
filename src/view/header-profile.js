@@ -7,7 +7,7 @@ const createSiteProfileTemplate = () => (
   </section>`
 );
 
-export default class SiteProfile {
+export default class Profile {
   constructor() {
     this._element = null;
   }

@@ -144,7 +144,7 @@ const createPopupTemplate = (params) => {
     </section>`;
 };
 
-export default class SitePopupCard {
+export default class PopupCard {
   constructor(params) {
     this._params = params;
     this._element = null;

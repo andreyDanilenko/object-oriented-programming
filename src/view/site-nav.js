@@ -22,7 +22,7 @@ const createSiteNavTemplate = (filterItems) => {
   </nav>`;
 };
 
-export default class SiteNav {
+export default class Nav {
   constructor(filters) {
     this._filters = filters;
     this._element = null;

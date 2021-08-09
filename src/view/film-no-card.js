@@ -2,7 +2,7 @@ import { createElement } from '../utils/util';
 
 const createFilmNoListTemplate = () => '<h2 class="films-list__title">There are no movies in our database</h2>';
 
-export default class SiteFilmNoCard {
+export default class FilmNoCard {
   constructor() {
     this._element = null;
   }

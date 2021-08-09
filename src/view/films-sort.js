@@ -8,7 +8,7 @@ export const createSiteSortTemplate = () => (
   </ul>`
 );
 
-export default class SiteSort {
+export default class Sort {
   constructor() {
     this._element = null;
   }
