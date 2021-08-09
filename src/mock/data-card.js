@@ -1,7 +1,6 @@
 import { generateComment } from './data-comments';
-import * as dayjs from 'dayjs';
 import { getRandomInt } from '../utils/util';
-
+import dayjs from 'dayjs';
 const generatePoster = () => ({
   0: 'made-for-each-other.png',
   1: 'popeye-meets-sinbad.png',

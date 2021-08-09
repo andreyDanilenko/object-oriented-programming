@@ -1,16 +1,14 @@
 import { createElement } from '../utils/util';
 
-const createButtonMoreTemplate = () => (
-  '<button class="films-list__show-more">Show more</button>'
-);
+const createFilmNoListTemplate = () => '<h2 class="films-list__title">There are no movies in our database</h2>';
 
-export default class LoadMoreButton {
+export default class FilmNoCard {
   constructor() {
     this._element = null;
   }
 
   getTemplate() {
-    return createButtonMoreTemplate();
+    return createFilmNoListTemplate();
   }
 
   getElement() {
