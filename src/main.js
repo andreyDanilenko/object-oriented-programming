@@ -24,42 +24,21 @@ const renderFilmCard = (container, data) => {
   const filmCardComponent = new FilmCardView(data);
   const popupCardComponent = new PopupCardView(data);
 
-  const onEscKeyDown = (evt) => {
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
-      document.querySelector('.film-details').remove();
-      document.removeEventListener('keydown', onEscKeyDown);
-      document.querySelector('body').classList.remove('hide-overflow');
-    }
-  };
-
   const openPopupCard = () => {
     if (document.querySelector('.film-details')) {
       document.querySelector('.film-details').remove();
     }
     siteFooterElement.after(popupCardComponent.getElement());
-    document.querySelector('body').classList.add('hide-overflow');
-    document.addEventListener('keydown', onEscKeyDown);
   };
 
-  const filmCard = filmCardComponent.getElement();
+  const closePopupCard = () => {
+    if (document.querySelector('.film-details')) {
+      document.querySelector('.film-details').remove();
+    }
+  };
 
-  filmCard.querySelector('.film-card__poster').addEventListener('click', () => {
-    openPopupCard();
-  });
-
-  filmCard.querySelector('.film-card__comments').addEventListener('click', () => {
-    openPopupCard();
-  });
-
-  filmCard.querySelector('.film-card__title').addEventListener('click', () => {
-    openPopupCard();
-  });
-
-  popupCardComponent.getElement().querySelector('.film-details__close-btn').addEventListener('click', () => {
-    document.querySelector('.film-details').remove();
-    document.removeEventListener('keydown', onEscKeyDown);
-    document.querySelector('body').classList.remove('hide-overflow');
-  });
+  filmCardComponent.setOpenClickHandler(() => openPopupCard());
+  popupCardComponent.setCloseClickHandler(() => closePopupCard());
 
   container.appendChild(filmCardComponent.getElement());
 };
