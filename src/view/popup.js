@@ -1,5 +1,7 @@
 import * as dayjs from 'dayjs';
-import { getPopupClassName, createElement } from '../utils/util';
+import { getPopupClassName } from '../utils/util';
+import AbstractView from './abstract';
+
 
 const createCommentPopupTemplate = (comment) => {
   const { text, authorName, emoji, date } = comment;
@@ -144,24 +146,13 @@ const createPopupTemplate = (params) => {
     </section>`;
 };
 
-export default class PopupCard {
+export default class PopupCard extends AbstractView {
   constructor(params) {
+    super();
     this._params = params;
-    this._element = null;
   }
 
   getTemplate() {
     return createPopupTemplate(this._params);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

@@ -36,7 +36,7 @@ const renderFilmCard = (container, data) => {
     if (document.querySelector('.film-details')) {
       document.querySelector('.film-details').remove();
     }
-    siteFooterElement.appendChild(popupCardComponent.getElement());
+    siteFooterElement.after(popupCardComponent.getElement());
     document.querySelector('body').classList.add('hide-overflow');
     document.addEventListener('keydown', onEscKeyDown);
   };
