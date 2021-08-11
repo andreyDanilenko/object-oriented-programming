@@ -151,28 +151,23 @@ export default class PopupCard extends AbstractView {
     super();
     this._params = params;
     this._getClosePopupHandler = this._getClosePopupHandler.bind(this);
-    this._getClosePopupKeyDown = this._getClosePopupKeyDown.bind(this);
   }
 
   getTemplate() {
     return createPopupTemplate(this._params);
   }
 
-  _getClosePopupHandler() {
+  _getClosePopupHandler(evt) {
     this._callback.closePopupFilm();
-  }
-
-  _getClosePopupKeyDown(evt) {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       this._callback.closePopupFilm();
-      document.querySelector('body').classList.remove('hide-overflow');
     }
-
+    document.querySelector('body').classList.remove('hide-overflow');
   }
 
   setCloseClickHandler(callback) {
     this._callback.closePopupFilm = callback;
     this.getElement().querySelector('.film-details__close-btn').addEventListener('click', this._getClosePopupHandler);
-    document.addEventListener('keydown', this._getClosePopupKeyDown);
+    document.addEventListener('keydown', this._getClosePopupHandler);
   }
 }
