@@ -165,9 +165,9 @@ export default class PopupCard extends AbstractView {
   _getClosePopupKeyDown(evt) {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       this._callback.closePopupFilm();
+      document.querySelector('body').classList.remove('hide-overflow');
     }
-    document.removeEventListener('keydown', this._getClosePopupKeyDown);
-    document.querySelector('body').classList.remove('hide-overflow');
+
   }
 
   setCloseClickHandler(callback) {
