@@ -1,5 +1,6 @@
 import * as dayjs from 'dayjs';
-import { getFirstElement, getCardClassName, getSliceText, createElement } from '../utils/util';
+import { getFirstElement, getCardClassName, getSliceText } from '../utils/util';
+import AbstractView from './abstract';
 
 const createFilmCardTemplate = (params) => {
   const { title, runtime, genres, poster, description } = params.filmInfo;
@@ -27,24 +28,29 @@ const createFilmCardTemplate = (params) => {
   </article>`;
 };
 
-export default class FilmCard {
+export default class FilmCard extends AbstractView {
   constructor(params) {
+    super();
     this._params = params;
-    this._element = null;
+    this._getOpenClickHandler = this._getOpenClickHandler.bind(this);
   }
 
   getTemplate() {
     return createFilmCardTemplate(this._params);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
+  _getOpenClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.openPopupFilm();
+    document.querySelector('body').classList.add('hide-overflow');
   }
 
-  removeElement() {
-    this._element = null;
+  setOpenClickHandler(callback) {
+    this._callback.openPopupFilm = callback;
+
+    const filmCard = this.getElement();
+    filmCard.querySelector('.film-card__poster').addEventListener('click', this._getOpenClickHandler);
+    filmCard.querySelector('.film-card__comments').addEventListener('click', this._getOpenClickHandler);
+    filmCard.querySelector('.film-card__title').addEventListener('click', this._getOpenClickHandler);
   }
 }

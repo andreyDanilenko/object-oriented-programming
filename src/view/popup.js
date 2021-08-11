@@ -1,5 +1,7 @@
 import * as dayjs from 'dayjs';
-import { getPopupClassName, createElement } from '../utils/util';
+import { getPopupClassName } from '../utils/util';
+import AbstractView from './abstract';
+
 
 const createCommentPopupTemplate = (comment) => {
   const { text, authorName, emoji, date } = comment;
@@ -144,24 +146,28 @@ const createPopupTemplate = (params) => {
     </section>`;
 };
 
-export default class PopupCard {
+export default class PopupCard extends AbstractView {
   constructor(params) {
+    super();
     this._params = params;
-    this._element = null;
+    this._getClosePopupHandler = this._getClosePopupHandler.bind(this);
   }
 
   getTemplate() {
     return createPopupTemplate(this._params);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
+  _getClosePopupHandler(evt) {
+    this._callback.closePopupFilm();
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      this._callback.closePopupFilm();
     }
-    return this._element;
+    document.querySelector('body').classList.remove('hide-overflow');
   }
 
-  removeElement() {
-    this._element = null;
+  setCloseClickHandler(callback) {
+    this._callback.closePopupFilm = callback;
+    this.getElement().querySelector('.film-details__close-btn').addEventListener('click', this._getClosePopupHandler);
+    document.addEventListener('keydown', this._getClosePopupHandler);
   }
 }
