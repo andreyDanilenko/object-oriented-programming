@@ -2,9 +2,11 @@ import ProfileView from './view/header-profile';
 import NavView from './view/site-nav';
 import SortView from './view/films-sort';
 import StatisticView from './view/statistics';
+// import FilmsListExtraView from './view/films-list-extra';
 import FilmsPresenter from './presenter/films';
 import { cardData } from './mock/data-card';
 import { generateFilter } from './utils/filters';
+
 
 const filters = generateFilter(cardData);
 
@@ -17,7 +19,7 @@ siteHeaderElement.appendChild(new ProfileView().getElement());
 siteMainElement.appendChild(new NavView(filters).getElement());
 siteMainElement.appendChild(new SortView().getElement());
 const filmsPresenter = new FilmsPresenter(siteMainElement);
-filmsPresenter.init(cardData)
+filmsPresenter.init(cardData);
 
 // const films = document.querySelector('.films');
 // const titleExtra = [{ title: 'Top rated' }, { title: 'Most commented' }];
@@ -27,7 +29,7 @@ filmsPresenter.init(cardData)
 
 // const filmsExtraList = films.querySelectorAll('.films-list--extra');
 // const ratedFilms = cardData
-//   .filter((card) => card.filmInfo.totalRating > RATED_COUNT)
+//   .filter((card) => card.filmInfo.totalRating > 8)
 //   .sort((a, b) => (b.filmInfo.totalRating > a.filmInfo.totalRating) ? 1 : -1)
 //   .slice(0, 2);
 // ratedFilms.forEach((card) => {

@@ -1,6 +1,6 @@
 import FilmsView from '../view/films';
-import FilmsListView from '../view/filmsList';
-import FilmsContainerView from '../view/filmsContainer';
+import FilmsListView from '../view/films-list';
+import FilmsContainerView from '../view/films-container';
 import FilmCardView from '../view/film-card';
 import PopupCardView from '../view/popup';
 import LoadMoreButtonView from '../view/button-more';
@@ -65,6 +65,10 @@ export default class Films {
     if (this._cards.length > FILM_COUNT_PER_STEP) {
       this._renderLoadMoreButton();
     }
+  }
+
+  _renderNoFilmsList() {
+    render(this._filmsContainerComponent, this._filmNoCardComponent, RenderPosition.BEFOREEND);
   }
 
   _renderLoadMoreButton() {
