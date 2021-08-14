@@ -13,12 +13,18 @@ export default class Films {
   constructor(filmsMain) {
     this._filmsMain = filmsMain;
     this._renderedTaskCount = FILM_COUNT_PER_STEP;
+
     this._filmsComponent = new FilmsView();
     this._filmsListComponent = new FilmsListView();
     this._filmsListExtraComponent = new FilmsListExtraView();
     this._filmsContainerComponent = new FilmsContainerView();
     this._loadMoreButtonComponent = new LoadMoreButtonView();
     this._filmNoCardComponent = new FilmNoCardView();
+
+    this._filmCardComponent = null;
+    this._filmPopupComponent = null;
+    this._handleOpenPopopClick = this._handleOpenPopopClick.bind(this);
+    this._handleClosePopopClick = this._handleClosePopopClick.bind(this);
 
     this._handleLoadMoreButton = this._handleLoadMoreButton.bind(this);
   }
@@ -34,26 +40,34 @@ export default class Films {
   }
 
   _renderFlimCard(card) {
-    const filmCardComponent = new FilmCardView(card);
-    const popupCardComponent = new PopupCardView(card);
+    this._filmCardComponent = new FilmCardView(card);
+    this._filmPopupComponent = new PopupCardView(card);
 
-    const openPopupCard = () => {
-      if (document.querySelector('.film-details')) {
-        document.querySelector('.film-details').remove();
-      }
-      render(document.body, popupCardComponent, RenderPosition.BEFOREEND);
-    };
+    this._filmCardComponent.setOpenClickHandler(this._handleOpenPopopClick);
+    this._filmPopupComponent.setCloseClickHandler(this._handleClosePopopClick);
 
-    const closePopupCard = () => {
-      if (document.querySelector('.film-details')) {
-        document.querySelector('.film-details').remove();
-      }
-    };
+    render(this._filmsContainerComponent, this._filmCardComponent, RenderPosition.BEFOREEND);
+  }
 
-    filmCardComponent.setOpenClickHandler(openPopupCard);
-    popupCardComponent.setCloseClickHandler(closePopupCard);
+  _openPopupCard() {
+    if (document.querySelector('.film-details')) {
+      document.querySelector('.film-details').remove();
+    }
+    render(document.body, this._filmPopupComponent, RenderPosition.BEFOREEND);
+  }
 
-    render(this._filmsContainerComponent, filmCardComponent, RenderPosition.BEFOREEND);
+  _closePopupCard() {
+    if (document.querySelector('.film-details')) {
+      document.querySelector('.film-details').remove();
+    }
+  }
+
+  _handleOpenPopopClick() {
+    this._openPopupCard();
+  }
+
+  _handleClosePopopClick() {
+    this._closePopupCard();
   }
 
   _renderFilmCards(from, to) {
