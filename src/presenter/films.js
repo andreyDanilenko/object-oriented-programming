@@ -1,25 +1,29 @@
 import FilmsView from '../view/films';
 import FilmsListView from '../view/films-list';
+import FilmsListExtraView from '../view/films-list-extra';
 import FilmsContainerView from '../view/films-container';
-import FilmCardView from '../view/film-card';
-import PopupCardView from '../view/popup';
 import LoadMoreButtonView from '../view/button-more';
+import FilmCardView from '../view/film-card';
 import FilmNoCardView from '../view/film-no-card';
+import PopupCardView from '../view/popup';
 import { render, remove, RenderPosition } from '../utils/render';
 import { FILM_COUNT_PER_STEP } from '../utils/const';
 
 export default class Films {
   constructor(filmsMain) {
     this._filmsMain = filmsMain;
+    this._renderedTaskCount = FILM_COUNT_PER_STEP;
     this._filmsComponent = new FilmsView();
     this._filmsListComponent = new FilmsListView();
+    this._filmsListExtraComponent = new FilmsListExtraView();
     this._filmsContainerComponent = new FilmsContainerView();
     this._loadMoreButtonComponent = new LoadMoreButtonView();
     this._filmNoCardComponent = new FilmNoCardView();
+
+    this._handleLoadMoreButton = this._handleLoadMoreButton.bind(this);
   }
 
   init(cards) {
-    // Метод возврращающий копию передающего в него массива для того чтобы создавать новую отричовку
     this._cards = cards.slice();
 
     render(this._filmsMain, this._filmsComponent, RenderPosition.BEFOREEND);
@@ -56,7 +60,6 @@ export default class Films {
     this._cards
       .slice(from, to)
       .forEach((card) => this._renderFlimCard(card));
-
   }
 
   _renderFilmsContainer() {
@@ -71,25 +74,18 @@ export default class Films {
     render(this._filmsContainerComponent, this._filmNoCardComponent, RenderPosition.BEFOREEND);
   }
 
+  _handleLoadMoreButton() {
+    this._renderFilmCards(this._renderedTaskCount, this._renderedTaskCount + FILM_COUNT_PER_STEP);
+    this._renderedTaskCount += FILM_COUNT_PER_STEP;
+
+    if (this._renderedTaskCount >= this._cards.length) {
+      remove(this._loadMoreButtonComponent);
+    }
+  }
+
   _renderLoadMoreButton() {
-    let renderedTaskCount = FILM_COUNT_PER_STEP;
-
     render(this._filmsListComponent, this._loadMoreButtonComponent, RenderPosition.BEFOREEND);
-
-    const loadMoreButton = document.querySelector('.films-list__show-more');
-
-    loadMoreButton.addEventListener('click', (evt) => {
-      evt.preventDefault();
-      this._cards.slice(renderedTaskCount, renderedTaskCount + FILM_COUNT_PER_STEP)
-        .forEach((card) => {
-          this._renderFlimCard(card);
-        });
-      renderedTaskCount += FILM_COUNT_PER_STEP;
-
-      if (renderedTaskCount >= this._cards.length) {
-        remove(this._loadMoreButtonComponent);
-      }
-    });
+    this._loadMoreButtonComponent.setClickHandler(this._handleLoadMoreButton);
   }
 
   _renderFilms() {
