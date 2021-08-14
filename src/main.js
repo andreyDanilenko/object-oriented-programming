@@ -7,7 +7,6 @@ import FilmsPresenter from './presenter/films';
 import { cardData } from './mock/data-card';
 import { generateFilter } from './utils/filters';
 
-
 const filters = generateFilter(cardData);
 
 const siteHeaderElement = document.querySelector('.header');

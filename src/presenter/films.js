@@ -49,25 +49,17 @@ export default class Films {
     render(this._filmsContainerComponent, this._filmCardComponent, RenderPosition.BEFOREEND);
   }
 
-  _openPopupCard() {
+  _handleOpenPopopClick() {
     if (document.querySelector('.film-details')) {
       document.querySelector('.film-details').remove();
     }
     render(document.body, this._filmPopupComponent, RenderPosition.BEFOREEND);
   }
 
-  _closePopupCard() {
+  _handleClosePopopClick() {
     if (document.querySelector('.film-details')) {
       document.querySelector('.film-details').remove();
     }
-  }
-
-  _handleOpenPopopClick() {
-    this._openPopupCard();
-  }
-
-  _handleClosePopopClick() {
-    this._closePopupCard();
   }
 
   _renderFilmCards(from, to) {
