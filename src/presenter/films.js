@@ -25,6 +25,7 @@ export default class Films {
     this._newFilmDate = new Map();
 
     this._handleLoadMoreButton = this._handleLoadMoreButton.bind(this);
+    this._handleCardChange = this._handleCardChange.bind(this);
   }
 
   init(cards) {

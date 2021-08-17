@@ -51,12 +51,12 @@ export default class FilmCard extends AbstractView {
 
   _historyClickHandler(evt) {
     evt.preventDefault();
-    this._callback.archiveClick();
+    this._callback.historyClick();
   }
 
   _watchlistClickHandler(evt) {
     evt.preventDefault();
-    this._callback.historyClick();
+    this._callback.watchlistClick();
   }
 
   _getOpenClickHandler(evt) {
@@ -71,12 +71,12 @@ export default class FilmCard extends AbstractView {
   }
 
   setHistoryClickHandler(callback) {
-    this._callback.archiveClick = callback;
+    this._callback.historyClick = callback;
     this._filmCard.querySelector('.film-card__controls-item--mark-as-watched').addEventListener('click', this._historyClickHandler);
   }
 
   setWatchlistClickHandler(callback) {
-    this._callback.historyClick = callback;
+    this._callback.watchlistClick = callback;
     this._filmCard.querySelector('.film-card__controls-item--add-to-watchlist').addEventListener('click', this._watchlistClickHandler);
   }
 
