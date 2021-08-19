@@ -1,6 +1,4 @@
-export const RATED_COUNT = 8;
-export const FILM_COUNT_STEP = 5;
-export const MAX_LENGTH_TEXT = 139;
+import { MAX_LENGTH_TEXT } from './const';
 export const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 export const getFirstElement = (arr) => arr[0];
 export const getCardClassName = (variable) => variable ? 'film-card__controls-item film-card__controls-item--active' : 'film-card__controls-item';
@@ -13,8 +11,15 @@ export const getSliceText = (text) => {
   return newText;
 };
 
-export const createElement = (template) => {
-  const newElement = document.createElement('div');
-  newElement.innerHTML = template;
-  return newElement.firstChild;
+export const updateItem = (items, update) => {
+  const index = items.findIndex((item) => item.id === update.id);
+  if (index === -1) {
+    return items;
+  }
+
+  return [
+    ...items.slice(0, index),
+    update,
+    ...items.slice(index + 1),
+  ];
 };

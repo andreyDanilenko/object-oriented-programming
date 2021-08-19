@@ -117,5 +117,5 @@ const generateObject = () => (
     },
   });
 
-const CARD_COUNT = 23;
+const CARD_COUNT = 22;
 export const cardData = new Array(CARD_COUNT).fill().map(() => generateObject());

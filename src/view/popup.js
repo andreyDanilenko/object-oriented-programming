@@ -150,7 +150,11 @@ export default class PopupCard extends AbstractView {
   constructor(params) {
     super();
     this._params = params;
+    this._filmPopup = this.getElement();
     this._getClosePopupHandler = this._getClosePopupHandler.bind(this);
+    this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
+    this._historyClickHandler = this._historyClickHandler.bind(this);
+    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
   }
 
   getTemplate() {
@@ -165,9 +169,40 @@ export default class PopupCard extends AbstractView {
     document.querySelector('body').classList.remove('hide-overflow');
   }
 
+  _historyClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.historyClick();
+  }
+
+  _favoriteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.favoriteClick();
+  }
+
+  _watchlistClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.watchlistClick();
+  }
+
+  setHistoryClickHandler(callback) {
+    this._callback.historyClick = callback;
+    this._filmPopup.querySelector('.film-details__control-button--watched').addEventListener('click', this._historyClickHandler);
+  }
+
+  setFavoriteClickHandler(callback) {
+    this._callback.favoriteClick = callback;
+    this._filmPopup.querySelector('.film-details__control-button--favorite').addEventListener('click', this._favoriteClickHandler);
+  }
+
+  setWatchlistClickHandler(callback) {
+    this._callback.watchlistClick = callback;
+    this._filmPopup.querySelector('.film-details__control-button--watchlist').addEventListener('click', this._watchlistClickHandler);
+  }
+
   setCloseClickHandler(callback) {
     this._callback.closePopupFilm = callback;
-    this.getElement().querySelector('.film-details__close-btn').addEventListener('click', this._getClosePopupHandler);
+    this._filmPopup.querySelector('.film-details__close-btn').addEventListener('click', this._getClosePopupHandler);
     document.addEventListener('keydown', this._getClosePopupHandler);
   }
 }
+
