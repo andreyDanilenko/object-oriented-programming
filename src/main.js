@@ -17,4 +17,4 @@ render(siteHeaderElement, new ProfileView(), RenderPosition.BEFOREEND);
 render(siteMainElement, new NavView(filters), RenderPosition.BEFOREEND);
 const filmsPresenter = new FilmsPresenter(siteMainElement);
 filmsPresenter.init(cardData);
-siteFooterStatisticsElement.appendChild(new StatisticView(cardData).getElement());
+render(siteFooterStatisticsElement, new StatisticView(cardData), RenderPosition.BEFOREEND);

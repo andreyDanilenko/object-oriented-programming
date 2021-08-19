@@ -1,5 +1,5 @@
 import FilmsView from '../view/films';
-import FilmsListView from '../view/films-list';
+import FilmsListMainView from '../view/films-list';
 import FilmsListCommentedView from '../view/films-list-commented';
 import FilmsListRatedView from '../view/films-list-rated';
 import LoadMoreButtonView from '../view/button-more';
@@ -11,18 +11,18 @@ import { FILM_COUNT_PER_STEP, FILM_COUNT_EXTRA, RATED_COUNT } from '../utils/con
 import { updateItem } from '../utils/util';
 
 export default class Films {
-  constructor(filmsMain) {
-    this._filmsMain = filmsMain;
+  constructor(filmsContainer) {
+    this._filmsContainer = filmsContainer;
     this._renderedTaskCount = FILM_COUNT_PER_STEP;
 
     this._sortComponent = new SortView();
     this._filmsComponent = new FilmsView();
-    this._filmsListMainComponent = new FilmsListView();
+    this._filmsListMainComponent = new FilmsListMainView();
     this._FilmsListCommentedComponent = new FilmsListCommentedView();
     this._FilmsListRatedComponent = new FilmsListRatedView();
     this._loadMoreButtonComponent = new LoadMoreButtonView();
     this._filmNoCardComponent = new FilmNoCardView();
-    this._newFilmDate = new Map();
+    this._newFilmData = new Map();
 
     this._handleLoadMoreButton = this._handleLoadMoreButton.bind(this);
     this._handleCardChange = this._handleCardChange.bind(this);
@@ -35,18 +35,18 @@ export default class Films {
   }
 
   _renderSort() {
-    render(this._filmsMain, this._sortComponent, RenderPosition.BEFOREEND);
+    render(this._filmsContainer, this._sortComponent, RenderPosition.BEFOREEND);
   }
 
   _renderFlimCard(container, card) {
     const cardPresenter = new FilmPresenter(container, this._handleCardChange);
     cardPresenter.init(card);
-    this._newFilmDate.set(card.id, cardPresenter);
+    this._newFilmData.set(card.id, cardPresenter);
   }
 
   _handleCardChange(updatedFilm) {
     this._cards = updateItem(this._cards, updatedFilm);
-    this._newFilmDate.get(updatedFilm.id).init(updatedFilm);
+    this._newFilmData.get(updatedFilm.id).init(updatedFilm);
   }
 
   _renderFilmCards(container, from, to, cardData) {
@@ -56,7 +56,7 @@ export default class Films {
   }
 
   _renderFilmsContainer() {
-    render(this._filmsMain, this._filmsComponent, RenderPosition.BEFOREEND);
+    render(this._filmsContainer, this._filmsComponent, RenderPosition.BEFOREEND);
   }
 
   _renderFilmsListMain() {
