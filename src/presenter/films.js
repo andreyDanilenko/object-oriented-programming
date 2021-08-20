@@ -20,8 +20,8 @@ export default class Films {
     this._sortComponent = new SortView();
     this._filmsComponent = new FilmsView();
     this._filmsListMainComponent = new FilmsListMainView();
-    this._FilmsListCommentedComponent = new FilmsListCommentedView();
-    this._FilmsListRatedComponent = new FilmsListRatedView();
+    this._filmsListCommentedComponent = new FilmsListCommentedView();
+    this._filmsListRatedComponent = new FilmsListRatedView();
     this._loadMoreButtonComponent = new LoadMoreButtonView();
     this._filmNoCardComponent = new FilmNoCardView();
     this._newFilmData = new Map();
@@ -110,8 +110,8 @@ export default class Films {
   }
 
   _renderFilmsListRated() {
-    render(this._filmsComponent, this._FilmsListRatedComponent, RenderPosition.BEFOREEND);
-    this.cardRatedContainer = this._FilmsListRatedComponent.getElement().querySelector('.films-list__container');
+    render(this._filmsComponent, this._filmsListRatedComponent, RenderPosition.BEFOREEND);
+    this.cardRatedContainer = this._filmsListRatedComponent.getElement().querySelector('.films-list__container');
     this._ratedFilms = this._cards
       .filter((card) => card.filmInfo.totalRating > RATED_COUNT)
       .sort((a, b) => (b.filmInfo.totalRating > a.filmInfo.totalRating) ? 1 : -1)
@@ -120,8 +120,8 @@ export default class Films {
   }
 
   _renderFilmsListCommented() {
-    render(this._filmsComponent, this._FilmsListCommentedComponent, RenderPosition.BEFOREEND);
-    this.cardComentedContainer = this._FilmsListCommentedComponent.getElement().querySelector('.films-list__container');
+    render(this._filmsComponent, this._filmsListCommentedComponent, RenderPosition.BEFOREEND);
+    this.cardComentedContainer = this._filmsListCommentedComponent.getElement().querySelector('.films-list__container');
     this._mostComments = this._cards
       .slice()
       .sort((a, b) => b.comments.length - a.comments.length)
