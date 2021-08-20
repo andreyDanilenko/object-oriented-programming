@@ -46,7 +46,7 @@ export default class Films {
 
   _handleCardChange(updatedFilm) {
     this._cards = updateItem(this._cards, updatedFilm);
-    this._sourcedFilmsCards = updatedFilm(this._sourcedFilmsCards, updatedFilm);
+    this._sourcedFilmsCards = updateItem(this._sourcedFilmsCards, updatedFilm);
     this._newFilmData.get(updatedFilm.id).init(updatedFilm);
   }
 
