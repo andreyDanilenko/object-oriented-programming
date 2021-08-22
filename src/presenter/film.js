@@ -2,7 +2,6 @@ import FilmCardView from '../view/film-card';
 import PopupCardView from '../view/popup';
 import { render, RenderPosition, replace, remove } from '../utils/render';
 
-
 export default class Film {
   constructor(filmContainer, changeData) {
     this._filmContainer = filmContainer;
@@ -23,7 +22,6 @@ export default class Film {
 
     const prevCardComponent = this._cardComponent;
     const prevCardPopupComponent = this._cardPopupComponent;
-
 
     this._cardComponent = new FilmCardView(card);
     this._cardPopupComponent = new PopupCardView(card);
@@ -64,10 +62,8 @@ export default class Film {
     this._changeData({
       ...this._card,
       userDetails: {
+        ...this._card.userDetails,
         history: !this._card.userDetails.history,
-        favorite: this._card.userDetails.favorite,
-        watchlist: this._card.userDetails.watchlist,
-        watchingDate: this._card.userDetails.watchingDate,
       },
     });
   }
@@ -76,10 +72,8 @@ export default class Film {
     this._changeData({
       ...this._card,
       userDetails: {
-        history: this._card.userDetails.history,
+        ...this._card.userDetails,
         favorite: !this._card.userDetails.favorite,
-        watchlist: this._card.userDetails.watchlist,
-        watchingDate: this._card.userDetails.watchingDate,
       },
     });
   }
@@ -88,10 +82,8 @@ export default class Film {
     this._changeData({
       ...this._card,
       userDetails: {
-        history: this._card.userDetails.history,
-        favorite: this._card.userDetails.favorite,
+        ...this._card.userDetails,
         watchlist: !this._card.userDetails.watchlist,
-        watchingDate: this._card.userDetails.watchingDate,
       },
     });
   }
