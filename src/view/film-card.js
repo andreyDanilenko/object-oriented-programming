@@ -62,7 +62,7 @@ export default class FilmCard extends AbstractView {
   _getOpenClickHandler(evt) {
     evt.preventDefault();
     this._callback.openPopupFilm();
-    document.querySelector('body').classList.add('hide-overflow');
+    document.body.classList.add('hide-overflow');
   }
 
   setFavoriteClickHandler(callback) {

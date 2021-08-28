@@ -12,6 +12,7 @@ export default class Film {
 
     this._handleOpenPopupClick = this._handleOpenPopupClick.bind(this);
     this._handleClosePopupClick = this._handleClosePopupClick.bind(this);
+    this._handleCloseEscClick = this._handleCloseEscClick.bind(this);
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
     this._handleHistoryClick = this._handleHistoryClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
@@ -92,12 +93,24 @@ export default class Film {
     if (document.querySelector('.film-details')) {
       document.querySelector('.film-details').remove();
     }
+    document.addEventListener('keydown', this._handleCloseEscClick);
     render(document.body, this._cardPopupComponent, RenderPosition.BEFOREEND);
   }
 
   _handleClosePopupClick() {
     if (document.querySelector('.film-details')) {
       document.querySelector('.film-details').remove();
+    }
+    document.removeEventListener('keydown', this._handleCloseEscClick);
+  }
+
+  _handleCloseEscClick(evt) {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      if (document.querySelector('.film-details')) {
+        document.querySelector('.film-details').remove();
+      }
+      document.querySelector('body').classList.remove('hide-overflow');
+      document.removeEventListener('keydown', this._handleCloseEscClick);
     }
   }
 }
