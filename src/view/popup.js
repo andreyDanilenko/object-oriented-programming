@@ -1,6 +1,6 @@
 import * as dayjs from 'dayjs';
 import { getPopupClassName } from '../utils/util';
-import AbstractView from './abstract';
+import SmartView from './smart';
 
 
 const createCommentPopupTemplate = (comment) => {
@@ -153,7 +153,7 @@ const createPopupTemplate = (data) => {
     </section>`;
 };
 
-export default class PopupCard extends AbstractView {
+export default class PopupCard extends SmartView {
   constructor(param) {
     super();
     this._data = PopupCard.parseParamToData(param);
@@ -170,30 +170,6 @@ export default class PopupCard extends AbstractView {
 
   getTemplate() {
     return createPopupTemplate(this._data);
-  }
-
-  // Метод обновления состояния
-  updateData(update) {
-    if (!update) {
-      return;
-    }
-
-    this._data = { ...this._data, ...update };
-
-    this.updateElement();
-  }
-
-  // Метод обновления элемента
-  updateElement() {
-    const prevElement = this.getElement();
-    const parent = prevElement.parentElement;
-    this.removeElement();
-
-    const newElement = this.getElement();
-
-    parent.replaceChild(newElement, prevElement);
-
-    this.restoreHandlers();
   }
 
   restoreHandlers() {
