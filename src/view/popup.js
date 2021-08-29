@@ -1,6 +1,6 @@
 import * as dayjs from 'dayjs';
 import { getPopupClassName } from '../utils/util';
-import AbstractView from './abstract';
+import SmartView from './smart';
 
 
 const createCommentPopupTemplate = (comment) => {
@@ -22,13 +22,14 @@ const createCommentPopupTemplate = (comment) => {
 </li>`;
 };
 
-const createPopupTemplate = (params) => {
-  const date = dayjs(params.filmInfo.release.date).format('DD MMMM YYYY');
-  const { releaseCountry } = params.filmInfo.release;
-  const { title, alternativeTitle, totalRating, poster, ageRating, runtime, description, director, genres } = params.filmInfo;
-  const { writers, actors } = params.filmInfo;
-  const { watchlist, favorite, history } = params.userDetails;
-  const comments = params.comments;
+const createPopupTemplate = (data) => {
+  const date = dayjs(data.filmInfo.release.date).format('DD MMMM YYYY');
+  const { releaseCountry } = data.filmInfo.release;
+  const { title, alternativeTitle, totalRating, poster, ageRating, runtime, description, director, genres } = data.filmInfo;
+  const { writers, actors } = data.filmInfo;
+  const { watchlist, favorite, history } = data.userDetails;
+  const { isEmoji, isEmojiName } = data;
+  const comments = data.comments;
   const countComments = comments.length;
   const genreTitle = genres.length > 1 ? 'Genres' : 'Genre';
   const getGenres = (genresFilm) => genresFilm.map(
@@ -39,7 +40,6 @@ const createPopupTemplate = (params) => {
   const filterItemsTemplate = comments
     .map((comment) => createCommentPopupTemplate(comment))
     .join('');
-
 
   return `<section class="film-details">
       <form class="film-details__inner" action="" method="get">
@@ -109,100 +109,193 @@ const createPopupTemplate = (params) => {
           </div>
 
           <div class="film-details__bottom-container">
-            <section class="film-details__comments-wrap">
+
+            ${filterItemsTemplate.length ? `<section class="film-details__comments-wrap">
               <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${countComments}</span></h3>
               <ul class="film-details__comments-list">
                       ${filterItemsTemplate}
               </ul>
               <div class="film-details__new-comment">
-                          <div class="film-details__add-emoji-label"></div>
+                <div class="film-details__add-emoji-label">
+                 ${isEmoji ? `<img src="./images/emoji/${isEmojiName}.png" width="30" height="30" alt="emoji">` : ''}
+                </div>
 
-                          <label class="film-details__comment-label">
-                            <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
-                          </label>
+                <label class="film-details__comment-label">
+                  <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
+                </label>
 
                 <div class="film-details__emoji-list">
-                  <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile">
+                  <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile"
+                  ${isEmojiName === 'smile' ? 'checked' : ''}>
                   <label class="film-details__emoji-label" for="emoji-smile">
                     <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji">
                   </label>
-                  <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="sleeping">
+                  <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="sleeping"
+                  ${isEmojiName === 'sleeping' ? 'checked' : ''}>
                   <label class="film-details__emoji-label" for="emoji-sleeping">
                     <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji">
                   </label>
-                  <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-puke" value="puke">
+                  <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-puke" value="puke"
+                  ${isEmojiName === 'puke' ? 'checked' : ''}>
                   <label class="film-details__emoji-label" for="emoji-puke">
                     <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji">
                   </label>
-                  <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="angry">
+                  <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="angry"
+                  ${isEmojiName === 'angry' ? 'checked' : ''}>
                   <label class="film-details__emoji-label" for="emoji-angry">
                     <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
                   </label>
                 </div>
-          </div>
-        </section>
+              </div>
+           </section>` : ''}
       </div>
     </form>
     </section>`;
 };
 
-export default class PopupCard extends AbstractView {
-  constructor(params) {
+export default class PopupCard extends SmartView {
+  constructor(param) {
     super();
-    this._params = params;
-    this._filmPopup = this.getElement();
+    this._data = PopupCard.parseParamToData(param);
+
     this._getClosePopupHandler = this._getClosePopupHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
     this._historyClickHandler = this._historyClickHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
+    this._emojiInputHandler = this._emojiInputHandler.bind(this);
+
+    this._setInnerHandlers();
   }
 
   getTemplate() {
-    return createPopupTemplate(this._params);
+    return createPopupTemplate(this._data);
+  }
+
+  // reset(param) {
+  //   this.updateData(PopupCard.parseDataToParam(param));
+  // }
+
+  restoreHandlers() {
+    this._setInnerHandlers();
+    this.setCloseClickHandler(this._callback.closePopupFilm);
+    this.setFavoriteClickHandler(this._callback.favoriteClick);
+    this.setHistoryClickHandler(this._callback.historyClick);
+    this.setWatchlistClickHandler(this._callback.watchlistClick);
+  }
+
+  _setInnerHandlers() {
+    this.getElement()
+      .querySelector('.film-details__emoji-list')
+      .addEventListener('input', this._emojiInputHandler);
+  }
+
+  // Метод подстановки смайлика
+  _emojiInputHandler(evt) {
+    if (evt.target.tagName !== 'INPUT') {
+      return;
+    }
+
+    evt.preventDefault();
+    this.updateData({
+      isEmoji: true,
+      isEmojiName: evt.target.value,
+      scrollPosition: this.getElement().scrollTop,
+    });
+
+    this.getElement().scrollTop = this._data.scrollPosition;
+  }
+
+  static parseParamToData(param) {
+    return { ...param, isEmoji: false, isEmojiName: null };
+  }
+
+  static parseDataToParam(data) {
+    data = { ...data };
+
+    if (!data.isEmoji) {
+      data.isEmoji = null;
+    }
+
+    if (!data.isEmojiName) {
+      data.isEmojiName = null;
+    }
+
+    delete data.isEmoji;
+    delete data.isEmojiName;
+    delete data.scrollPosition;
+
+    return data;
   }
 
   _getClosePopupHandler(evt) {
+    evt.preventDefault();
     this._callback.closePopupFilm();
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
-      this._callback.closePopupFilm();
-    }
-    document.querySelector('body').classList.remove('hide-overflow');
+
   }
 
   _historyClickHandler(evt) {
     evt.preventDefault();
+    this.updateData({
+      ...this._data,
+      userDetails: {
+        ...this._data.userDetails,
+        history: !this._data.userDetails.history,
+      },
+      scrollPosition: this.getElement().scrollTop,
+    });
+
     this._callback.historyClick();
+    this.getElement().scrollTop = this._data.scrollPosition;
   }
 
   _favoriteClickHandler(evt) {
     evt.preventDefault();
+    this.updateData({
+      ...this._data,
+      userDetails: {
+        ...this._data.userDetails,
+        favorite: !this._data.userDetails.favorite,
+      },
+      scrollPosition: this.getElement().scrollTop,
+    });
+
     this._callback.favoriteClick();
+    this.getElement().scrollTop = this._data.scrollPosition;
   }
 
   _watchlistClickHandler(evt) {
     evt.preventDefault();
+    this.updateData({
+      ...this._data,
+      userDetails: {
+        ...this._data.userDetails,
+        watchlist: !this._data.userDetails.watchlist,
+      },
+      scrollPosition: this.getElement().scrollTop,
+    });
+
     this._callback.watchlistClick();
+    this.getElement().scrollTop = this._data.scrollPosition;
   }
 
   setHistoryClickHandler(callback) {
     this._callback.historyClick = callback;
-    this._filmPopup.querySelector('.film-details__control-button--watched').addEventListener('click', this._historyClickHandler);
+    this.getElement().querySelector('.film-details__control-button--watched').addEventListener('click', this._historyClickHandler);
   }
 
   setFavoriteClickHandler(callback) {
     this._callback.favoriteClick = callback;
-    this._filmPopup.querySelector('.film-details__control-button--favorite').addEventListener('click', this._favoriteClickHandler);
+    this.getElement().querySelector('.film-details__control-button--favorite').addEventListener('click', this._favoriteClickHandler);
   }
 
   setWatchlistClickHandler(callback) {
     this._callback.watchlistClick = callback;
-    this._filmPopup.querySelector('.film-details__control-button--watchlist').addEventListener('click', this._watchlistClickHandler);
+    this.getElement().querySelector('.film-details__control-button--watchlist').addEventListener('click', this._watchlistClickHandler);
   }
 
   setCloseClickHandler(callback) {
     this._callback.closePopupFilm = callback;
-    this._filmPopup.querySelector('.film-details__close-btn').addEventListener('click', this._getClosePopupHandler);
-    document.addEventListener('keydown', this._getClosePopupHandler);
+    this.getElement().querySelector('.film-details__close-btn').addEventListener('click', this._getClosePopupHandler);
   }
 }
 

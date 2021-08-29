@@ -33,7 +33,9 @@ export default class Sort extends AbstractView {
     if (evt.target.tagName !== 'A') {
       return;
     }
-
+    if (document.body.classList.contains('hide-overflow')) {
+      document.body.classList.remove('hide-overflow');
+    }
     evt.preventDefault();
     this._getClassActive(evt.target);
     this._callback.sortTypeChange(evt.target.dataset.sortType);
