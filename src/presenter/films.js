@@ -9,7 +9,7 @@ import SortView from '../view/films-sort';
 import FilmPresenter from './film';
 import { render, remove, RenderPosition } from '../utils/render';
 import { FILM_COUNT_PER_STEP, FILM_COUNT_EXTRA, RATED_COUNT, SortType } from '../utils/const';
-// import { updateItem } from '../utils/util';
+import { updateItem } from '../utils/util';
 
 export default class Films {
   constructor(filmsContainer) {
@@ -54,8 +54,8 @@ export default class Films {
   }
 
   _handleCardChange(updatedFilm) {
-    // this._cards = updateItem(this._cards, updatedFilm);
-    // this._sourcedFilmsCards = updateItem(this._sourcedFilmsCards, updatedFilm);
+    this._cards = updateItem(this._cards, updatedFilm);
+    this._sourcedFilmsCards = updateItem(this._sourcedFilmsCards, updatedFilm);
     // this._ratedDataFilms = updateItem(this._ratedDataFilms, updatedFilm);
     // this._mostDataComments = updateItem(this._mostDataComments, updatedFilm);
     this._newFilmData.get(updatedFilm.id).init(updatedFilm);
