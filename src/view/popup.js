@@ -158,7 +158,6 @@ export default class PopupCard extends SmartView {
     super();
     this._data = PopupCard.parseParamToData(param);
 
-    this._filmPopup = this.getElement();
     this._getClosePopupHandler = this._getClosePopupHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
     this._historyClickHandler = this._historyClickHandler.bind(this);
@@ -172,12 +171,16 @@ export default class PopupCard extends SmartView {
     return createPopupTemplate(this._data);
   }
 
+  // reset(param) {
+  //   this.updateData(PopupCard.parseDataToParam(param));
+  // }
+
   restoreHandlers() {
     this._setInnerHandlers();
-    this.setHistoryClickHandler(this._callback.historyClick);
-    this.setFavoriteClickHandler(this._callback.favoriteClick);
-    this.setWatchlistClickHandler(this._callback.watchlistClick);
     this.setCloseClickHandler(this._callback.closePopupFilm);
+    this.setFavoriteClickHandler(this._callback.favoriteClick);
+    this.setHistoryClickHandler(this._callback.historyClick);
+    this.setWatchlistClickHandler(this._callback.watchlistClick);
   }
 
   _setInnerHandlers() {
@@ -227,42 +230,72 @@ export default class PopupCard extends SmartView {
   _getClosePopupHandler(evt) {
     evt.preventDefault();
     this._callback.closePopupFilm();
-    document.querySelector('body').classList.remove('hide-overflow');
+
   }
 
   _historyClickHandler(evt) {
     evt.preventDefault();
+    this.updateData({
+      ...this._data,
+      userDetails: {
+        ...this._data.userDetails,
+        history: !this._data.userDetails.history,
+      },
+      scrollPosition: this.getElement().scrollTop,
+    });
+
     this._callback.historyClick();
+    this.getElement().scrollTop = this._data.scrollPosition;
   }
 
   _favoriteClickHandler(evt) {
     evt.preventDefault();
+    this.updateData({
+      ...this._data,
+      userDetails: {
+        ...this._data.userDetails,
+        favorite: !this._data.userDetails.favorite,
+      },
+      scrollPosition: this.getElement().scrollTop,
+    });
+
     this._callback.favoriteClick();
+    this.getElement().scrollTop = this._data.scrollPosition;
   }
 
   _watchlistClickHandler(evt) {
     evt.preventDefault();
+    this.updateData({
+      ...this._data,
+      userDetails: {
+        ...this._data.userDetails,
+        watchlist: !this._data.userDetails.watchlist,
+      },
+      scrollPosition: this.getElement().scrollTop,
+    });
+
     this._callback.watchlistClick();
+    this.getElement().scrollTop = this._data.scrollPosition;
   }
 
   setHistoryClickHandler(callback) {
     this._callback.historyClick = callback;
-    this._filmPopup.querySelector('.film-details__control-button--watched').addEventListener('click', this._historyClickHandler);
+    this.getElement().querySelector('.film-details__control-button--watched').addEventListener('click', this._historyClickHandler);
   }
 
   setFavoriteClickHandler(callback) {
     this._callback.favoriteClick = callback;
-    this._filmPopup.querySelector('.film-details__control-button--favorite').addEventListener('click', this._favoriteClickHandler);
+    this.getElement().querySelector('.film-details__control-button--favorite').addEventListener('click', this._favoriteClickHandler);
   }
 
   setWatchlistClickHandler(callback) {
     this._callback.watchlistClick = callback;
-    this._filmPopup.querySelector('.film-details__control-button--watchlist').addEventListener('click', this._watchlistClickHandler);
+    this.getElement().querySelector('.film-details__control-button--watchlist').addEventListener('click', this._watchlistClickHandler);
   }
 
   setCloseClickHandler(callback) {
     this._callback.closePopupFilm = callback;
-    this._filmPopup.querySelector('.film-details__close-btn').addEventListener('click', this._getClosePopupHandler);
+    this.getElement().querySelector('.film-details__close-btn').addEventListener('click', this._getClosePopupHandler);
   }
 }
 
