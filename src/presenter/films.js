@@ -56,17 +56,17 @@ export default class Films {
   _handleCardChange(updatedFilm) {
     this._cards = updateItem(this._cards, updatedFilm);
     this._sourcedFilmsCards = updateItem(this._sourcedFilmsCards, updatedFilm);
-    // this._ratedDataFilms = updateItem(this._ratedDataFilms, updatedFilm);
-    // this._mostDataComments = updateItem(this._mostDataComments, updatedFilm);
     this._newFilmData.get(updatedFilm.id).init(updatedFilm);
   }
 
   _handleCardRatedChange(updatedFilm) {
     this._newFilmRatedData.get(updatedFilm.id).init(updatedFilm);
+    this._ratedDataFilms = updateItem(this._ratedDataFilms, updatedFilm);
   }
 
   _handleCardCommentedChange(updatedFilm) {
     this._newFilmCommentedData.get(updatedFilm.id).init(updatedFilm);
+    this._mostDataComments = updateItem(this._mostDataComments, updatedFilm);
   }
 
   _renderFlimCard(container, card, type = '') {
