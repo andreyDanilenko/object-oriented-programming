@@ -163,6 +163,7 @@ export default class PopupCard extends SmartView {
     this._historyClickHandler = this._historyClickHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._emojiInputHandler = this._emojiInputHandler.bind(this);
+    this._textAreaHandler = this._textAreaHandler.bind(this);
 
     this._setInnerHandlers();
   }
@@ -171,10 +172,7 @@ export default class PopupCard extends SmartView {
     return createPopupTemplate(this._data);
   }
 
-  // reset(param) {
-  //   this.updateData(PopupCard.parseDataToParam(param));
-  // }
-
+  // Метод возврата обработчиков после перерисовки
   restoreHandlers() {
     this._setInnerHandlers();
     this.setCloseClickHandler(this._callback.closePopupFilm);
@@ -183,46 +181,56 @@ export default class PopupCard extends SmartView {
     this.setWatchlistClickHandler(this._callback.watchlistClick);
   }
 
+  // метод хранящий внутренние обработчики
   _setInnerHandlers() {
     this.getElement()
       .querySelector('.film-details__emoji-list')
       .addEventListener('input', this._emojiInputHandler);
+    this.getElement()
+      .querySelector('.film-details__comment-input')
+      .addEventListener('input', this._textAreaHandler);
   }
 
-  // Метод подстановки смайлика
-  _emojiInputHandler(evt) {
-    if (evt.target.tagName !== 'INPUT') {
-      return;
-    }
-
+  // Метод сохранения ввода текста в окно комментария
+  _textAreaHandler(evt) {
     evt.preventDefault();
     this.updateData({
-      isEmoji: true,
-      isEmojiName: evt.target.value,
-      scrollPosition: this.getElement().scrollTop,
-    });
+      ...this._data,
+      textComment: evt.target.value,
+    }, true);
+  }
 
+  // Метод подстановки смайлика и обновления данных
+  _emojiInputHandler(evt) {
+    evt.preventDefault();
+    if (evt.target.tagName === 'INPUT') {
+
+      this.updateData({
+        ...this._data,
+        isEmoji: true,
+        isEmojiName: evt.target.value,
+        textComment: this.getElement().querySelector('.film-details__comment-input').value,
+        scrollPosition: this.getElement().scrollTop,
+      });
+    }
+
+    this.getElement().querySelector('.film-details__comment-input').value = this._data.textComment;
     this.getElement().scrollTop = this._data.scrollPosition;
   }
 
+  // Перносим данные в состояние
   static parseParamToData(param) {
-    return { ...param, isEmoji: false, isEmojiName: null };
+    return {
+      ...param, isEmoji: false, isEmojiName: null, textComment: '',
+    };
   }
 
   static parseDataToParam(data) {
     data = { ...data };
 
-    if (!data.isEmoji) {
-      data.isEmoji = null;
-    }
-
-    if (!data.isEmojiName) {
-      data.isEmojiName = null;
-    }
-
+    delete data.textComment;
     delete data.isEmoji;
     delete data.isEmojiName;
-    delete data.scrollPosition;
 
     return data;
   }

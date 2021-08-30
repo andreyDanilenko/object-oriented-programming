@@ -6,8 +6,13 @@ export default class Smart extends AbstractView {
     this._data = {};
   }
 
-  updateData(update) {
+  // Метод обновляющий данные
+  updateData(update, justDataUpdating) {
     if (!update) {
+      return;
+    }
+
+    if (justDataUpdating) {
       return;
     }
 
@@ -16,6 +21,7 @@ export default class Smart extends AbstractView {
     this.updateElement();
   }
 
+  // Метод пересоздающий элемент с новыми данными
   updateElement() {
     const prevElement = this.getElement();
     const parent = prevElement.parentElement;
