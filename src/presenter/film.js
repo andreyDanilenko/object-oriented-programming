@@ -1,5 +1,6 @@
 import FilmCardView from '../view/film-card';
 import PopupCardView from '../view/popup';
+import { UserAction, UpdateType } from '../utils/const';
 import { render, RenderPosition, replace, remove } from '../utils/render';
 
 export default class Film {
@@ -54,33 +55,42 @@ export default class Film {
   }
 
   _handleHistoryClick() {
-    this._changeData({
-      ...this._card,
-      userDetails: {
-        ...this._card.userDetails,
-        history: !this._card.userDetails.history,
-      },
-    });
+    this._changeData(
+      UserAction.UPDATE_CARD,
+      UpdateType.MINOR,
+      {
+        ...this._card,
+        userDetails: {
+          ...this._card.userDetails,
+          history: !this._card.userDetails.history,
+        },
+      });
   }
 
   _handleFavoriteClick() {
-    this._changeData({
-      ...this._card,
-      userDetails: {
-        ...this._card.userDetails,
-        favorite: !this._card.userDetails.favorite,
-      },
-    });
+    this._changeData(
+      UserAction.UPDATE_CARD,
+      UpdateType.MINOR,
+      {
+        ...this._card,
+        userDetails: {
+          ...this._card.userDetails,
+          favorite: !this._card.userDetails.favorite,
+        },
+      });
   }
 
   _handleWatchlistClick() {
-    this._changeData({
-      ...this._card,
-      userDetails: {
-        ...this._card.userDetails,
-        watchlist: !this._card.userDetails.watchlist,
-      },
-    });
+    this._changeData(
+      UserAction.UPDATE_CARD,
+      UpdateType.MINOR,
+      {
+        ...this._card,
+        userDetails: {
+          ...this._card.userDetails,
+          watchlist: !this._card.userDetails.watchlist,
+        },
+      });
   }
 
   _handleOpenPopupClick() {

@@ -1,5 +1,6 @@
 import ProfileView from './view/header-profile';
 import NavView from './view/site-nav';
+import FilmsView from './view/films';
 import StatisticView from './view/statistics';
 import FilmsPresenter from './presenter/films';
 import FilmsModel from './abstract/observer';
@@ -19,6 +20,7 @@ const siteFooterStatisticsElement = siteFooterElement.querySelector('.footer__st
 
 render(siteHeaderElement, new ProfileView(), RenderPosition.BEFOREEND);
 render(siteMainElement, new NavView(filters), RenderPosition.BEFOREEND);
+
 const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel);
-filmsPresenter.init(cardData);
+filmsPresenter.init();
 render(siteFooterStatisticsElement, new StatisticView(cardData), RenderPosition.BEFOREEND);
