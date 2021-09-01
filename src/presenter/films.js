@@ -12,7 +12,8 @@ import { FILM_COUNT_PER_STEP, FILM_COUNT_EXTRA, RATED_COUNT, SortType } from '..
 import { updateItem } from '../utils/util';
 
 export default class Films {
-  constructor(filmsContainer) {
+  constructor(filmsContainer, filmsModel) {
+    this._filmsModel = filmsModel;
     this._filmsContainer = filmsContainer;
     this._renderedCardCount = FILM_COUNT_PER_STEP;
     this._currentSortType = SortType.DEFAULT;
@@ -51,6 +52,10 @@ export default class Films {
       .slice(0, 2);
 
     this._renderFilms();
+  }
+
+  _getFilms() {
+    return this._filmsModel.getFilms();
   }
 
   _handleCardChange(updatedFilm) {

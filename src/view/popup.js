@@ -67,7 +67,8 @@ const createPopupTemplate = (data) => {
       `<span class="film-details__genre">${genre}</span>`,
   ).join('');
 
-  const filterItemsTemplate = comments
+  const filterItemsTemplate = comments.slice()
+
     .map((comment) => createCommentPopupTemplate(comment))
     .join('');
 
@@ -147,7 +148,7 @@ const createPopupTemplate = (data) => {
               </ul>
               <div class="film-details__new-comment">
                 <div class="film-details__add-emoji-label">
-                 ${isEmoji ? `<img src="./images/emoji/${isEmojiName}.png" width="30" height="30" alt="emoji">` : ''}
+                 ${isEmoji ? `<img src="./images/emoji/${isEmojiName}.png" width="55" height="55" alt="emoji">` : ''}
                 </div>
 
                 <label class="film-details__comment-label">

@@ -1,4 +1,4 @@
-import AbstractView from './abstract';
+import AbstractView from '../abstract/component';
 
 const createSiteProfileTemplate = () => (
   `<section class="header__profile profile">
@@ -12,4 +12,3 @@ export default class Profile extends AbstractView {
     return createSiteProfileTemplate();
   }
 }
-

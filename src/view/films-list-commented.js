@@ -1,4 +1,4 @@
-import AbstractView from './abstract';
+import AbstractView from '../abstract/component';
 
 export const createFilmListCommentedTemplate = () => (
   `<section class="films-list films-list--extra">
