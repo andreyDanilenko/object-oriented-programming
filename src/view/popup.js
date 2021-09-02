@@ -5,37 +5,7 @@ import SmartView from './smart';
 
 const createCommentPopupTemplate = (comment) => {
   const { text, authorName, emoji, date } = comment;
-
-  const parseDate = (d) => {
-    let newDate;
-
-    if (-604800000 < dayjs(d).diff()) {
-      newDate = `${Math.floor(dayjs(d).diff() / -86400000)} days ago`;
-      if (newDate === '1 days ago') {
-        newDate = '1 day ago';
-      }
-      if (newDate === '0 days ago') {
-        newDate = `${Math.floor(dayjs(d).diff() / -3600000)} hours ago`;
-        if (newDate === '1 hours ago') {
-          newDate = '1 hour ago';
-        }
-        if (newDate === '0 hours ago') {
-          newDate = `${Math.floor(dayjs(d).diff() / -60000)} min ago`;
-          if (newDate === '0 min ago') {
-            newDate = 'now';
-          }
-        }
-      }
-    }
-
-    if (-604800000 > dayjs(d).diff()) {
-      newDate = dayjs(d).format('DD/MM/YYYY HH:mm');
-    }
-
-    return newDate;
-  };
-
-  const dateFormat = parseDate(date);
+  const dateFormat = dayjs(date).format('DD/MM/YYYY HH:mm');
 
   return `<li class="film-details__comment">
     <span class="film-details__comment-emoji">
@@ -67,8 +37,7 @@ const createPopupTemplate = (data) => {
       `<span class="film-details__genre">${genre}</span>`,
   ).join('');
 
-  const filterItemsTemplate = comments.slice()
-
+  const filterItemsTemplate = comments
     .map((comment) => createCommentPopupTemplate(comment))
     .join('');
 
@@ -148,7 +117,7 @@ const createPopupTemplate = (data) => {
               </ul>
               <div class="film-details__new-comment">
                 <div class="film-details__add-emoji-label">
-                 ${isEmoji ? `<img src="./images/emoji/${isEmojiName}.png" width="55" height="55" alt="emoji">` : ''}
+                 ${isEmoji ? `<img src="./images/emoji/${isEmojiName}.png" width="30" height="30" alt="emoji">` : ''}
                 </div>
 
                 <label class="film-details__comment-label">

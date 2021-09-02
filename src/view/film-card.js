@@ -1,6 +1,6 @@
 import * as dayjs from 'dayjs';
 import { getFirstElement, getCardClassName, getSliceText } from '../utils/util';
-import AbstractView from '../abstract/component';
+import AbstractView from './abstract';
 
 const createFilmCardTemplate = (params) => {
   const { title, runtime, genres, poster, description } = params.filmInfo;
@@ -57,7 +57,6 @@ export default class FilmCard extends AbstractView {
   _watchlistClickHandler(evt) {
     evt.preventDefault();
     this._callback.watchlistClick();
-    console.log(this._callback.watchlistClick);
   }
 
   _getOpenClickHandler(evt) {

@@ -1,4 +1,4 @@
-import AbstractView from '../abstract/component';
+import AbstractView from './abstract';
 
 export const createStatisticTemplate = (params) => (
   `<p>${params.length} movies inside</p>`

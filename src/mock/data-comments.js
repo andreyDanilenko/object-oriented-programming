@@ -36,8 +36,8 @@ const generateEmoji = () => ({
 }[getRandomInt(0, 3)]);
 
 const generateCommentDate = () => {
-  const dayGap = getRandomInt(-20160, 0);
-  return dayjs().add(dayGap, 'minutes').toDate();
+  const dayGap = getRandomInt(-1095, 0);
+  return dayjs().add(dayGap, 'day').toDate();
 };
 
 export const generateComment = () => ({

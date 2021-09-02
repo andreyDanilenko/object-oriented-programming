@@ -1,4 +1,4 @@
-import AbstractView from '../abstract/component';
+import AbstractView from './abstract';
 
 export const createFilmListRatedTemplate = () => (
   `<section class="films-list films-list--extra">

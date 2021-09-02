@@ -1,4 +1,4 @@
-import Abstract from '../abstract/component.js';
+import Abstract from '../view/abstract.js';
 
 export const RenderPosition = {
   AFTERBEGIN: 'afterbegin',
@@ -32,10 +32,6 @@ export const createElement = (template) => {
 };
 
 export const remove = (component) => {
-  if (component === null) {
-    return;
-  }
-
   if (!(component instanceof Abstract)) {
     throw new Error('Can remove only components');
   }
@@ -61,4 +57,3 @@ export const replace = (newChild, oldChild) => {
 
   parent.replaceChild(newChild, oldChild);
 };
-
