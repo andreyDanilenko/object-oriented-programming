@@ -28,12 +28,23 @@ export default class Films {
     this._newFilmData = new Map();
 
     this._handleLoadMoreButton = this._handleLoadMoreButton.bind(this);
-    this._handleCardChange = this._handleCardChange.bind(this);
+    this._handleViewAction = this._handleViewAction.bind(this);
+    this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+
+    this._filmsModel.addObserver(this._handleModelEvent);
   }
 
   init() {
     this._renderFilmsList();
+  }
+
+  _handleViewAction(update) {
+    this._filmsModel.updateFilm(update);
+  }
+
+  _handleModelEvent(data) {
+    this._newFilmData.get(data.id).init(data);
   }
 
   _getFilms() {
@@ -46,16 +57,9 @@ export default class Films {
         this._filmsModel.getFilms()
           .sort((a, b) => (b.filmInfo.totalRating > a.filmInfo.totalRating) ? 1 : -1);
         break;
-      case SortType.DEFAULT:
-        this._filmsModel.getFilms();
-        break;
     }
 
     return this._filmsModel.getFilms();
-  }
-
-  _handleCardChange(updatedFilm) {
-    this._newFilmData.get(updatedFilm.id).init(updatedFilm);
   }
 
   // отрисовка блока сортировки
@@ -71,12 +75,12 @@ export default class Films {
     }
 
     this._currentSortType = sortType;
-    this._clearCardList();
-    this._renderFilmsList();
+    this._clearFilmsList();
+    this._renderFilmsListMain();
   }
 
   // Очистка данных для отрисовки новых
-  _clearCardList() {
+  _clearFilmsList() {
     this._newFilmData.forEach((presenter) => presenter.destroy());
     this._newFilmData.clear();
     this._renderedCardCount = FILM_COUNT_PER_STEP;
@@ -85,7 +89,7 @@ export default class Films {
 
   // отрисовка одной карточки фильма
   _renderFlim(card) {
-    const cardPresenter = new FilmPresenter(this.cardMainContainer, this._handleCardChange);
+    const cardPresenter = new FilmPresenter(this.cardMainContainer, this._handleViewAction);
     cardPresenter.init(card);
     this._newFilmData.set(card.id, cardPresenter);
   }
