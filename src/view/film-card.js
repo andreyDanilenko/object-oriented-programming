@@ -1,6 +1,6 @@
 import * as dayjs from 'dayjs';
 import { getFirstElement, getCardClassName, getSliceText } from '../utils/util';
-import AbstractView from './abstract';
+import AbstractView from '../abstract/component';
 
 const createFilmCardTemplate = (params) => {
   const { title, runtime, genres, poster, description } = params.filmInfo;

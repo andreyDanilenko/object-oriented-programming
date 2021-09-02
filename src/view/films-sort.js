@@ -1,4 +1,4 @@
-import AbstractView from './abstract';
+import AbstractView from '../abstract/component';
 import { SortType } from '../utils/const';
 
 export const createSiteSortTemplate = () => (
