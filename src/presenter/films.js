@@ -63,7 +63,6 @@ export default class Films {
 
   // отрисовка блока сортировки
   _renderSort() {
-
     if (this._sortComponent !== null) {
       this._sortComponent = null;
     }
@@ -123,13 +122,6 @@ export default class Films {
     render(this._filmsContainer, this._filmsComponent, RenderPosition.BEFOREEND);
     render(this._filmsComponent, this._filmsListMainComponent, RenderPosition.BEFOREEND);
     this.cardMainContainer = this._filmsListMainComponent.getElement().querySelector('.films-list__container');
-  }
-
-  _renderFilmsExtraLists() {
-    render(this._filmsComponent, this._filmsListRatedComponent, RenderPosition.BEFOREEND);
-    this.cardRatedContainer = this._filmsListRatedComponent.getElement().querySelector('.films-list__container');
-    render(this._filmsComponent, this._filmsListCommentedComponent, RenderPosition.BEFOREEND);
-    this.cardComentedContainer = this._filmsListCommentedComponent.getElement().querySelector('.films-list__container');
   }
 
   // Начальная отрисовка карточек фильма
