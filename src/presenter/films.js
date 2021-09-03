@@ -17,8 +17,8 @@ export default class Films {
     this._renderedCardCount = FILM_COUNT_PER_STEP;
     this._currentSortType = SortType.DEFAULT;
 
-    this._loadMoreButtonComponent = null;
     this._sortComponent = null;
+    this._loadMoreButtonComponent = null;
 
     this._filmsComponent = new FilmsView();
     this._filmsListMainComponent = new FilmsListMainView();
@@ -26,10 +26,10 @@ export default class Films {
 
     this._newFilmData = new Map();
 
+    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleLoadMoreButton = this._handleLoadMoreButton.bind(this);
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
-    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
     this._filmsModel.addObserver(this._handleModelEvent);
   }
@@ -89,9 +89,7 @@ export default class Films {
     this._newFilmData.clear();
 
     remove(this._sortComponent);
-    if (filmCount > FILM_COUNT_PER_STEP) {
-      remove(this._loadMoreButtonComponent);
-    }
+    remove(this._loadMoreButtonComponent);
 
     if (resetRenderedFilmCount) {
       this._renderedCardCount = FILM_COUNT_PER_STEP;
@@ -124,17 +122,6 @@ export default class Films {
     this.cardMainContainer = this._filmsListMainComponent.getElement().querySelector('.films-list__container');
   }
 
-  // Начальная отрисовка карточек фильма
-  _renderFilmsList() {
-    const filmCount = this._getFilms().length;
-    const films = this._getFilms().slice(0, Math.min(filmCount, FILM_COUNT_PER_STEP));
-    this._renderFilms(films);
-
-    if (this._getFilms().length > FILM_COUNT_PER_STEP) {
-      this._renderLoadMoreButton();
-    }
-  }
-
   // отрисока текста при отсутствии фильмов
   _renderNoFilmsList() {
     render(this._filmsContainer, this._filmNoCardComponent, RenderPosition.BEFOREEND);
@@ -155,10 +142,6 @@ export default class Films {
 
   // отрисовка кнопки показать еще
   _renderLoadMoreButton() {
-    // if (this._loadMoreButtonComponent !== null) {
-    //   this._loadMoreButtonComponent = null;
-    // }
-
     this._loadMoreButtonComponent = new LoadMoreButtonView();
     this._loadMoreButtonComponent.setClickHandler(this._handleLoadMoreButton);
     render(this._filmsListMainComponent, this._loadMoreButtonComponent, RenderPosition.BEFOREEND);
@@ -166,13 +149,20 @@ export default class Films {
 
   // Отрисовка основного списка фильмов
   _renderFilmsBoard() {
-    if (this._getFilms().length === 0) {
+    const films = this._getFilms();
+    const filmCount = films.length;
+
+    if (filmCount === 0) {
       this._renderNoFilmsList();
       return;
     }
 
     this._renderSort();
     this._renderFilmsContainer();
-    this._renderFilmsList();
+    this._renderFilms(films.slice(0, Math.min(filmCount, this._renderedCardCount)));
+
+    if (filmCount > this._renderedCardCount) {
+      this._renderLoadMoreButton();
+    }
   }
 }
