@@ -3,9 +3,10 @@ import PopupCardView from '../view/popup';
 import { render, RenderPosition, replace, remove } from '../utils/render';
 
 export default class Film {
-  constructor(filmContainer, changeData) {
+  constructor(filmContainer, changeData, commentData) {
     this._filmContainer = filmContainer;
     this._changeData = changeData;
+    this._commentData = commentData
 
     this._cardComponent = null;
     this._cardPopupComponent = null;
@@ -16,6 +17,7 @@ export default class Film {
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
     this._handleHistoryClick = this._handleHistoryClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+    this._handleDeleteClick = this._handleDeleteClick.bind(this);
   }
 
   init(card) {
@@ -35,6 +37,7 @@ export default class Film {
     this._cardPopupComponent.setHistoryClickHandler(this._handleHistoryClick);
     this._cardPopupComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._cardPopupComponent.setWatchlistClickHandler(this._handleWatchlistClick);
+    this._cardPopupComponent.setDeleteClickHandler(this._handleDeleteClick);
 
     if (prevCardComponent === null) {
       render(this._filmContainer, this._cardComponent, RenderPosition.BEFOREEND);
@@ -81,6 +84,10 @@ export default class Film {
         watchlist: !this._card.userDetails.watchlist,
       },
     });
+  }
+
+  _handleDeleteClick(card) {
+    this._commentData(card);
   }
 
   _handleOpenPopupClick() {
