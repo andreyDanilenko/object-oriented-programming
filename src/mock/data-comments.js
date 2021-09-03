@@ -40,7 +40,13 @@ const generateCommentDate = () => {
   return dayjs().add(dayGap, 'day').toDate();
 };
 
+function createId() {
+  const random = Math.random();
+  return random.toString(16).substr(2);
+}
+
 export const generateComment = () => ({
+  id: createId(),
   text: generateText(),
   authorName: generateName(),
   emoji: generateEmoji(),
