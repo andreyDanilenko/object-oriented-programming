@@ -1,5 +1,5 @@
 import * as dayjs from 'dayjs';
-import { getPopupClassName } from '../utils/util';
+import { getPopupClassName, getTitle } from '../utils/util';
 import SmartView from './smart';
 
 
@@ -32,6 +32,7 @@ const createPopupTemplate = (data, dataComment) => {
   const comments = dataComment;
   const countComments = comments.length;
   const genreTitle = genres.length > 1 ? 'Genres' : 'Genre';
+  const commentsTitle = countComments === 1 ? 'Comment' : 'Comments';
   const getGenres = (genresFilm) => genresFilm.map(
     (genre) =>
       `<span class="film-details__genre">${genre}</span>`,
@@ -109,14 +110,14 @@ const createPopupTemplate = (data, dataComment) => {
 
           <div class="film-details__bottom-container">
 
-            ${filterItemsTemplate.length ? `<section class="film-details__comments-wrap">
-              <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${countComments}</span></h3>
+          <section class="film-details__comments-wrap">
+              ${filterItemsTemplate.length ? `  <h3 class="film-details__comments-title">${commentsTitle} <span class="film-details__comments-count">${countComments}</span></h3>
               <ul class="film-details__comments-list">
                       ${filterItemsTemplate}
-              </ul>
+              </ul>` : ''}
               <div class="film-details__new-comment">
                 <div class="film-details__add-emoji-label">
-                 ${isEmoji ? `<img src="./images/emoji/${isEmojiName}.png" width="30" height="30" alt="emoji">` : ''}
+                 ${isEmoji ? `<img src="./images/emoji/${isEmojiName}.png" width="55" height="55" alt="emoji">` : ''}
                 </div>
 
                 <label class="film-details__comment-label">
@@ -146,10 +147,10 @@ const createPopupTemplate = (data, dataComment) => {
                   </label>
                 </div>
               </div>
-           </section>` : ''}
-      </div>
-    </form>
-    </section>`;
+           </section>
+      </div >
+    </form >
+    </section > `;
 };
 
 export default class PopupCard extends SmartView {
@@ -157,15 +158,14 @@ export default class PopupCard extends SmartView {
     super();
     this._data = PopupCard.parseParamToData(param, comments);
     this._comments = this._data.comments;
-
     this._getClosePopupHandler = this._getClosePopupHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
     this._historyClickHandler = this._historyClickHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._emojiInputHandler = this._emojiInputHandler.bind(this);
     this._textAreaHandler = this._textAreaHandler.bind(this);
-    this._getDeleteClickHandler = this._getDeleteClickHandler.bind(this)
-    this.getCommentData(this._data);
+    this._getDeleteClickHandler = this._getDeleteClickHandler.bind(this);
+
     this._setInnerHandlers();
   }
 
@@ -233,6 +233,7 @@ export default class PopupCard extends SmartView {
     delete data.textComment;
     delete data.isEmoji;
     delete data.isEmojiName;
+    delete data.scrollPosition;
 
     return data;
   }
@@ -292,7 +293,7 @@ export default class PopupCard extends SmartView {
     if (evt.target.tagName !== 'BUTTON') {
       return;
     }
-
+    console.log();
     const index = this._comments.findIndex((comment) => comment.id === evt.target.value);
     this._comments = [
       ...this._comments.slice(0, index),
@@ -314,7 +315,7 @@ export default class PopupCard extends SmartView {
 
   setDeleteClickHandler(callback) {
     this._callback.deleteClick = callback;
-    this.getElement().querySelector('.film-details__comments-list').addEventListener('click', this._getDeleteClickHandler);
+    this.getElement().querySelector('.film-details__comments-wrap').addEventListener('click', this._getDeleteClickHandler);
   }
 
   setHistoryClickHandler(callback) {

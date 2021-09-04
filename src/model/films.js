@@ -4,7 +4,6 @@ export default class Films extends AbstractObserver {
   constructor() {
     super();
     this._films = [];
-    this._comments = this._films.comments;
   }
 
   setFilms(films) {
@@ -16,7 +15,6 @@ export default class Films extends AbstractObserver {
   }
 
   updateFilm(update) {
-    console.log(update.id);
     const index = this._films.findIndex((film) => film.id === update.id);
 
     if (index === -1) {
@@ -41,20 +39,25 @@ export default class Films extends AbstractObserver {
   //   this._notify(updateType, update);
   // }
 
-  deleteComment(update) {
-    const index = this._films.findIndex((film) => film.id === update.id);
+  // deleteComment(update) {
+  //   const index = this._films.findIndex((film) => film.id === update.id);
 
-    this._films = [
-      ...this._films.slice(0, index),
-      ...this._films.slice(index + 1),
-    ];
+  //   // this._films = [
+  //   //   ...this._films.slice(0, index),
+  //   //   ...this._films.slice(index + 1),
+  //   // ];
 
-    this._films = [
-      ...this._films.slice(0, index),
-      update,
-      ...this._films.slice(index + 1),
-    ];
 
-    this._notify(update);
-  }
+  //   if (index === -1) {
+  //     throw new Error('Can\'t update unexisting film');
+  //   }
+
+  //   this._films = [
+  //     ...this._films.slice(0, index),
+  //     update,
+  //     ...this._films.slice(index + 1),
+  //   ];
+
+  //   this._notify(update);
+  // }
 }

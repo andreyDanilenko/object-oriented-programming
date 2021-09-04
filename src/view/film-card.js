@@ -7,6 +7,7 @@ const createFilmCardTemplate = (params) => {
   const rating = params.filmInfo.totalRating;
   const date = dayjs(params.filmInfo.release.date).format('YYYY');
   const comments = params.comments.length;
+  const commentsTitle = comments === 1 ? 'Comment' : 'Comments';
   const { watchlist, favorite, history } = params.userDetails;
 
   return `<article class="film-card">
@@ -19,7 +20,7 @@ const createFilmCardTemplate = (params) => {
     </p>
     <img src="./images/posters/${poster}" alt="" class="film-card__poster">
     <p class="film-card__description">${getSliceText(description)}</p>
-    <a class="film-card__comments">${comments} comments</a>
+    <a class="film-card__comments">${comments} ${commentsTitle}</a>
     <div class="film-card__controls">
       <button class="${getCardClassName(watchlist)} film-card__controls-item--add-to-watchlist" type="button">Add to watchlist</button>
       <button class="${getCardClassName(history)} film-card__controls-item--mark-as-watched" type="button">Mark as watched</button>

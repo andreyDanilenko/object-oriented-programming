@@ -3,10 +3,9 @@ import PopupCardView from '../view/popup';
 import { render, RenderPosition, replace, remove } from '../utils/render';
 
 export default class Film {
-  constructor(filmContainer, changeData, commentData) {
+  constructor(filmContainer, changeData) {
     this._filmContainer = filmContainer;
     this._changeData = changeData;
-    this._commentData = commentData
 
     this._cardComponent = null;
     this._cardPopupComponent = null;
@@ -87,7 +86,7 @@ export default class Film {
   }
 
   _handleDeleteClick(card) {
-    this._commentData(card);
+    this._changeData(card);
   }
 
   _handleOpenPopupClick() {

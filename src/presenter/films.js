@@ -30,7 +30,6 @@ export default class Films {
     this._handleLoadMoreButton = this._handleLoadMoreButton.bind(this);
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
-    this._handleViewDelete = this._handleViewDelete.bind(this);
 
     this._filmsModel.addObserver(this._handleModelEvent);
   }
@@ -39,17 +38,12 @@ export default class Films {
     this._renderFilmsBoard();
   }
 
-  _handleViewDelete(update) {
-    this._filmsModel.deleteComment(update);
-  }
-
   _handleViewAction(update) {
     this._filmsModel.updateFilm(update);
   }
 
   _handleModelEvent(data) {
     this._newFilmData.get(data.id).init(data);
-    console.log(data.id);
   }
 
   _getFilms() {
@@ -111,7 +105,7 @@ export default class Films {
 
   // отрисовка одной карточки фильма
   _renderFlim(card) {
-    const cardPresenter = new FilmPresenter(this.cardMainContainer, this._handleViewAction, this._handleViewDelete);
+    const cardPresenter = new FilmPresenter(this.cardMainContainer, this._handleViewAction);
     cardPresenter.init(card);
     this._newFilmData.set(card.id, cardPresenter);
   }
