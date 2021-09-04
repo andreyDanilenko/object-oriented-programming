@@ -51,7 +51,7 @@ export default class Films {
   }
 
   _handleModelFilterEvent() {
-    this._clearFilmsList({ resetRenderedTaskCount: true, resetSortType: true });
+    this._clearFilmsList({ resetRenderedFilmCount: true, resetSortType: true });
     this._renderFilmsBoard();
   }
 
@@ -98,6 +98,7 @@ export default class Films {
     this._newFilmData.clear();
 
     remove(this._sortComponent);
+    remove(this._filmNoCardComponent);
     remove(this._loadMoreButtonComponent);
 
     if (resetRenderedFilmCount) {
@@ -151,6 +152,10 @@ export default class Films {
 
   // отрисовка кнопки показать еще
   _renderLoadMoreButton() {
+    if (this._loadMoreButtonComponent !== null) {
+      this._loadMoreButtonComponent = null;
+    }
+
     this._loadMoreButtonComponent = new LoadMoreButtonView();
     this._loadMoreButtonComponent.setClickHandler(this._handleLoadMoreButton);
     render(this._filmsListMainComponent, this._loadMoreButtonComponent, RenderPosition.BEFOREEND);
