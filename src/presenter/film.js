@@ -17,6 +17,7 @@ export default class Film {
     this._handleHistoryClick = this._handleHistoryClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
+    this._handleAddClick = this._handleAddClick.bind(this)
   }
 
   init(card) {
@@ -37,6 +38,7 @@ export default class Film {
     this._cardPopupComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._cardPopupComponent.setWatchlistClickHandler(this._handleWatchlistClick);
     this._cardPopupComponent.setDeleteClickHandler(this._handleDeleteClick);
+    this._cardPopupComponent.setAddClickHandler(this._handleAddClick)
 
     if (prevCardComponent === null) {
       render(this._filmContainer, this._cardComponent, RenderPosition.BEFOREEND);
@@ -96,6 +98,14 @@ export default class Film {
       card,
     );
   }
+
+  _handleAddClick(card) {
+    this._changeData(
+      UpdateType.PATCH,
+      card,
+    );
+  }
+
 
   _handleOpenPopupClick() {
     if (document.querySelector('.film-details')) {
