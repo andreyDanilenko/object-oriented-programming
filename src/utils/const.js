@@ -15,3 +15,9 @@ export const FilterType = {
   HISTORY: 'history',
   WATCHLIST: 'watchlist',
 };
+
+export const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};

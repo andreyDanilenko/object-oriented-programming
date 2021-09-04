@@ -9,7 +9,7 @@ import SortView from '../view/films-sort';
 import FilmPresenter from './film';
 import { filter } from '../utils/filters';
 import { render, remove, RenderPosition } from '../utils/render';
-import { FILM_COUNT_PER_STEP, SortType } from '../utils/const';
+import { FILM_COUNT_PER_STEP, SortType, UpdateType } from '../utils/const';
 
 export default class Films {
   constructor(filmsContainer, filmsModel, filterModel) {
@@ -31,28 +31,34 @@ export default class Films {
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleLoadMoreButton = this._handleLoadMoreButton.bind(this);
     this._handleViewAction = this._handleViewAction.bind(this);
-    this._handleModelUpdateEvent = this._handleModelUpdateEvent.bind(this);
-    this._handleModelFilterEvent = this._handleModelFilterEvent.bind(this);
+    this._handleModelEvent = this._handleModelEvent.bind(this);
 
-    this._filmsModel.addObserver(this._handleModelUpdateEvent);
-    this._filterModel.addObserver(this._handleModelFilterEvent);
+    this._filmsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
   }
 
   init() {
     this._renderFilmsBoard();
   }
 
-  _handleViewAction(update) {
-    this._filmsModel.updateFilm(update);
+  _handleViewAction(updateType, update) {
+    this._filmsModel.updateFilms(updateType, update);
   }
 
-  _handleModelUpdateEvent(data) {
-    this._newFilmData.get(data.id).init(data);
-  }
-
-  _handleModelFilterEvent() {
-    this._clearFilmsList({ resetRenderedFilmCount: true, resetSortType: true });
-    this._renderFilmsBoard();
+  _handleModelEvent(updateType, data) {
+    switch (updateType) {
+      case UpdateType.PATCH:
+        this._newFilmData.get(data.id).init(data);
+        break;
+      case UpdateType.MINOR:
+        this._clearFilmsList();
+        this._renderFilmsBoard();
+        break;
+      case UpdateType.MAJOR:
+        this._clearFilmsList({ resetRenderedFilmCount: true, resetSortType: true });
+        this._renderFilmsBoard();
+        break;
+    }
   }
 
   _getFilms() {

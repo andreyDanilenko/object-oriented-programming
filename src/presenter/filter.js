@@ -1,7 +1,7 @@
 import NavView from '../view/site-nav';
 import { RenderPosition, render, replace, remove } from '../utils/render';
 import { filter } from '../utils/filters';
-import { FilterType } from '../utils/const';
+import { FilterType, UpdateType } from '../utils/const';
 
 export default class Filter {
   constructor(filterContainer, filmsModel, filterModel) {
@@ -43,8 +43,9 @@ export default class Filter {
       return;
     }
 
-    this._filterModel.setFilter(filterType);
+    this._filterModel.setFilter(UpdateType.MAJOR, filterType);
   }
+
 
   _getFilter() {
     const films = this._filmsModel.getFilms();
