@@ -1,11 +1,10 @@
 import * as dayjs from 'dayjs';
-import { getPopupClassName, getTitle } from '../utils/util';
+import { getPopupClassName, parseDate } from '../utils/util';
 import SmartView from './smart';
-
 
 const createCommentPopupTemplate = (dataComment) => {
   const { text, authorName, emoji, date, id } = dataComment;
-  const dateFormat = dayjs(date).format('DD/MM/YYYY HH:mm');
+  const dateFormat = parseDate(date);
 
   return `<li class="film-details__comment" value=${id}">
     <span class="film-details__comment-emoji">
@@ -154,10 +153,10 @@ const createPopupTemplate = (data, dataComment) => {
 };
 
 export default class PopupCard extends SmartView {
-  constructor(param, comments) {
+  constructor(param) {
     super();
-    this._data = PopupCard.parseParamToData(param, comments);
-    this._comments = this._data.comments;
+    this._data = PopupCard.parseParamToData(param);
+    this._comments = this._data.comments.sort((a, b) => dayjs(b.date).diff(dayjs(a.date)));
     this._getClosePopupHandler = this._getClosePopupHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
     this._historyClickHandler = this._historyClickHandler.bind(this);
@@ -293,7 +292,7 @@ export default class PopupCard extends SmartView {
     if (evt.target.tagName !== 'BUTTON') {
       return;
     }
-    console.log();
+
     const index = this._comments.findIndex((comment) => comment.id === evt.target.value);
     this._comments = [
       ...this._comments.slice(0, index),
@@ -307,10 +306,6 @@ export default class PopupCard extends SmartView {
     evt.preventDefault();
     this.getElement().scrollTop = this._data.scrollPosition;
     this._callback.deleteClick(PopupCard.parseDataToParam(this._data));
-  }
-
-  getCommentData(comment) {
-    return comment;
   }
 
   setDeleteClickHandler(callback) {
