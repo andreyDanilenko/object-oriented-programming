@@ -21,7 +21,7 @@ const filterModel = new FilterModel();
 render(siteHeaderElement, new ProfileView(), RenderPosition.BEFOREEND);
 
 const filterPresenter = new FilterPresenter(siteMainElement, filmsModel, filterModel);
-const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel);
+const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, filterModel);
 
 filterPresenter.init();
 filmsPresenter.init();

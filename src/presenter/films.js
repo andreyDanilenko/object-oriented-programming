@@ -7,13 +7,15 @@ import LoadMoreButtonView from '../view/button-more';
 import FilmNoCardView from '../view/film-no-card';
 import SortView from '../view/films-sort';
 import FilmPresenter from './film';
+import { filter } from '../utils/filters';
 import { render, remove, RenderPosition } from '../utils/render';
 import { FILM_COUNT_PER_STEP, SortType } from '../utils/const';
 
 export default class Films {
-  constructor(filmsContainer, filmsModel) {
+  constructor(filmsContainer, filmsModel, filterModel) {
     this._filmsContainer = filmsContainer;
     this._filmsModel = filmsModel;
+    this._filterModel = filterModel;
     this._renderedCardCount = FILM_COUNT_PER_STEP;
     this._currentSortType = SortType.DEFAULT;
 
@@ -29,9 +31,11 @@ export default class Films {
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleLoadMoreButton = this._handleLoadMoreButton.bind(this);
     this._handleViewAction = this._handleViewAction.bind(this);
-    this._handleModelEvent = this._handleModelEvent.bind(this);
+    this._handleModelUpdateEvent = this._handleModelUpdateEvent.bind(this);
+    this._handleModelFilterEvent = this._handleModelFilterEvent.bind(this);
 
-    this._filmsModel.addObserver(this._handleModelEvent);
+    this._filmsModel.addObserver(this._handleModelUpdateEvent);
+    this._filterModel.addObserver(this._handleModelFilterEvent);
   }
 
   init() {
@@ -42,23 +46,28 @@ export default class Films {
     this._filmsModel.updateFilm(update);
   }
 
-  _handleModelEvent(data) {
+  _handleModelUpdateEvent(data) {
     this._newFilmData.get(data.id).init(data);
   }
 
+  _handleModelFilterEvent() {
+    this._clearFilmsList({ resetRenderedTaskCount: true, resetSortType: true });
+    this._renderFilmsBoard();
+  }
+
   _getFilms() {
+    const filterType = this._filterModel.getFilter();
+    const films = this._filmsModel.getFilms();
+    const filtredFilms = filter[filterType](films);
+
     switch (this._currentSortType) {
       case SortType.DATE:
-        this._filmsModel.getFilms()
-          .sort((a, b) => dayjs(b.filmInfo.release.date).diff(dayjs(a.filmInfo.release.date)));
-        break;
+        return filtredFilms.sort((a, b) => dayjs(b.filmInfo.release.date).diff(dayjs(a.filmInfo.release.date)));
       case SortType.RATING:
-        this._filmsModel.getFilms()
-          .sort((a, b) => (b.filmInfo.totalRating > a.filmInfo.totalRating) ? 1 : -1);
-        break;
+        return filtredFilms.sort((a, b) => (b.filmInfo.totalRating > a.filmInfo.totalRating) ? 1 : -1);
     }
 
-    return this._filmsModel.getFilms();
+    return filtredFilms;
   }
 
   // отрисовка блока сортировки
