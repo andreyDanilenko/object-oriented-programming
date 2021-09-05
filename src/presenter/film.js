@@ -91,10 +91,6 @@ export default class Film {
           watchlist: !this._card.userDetails.watchlist,
         },
       });
-
-    if (this._cardPopupComponent) {
-      this._cardPopupComponent.reset(this._card);
-    }
   }
 
   // Временно пока не разберусь как синхронизировать изменения попапа чс карточкой

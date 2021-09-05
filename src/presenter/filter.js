@@ -46,7 +46,6 @@ export default class Filter {
     this._filterModel.setFilter(UpdateType.MAJOR, filterType);
   }
 
-
   _getFilter() {
     const films = this._filmsModel.getFilms();
 

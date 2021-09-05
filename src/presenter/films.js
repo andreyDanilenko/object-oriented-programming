@@ -9,7 +9,7 @@ import SortView from '../view/films-sort';
 import FilmPresenter from './film';
 import { filter } from '../utils/filters';
 import { render, remove, RenderPosition } from '../utils/render';
-import { FILM_COUNT_PER_STEP, SortType, UpdateType } from '../utils/const';
+import { FILM_COUNT_PER_STEP, SortType, UpdateType, FilterType } from '../utils/const';
 
 export default class Films {
   constructor(filmsContainer, filmsModel, filterModel) {
@@ -18,13 +18,14 @@ export default class Films {
     this._filterModel = filterModel;
     this._renderedCardCount = FILM_COUNT_PER_STEP;
     this._currentSortType = SortType.DEFAULT;
+    this._filterType = FilterType.ALL;
 
     this._sortComponent = null;
     this._loadMoreButtonComponent = null;
+    this._filmNoCardComponent = null;
 
     this._filmsComponent = new FilmsView();
     this._filmsListMainComponent = new FilmsListMainView();
-    this._filmNoCardComponent = new FilmNoCardView();
 
     this._newFilmData = new Map();
 
@@ -62,10 +63,9 @@ export default class Films {
   }
 
   _getFilms() {
-    const filterType = this._filterModel.getFilter();
+    this._filterType = this._filterModel.getFilter();
     const films = this._filmsModel.getFilms();
-    const filtredFilms = filter[filterType](films);
-
+    const filtredFilms = filter[this._filterType](films);
     switch (this._currentSortType) {
       case SortType.DATE:
         return filtredFilms.slice().sort((a, b) => dayjs(b.filmInfo.release.date).diff(dayjs(a.filmInfo.release.date)));
@@ -104,8 +104,11 @@ export default class Films {
     this._newFilmData.clear();
 
     remove(this._sortComponent);
-    remove(this._filmNoCardComponent);
     remove(this._loadMoreButtonComponent);
+
+    if (this._filmNoCardComponent) {
+      remove(this._filmNoCardComponent);
+    }
 
     if (resetRenderedFilmCount) {
       this._renderedCardCount = FILM_COUNT_PER_STEP;
@@ -140,6 +143,7 @@ export default class Films {
 
   // отрисока текста при отсутствии фильмов
   _renderNoFilmsList() {
+    this._filmNoCardComponent = new FilmNoCardView(this._filterType);
     render(this._filmsContainer, this._filmNoCardComponent, RenderPosition.BEFOREEND);
   }
 

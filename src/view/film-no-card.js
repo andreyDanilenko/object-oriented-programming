@@ -1,6 +1,5 @@
 import AbstractView from './abstract';
 import { FilterType } from '../utils/const';
-
 const NoFilmsTextType = {
   [FilterType.ALL]: 'There are no movies in our database',
   [FilterType.FAVORITES]: 'There are no favorite movies now',
@@ -10,7 +9,7 @@ const NoFilmsTextType = {
 
 const createFilmNoListTemplate = (filterType) => {
   const noFilmsTextValue = NoFilmsTextType[filterType];
-  `<h2 class="films-list__title">
+  return `<h2 class="films-list__title">
     ${noFilmsTextValue}
   </h2 > `;
 };
@@ -18,7 +17,7 @@ const createFilmNoListTemplate = (filterType) => {
 export default class FilmNoCard extends AbstractView {
   constructor(data) {
     super();
-    this._data = data;
+    this._data = String(data);
   }
 
   getTemplate() {
