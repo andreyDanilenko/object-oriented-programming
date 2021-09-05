@@ -1,16 +1,16 @@
 import AbstractView from './abstract';
 
-export const createStatisticTemplate = (params) => (
+export const createMoviesInsideTemplate = (params) => (
   `<p>${params.length} movies inside</p>`
 );
 
-export default class Statistic extends AbstractView {
+export default class MoviesInside extends AbstractView {
   constructor(params) {
     super();
     this._params = params;
   }
 
   getTemplate() {
-    return createStatisticTemplate(this._params);
+    return createMoviesInsideTemplate(this._params);
   }
 }

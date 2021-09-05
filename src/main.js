@@ -1,5 +1,6 @@
 import ProfileView from './view/header-profile';
-import StatisticView from './view/statistics';
+import MoviesInsideView from './view/inside';
+import StatisticView from './view/stats';
 import FilmsPresenter from './presenter/films';
 import FilterPresenter from './presenter/filter';
 import FilmsModel from './model/films';
@@ -26,4 +27,7 @@ const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, filterMod
 filterPresenter.init();
 filmsPresenter.init();
 
-render(siteFooterStatisticsElement, new StatisticView(cardData), RenderPosition.BEFOREEND);
+render(siteMainElement, new StatisticView(), RenderPosition.BEFOREEND);
+
+render(siteFooterStatisticsElement, new MoviesInsideView(cardData), RenderPosition.BEFOREEND);
+
