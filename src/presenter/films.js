@@ -68,9 +68,9 @@ export default class Films {
 
     switch (this._currentSortType) {
       case SortType.DATE:
-        return filtredFilms.sort((a, b) => dayjs(b.filmInfo.release.date).diff(dayjs(a.filmInfo.release.date)));
+        return filtredFilms.slice().sort((a, b) => dayjs(b.filmInfo.release.date).diff(dayjs(a.filmInfo.release.date)));
       case SortType.RATING:
-        return filtredFilms.sort((a, b) => (b.filmInfo.totalRating > a.filmInfo.totalRating) ? 1 : -1);
+        return filtredFilms.slice().sort((a, b) => (b.filmInfo.totalRating > a.filmInfo.totalRating) ? 1 : -1);
     }
 
     return filtredFilms;
