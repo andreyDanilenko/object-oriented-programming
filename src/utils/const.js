@@ -8,3 +8,16 @@ export const SortType = {
   DATE: 'date',
   RATING: 'rating',
 };
+
+export const FilterType = {
+  ALL: 'all',
+  FAVORITES: 'favorites',
+  HISTORY: 'history',
+  WATCHLIST: 'watchlist',
+};
+
+export const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};

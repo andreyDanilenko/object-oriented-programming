@@ -1,12 +1,8 @@
-const cardToFilterMap = {
-  Favorites: 'favorite',
-  History: 'history',
-  Watchlist: 'watchlist',
-};
+import { FilterType } from './const';
 
-export const generateFilter = (tasks) => Object.entries(cardToFilterMap).map(
-  ([filterName, countTasks]) => ({
-    name: filterName,
-    count: tasks.filter((task) => task.userDetails[countTasks]).length,
-  }),
-);
+export const filter = {
+  [FilterType.ALL]: (films) => films,
+  [FilterType.HISTORY]: (films) => films.filter((film) => film.userDetails.history),
+  [FilterType.FAVORITES]: (films) => films.filter((film) => film.userDetails.favorite),
+  [FilterType.WATCHLIST]: (films) => films.filter((film) => film.userDetails.watchlist),
+};

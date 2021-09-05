@@ -15,7 +15,7 @@ const generateText = () => ({
 }[getRandomInt(0, 9)]);
 
 
-const generateName = () => ({
+export const generateName = () => ({
   0: 'John Doe',
   1: 'Marilyn Monroe',
   2: 'Tim Macoveev',
@@ -36,11 +36,17 @@ const generateEmoji = () => ({
 }[getRandomInt(0, 3)]);
 
 const generateCommentDate = () => {
-  const dayGap = getRandomInt(-1095, 0);
-  return dayjs().add(dayGap, 'day').toDate();
+  const dayGap = getRandomInt(-14400, 0);
+  return dayjs().add(dayGap, 'minutes').toDate();
+};
+
+export const createId = () => {
+  const random = Math.random();
+  return random.toString(16).substr(2);
 };
 
 export const generateComment = () => ({
+  id: createId(),
   text: generateText(),
   authorName: generateName(),
   emoji: generateEmoji(),

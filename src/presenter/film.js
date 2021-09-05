@@ -1,6 +1,7 @@
 import FilmCardView from '../view/film-card';
 import PopupCardView from '../view/popup';
 import { render, RenderPosition, replace, remove } from '../utils/render';
+import { UpdateType } from '../utils/const';
 
 export default class Film {
   constructor(filmContainer, changeData) {
@@ -8,7 +9,6 @@ export default class Film {
     this._changeData = changeData;
 
     this._cardComponent = null;
-    this._cardPopupComponent = null;
 
     this._handleOpenPopupClick = this._handleOpenPopupClick.bind(this);
     this._handleClosePopupClick = this._handleClosePopupClick.bind(this);
@@ -16,6 +16,9 @@ export default class Film {
     this._handleWatchlistClick = this._handleWatchlistClick.bind(this);
     this._handleHistoryClick = this._handleHistoryClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+    this._handleDeleteClick = this._handleDeleteClick.bind(this);
+    this._handleAddClick = this._handleAddClick.bind(this);
+    this._handleEditPopup = this._handleEditPopup.bind(this);
   }
 
   init(card) {
@@ -32,9 +35,11 @@ export default class Film {
     this._cardComponent.setWatchlistClickHandler(this._handleWatchlistClick);
 
     this._cardPopupComponent.setCloseClickHandler(this._handleClosePopupClick);
-    this._cardPopupComponent.setHistoryClickHandler(this._handleHistoryClick);
-    this._cardPopupComponent.setFavoriteClickHandler(this._handleFavoriteClick);
-    this._cardPopupComponent.setWatchlistClickHandler(this._handleWatchlistClick);
+    this._cardPopupComponent.setHistoryClickHandler(this._handleEditPopup);
+    this._cardPopupComponent.setFavoriteClickHandler(this._handleEditPopup);
+    this._cardPopupComponent.setWatchlistClickHandler(this._handleEditPopup);
+    this._cardPopupComponent.setDeleteClickHandler(this._handleDeleteClick);
+    this._cardPopupComponent.setAddClickHandler(this._handleAddClick);
 
     if (prevCardComponent === null) {
       render(this._filmContainer, this._cardComponent, RenderPosition.BEFOREEND);
@@ -50,43 +55,72 @@ export default class Film {
 
   destroy() {
     remove(this._cardComponent);
-    remove(this._cardPopupComponent);
   }
 
   _handleHistoryClick() {
-    this._changeData({
-      ...this._card,
-      userDetails: {
-        ...this._card.userDetails,
-        history: !this._card.userDetails.history,
-      },
-    });
+    this._changeData(
+      UpdateType.MAJOR,
+      {
+        ...this._card,
+        userDetails: {
+          ...this._card.userDetails,
+          history: !this._card.userDetails.history,
+        },
+      });
   }
 
   _handleFavoriteClick() {
-    this._changeData({
-      ...this._card,
-      userDetails: {
-        ...this._card.userDetails,
-        favorite: !this._card.userDetails.favorite,
-      },
-    });
+    this._changeData(
+      UpdateType.MAJOR,
+      {
+        ...this._card,
+        userDetails: {
+          ...this._card.userDetails,
+          favorite: !this._card.userDetails.favorite,
+        },
+      });
   }
 
   _handleWatchlistClick() {
-    this._changeData({
-      ...this._card,
-      userDetails: {
-        ...this._card.userDetails,
-        watchlist: !this._card.userDetails.watchlist,
-      },
-    });
+    this._changeData(
+      UpdateType.MAJOR,
+      {
+        ...this._card,
+        userDetails: {
+          ...this._card.userDetails,
+          watchlist: !this._card.userDetails.watchlist,
+        },
+      });
+  }
+
+  // Временно пока не разберусь как синхронизировать изменения попапа чс карточкой
+  // Не могу придумать как перерисовывать открытый попап при клике
+  // на кнопки добавлений в определенный список карточки фильма
+  _handleEditPopup(card) {
+    this._changeData(
+      UpdateType.MAJOR,
+      card);
+  }
+
+  _handleDeleteClick(card) {
+    this._changeData(
+      UpdateType.PATCH,
+      card,
+    );
+  }
+
+  _handleAddClick(card) {
+    this._changeData(
+      UpdateType.PATCH,
+      card,
+    );
   }
 
   _handleOpenPopupClick() {
     if (document.querySelector('.film-details')) {
       document.querySelector('.film-details').remove();
     }
+
     document.body.classList.add('hide-overflow');
     document.addEventListener('keydown', this._handleCloseEscClick);
     render(document.body, this._cardPopupComponent, RenderPosition.BEFOREEND);
