@@ -176,10 +176,6 @@ export default class PopupCard extends SmartView {
     return createPopupTemplate(this._data, this._comments);
   }
 
-  reset(film) {
-    return this.updateData(PopupCard.parseDataToParam(film));
-  }
-
   // Метод возврата обработчиков после перерисовки
   restoreHandlers() {
     this._setInnerHandlers();
@@ -239,7 +235,6 @@ export default class PopupCard extends SmartView {
     data = { ...data };
 
     delete data.textComment;
-
     delete data.isEmojiName;
     delete data.scrollPosition;
 

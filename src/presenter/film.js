@@ -18,6 +18,7 @@ export default class Film {
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
     this._handleAddClick = this._handleAddClick.bind(this);
+    this._handleEditPopup = this._handleEditPopup.bind(this);
   }
 
   init(card) {
@@ -34,9 +35,9 @@ export default class Film {
     this._cardComponent.setWatchlistClickHandler(this._handleWatchlistClick);
 
     this._cardPopupComponent.setCloseClickHandler(this._handleClosePopupClick);
-    this._cardPopupComponent.setHistoryClickHandler(this._handleHistoryClick);
-    this._cardPopupComponent.setFavoriteClickHandler(this._handleFavoriteClick);
-    this._cardPopupComponent.setWatchlistClickHandler(this._handleWatchlistClick);
+    this._cardPopupComponent.setHistoryClickHandler(this._handleEditPopup);
+    this._cardPopupComponent.setFavoriteClickHandler(this._handleEditPopup);
+    this._cardPopupComponent.setWatchlistClickHandler(this._handleEditPopup);
     this._cardPopupComponent.setDeleteClickHandler(this._handleDeleteClick);
     this._cardPopupComponent.setAddClickHandler(this._handleAddClick);
 
@@ -58,7 +59,7 @@ export default class Film {
 
   _handleHistoryClick() {
     this._changeData(
-      UpdateType.MINOR,
+      UpdateType.MAJOR,
       {
         ...this._card,
         userDetails: {
@@ -70,7 +71,7 @@ export default class Film {
 
   _handleFavoriteClick() {
     this._changeData(
-      UpdateType.MINOR,
+      UpdateType.MAJOR,
       {
         ...this._card,
         userDetails: {
@@ -82,7 +83,7 @@ export default class Film {
 
   _handleWatchlistClick() {
     this._changeData(
-      UpdateType.MINOR,
+      UpdateType.MAJOR,
       {
         ...this._card,
         userDetails: {
@@ -90,6 +91,19 @@ export default class Film {
           watchlist: !this._card.userDetails.watchlist,
         },
       });
+
+    if (this._cardPopupComponent) {
+      this._cardPopupComponent.reset(this._card);
+    }
+  }
+
+  // Временно пока не разберусь как синхронизировать изменения попапа чс карточкой
+  // Не могу придумать как перерисовывать открытый попап при клике
+  // на кнопки добавлений в определенный список карточки фильма
+  _handleEditPopup(card) {
+    this._changeData(
+      UpdateType.MAJOR,
+      card);
   }
 
   _handleDeleteClick(card) {
@@ -105,7 +119,6 @@ export default class Film {
       card,
     );
   }
-
 
   _handleOpenPopupClick() {
     if (document.querySelector('.film-details')) {
