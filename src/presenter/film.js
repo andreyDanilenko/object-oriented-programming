@@ -120,6 +120,7 @@ export default class Film {
     if (document.querySelector('.film-details')) {
       document.querySelector('.film-details').remove();
     }
+
     document.body.classList.add('hide-overflow');
     document.addEventListener('keydown', this._handleCloseEscClick);
     render(document.body, this._cardPopupComponent, RenderPosition.BEFOREEND);

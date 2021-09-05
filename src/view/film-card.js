@@ -1,4 +1,5 @@
 import * as dayjs from 'dayjs';
+import he from 'he';
 import { getFirstElement, getCardClassName, getSliceText } from '../utils/util';
 import AbstractView from './abstract';
 
@@ -19,7 +20,7 @@ const createFilmCardTemplate = (params) => {
       <span class="film-card__genre">${getFirstElement(genres)}</span>
     </p>
     <img src="./images/posters/${poster}" alt="" class="film-card__poster">
-    <p class="film-card__description">${getSliceText(description)}</p>
+    <p class="film-card__description">${getSliceText(he.encode(description))}</p>
     <a class="film-card__comments">${comments} ${commentsTitle}</a>
     <div class="film-card__controls">
       <button class="${getCardClassName(watchlist)} film-card__controls-item--add-to-watchlist" type="button">Add to watchlist</button>

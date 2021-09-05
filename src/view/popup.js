@@ -1,4 +1,5 @@
 import * as dayjs from 'dayjs';
+import he from 'he';
 import { createId, generateName } from '../mock/data-comments';
 import { getPopupClassName, parseDate } from '../utils/util';
 import SmartView from './smart';
@@ -6,13 +7,12 @@ import SmartView from './smart';
 const createCommentPopupTemplate = (dataComment) => {
   const { text, authorName, emoji, date, id } = dataComment;
   const dateFormat = parseDate(date);
-
   return `<li class="film-details__comment" value=${id}">
     <span class="film-details__comment-emoji">
       <img src="./images/emoji/${emoji}" width="55" height="55" alt="emoji-smile">
     </span>
       <div>
-        <p class="film-details__comment-text">${text}</p>
+        <p class="film-details__comment-text">${he.encode(text)}</p>
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${authorName}</span>
           <span class="film-details__comment-day">${dateFormat}</span>
@@ -27,6 +27,7 @@ const createPopupTemplate = (data, dataComment) => {
   const { releaseCountry } = data.filmInfo.release;
   const { title, alternativeTitle, totalRating, poster, ageRating, runtime, description, director, genres } = data.filmInfo;
   const { writers, actors } = data.filmInfo;
+
   const { watchlist, favorite, history } = data.userDetails;
   const { isEmojiName } = data;
   const comments = dataComment;
@@ -97,7 +98,7 @@ const createPopupTemplate = (data, dataComment) => {
                   </tr>
                 </table>
 
-                <p class="film-details__film-description">${description}</p>
+                <p class="film-details__film-description">${he.encode(description)}</p>
               </div>
             </div>
 
@@ -185,7 +186,6 @@ export default class PopupCard extends SmartView {
     this.setWatchlistClickHandler(this._callback.watchlistClick);
     this.setDeleteClickHandler(this._callback.deleteClick);
     this.setAddClickHandler(this._callback.addClick);
-
   }
 
   // метод хранящий внутренние обработчики
@@ -203,7 +203,7 @@ export default class PopupCard extends SmartView {
     evt.preventDefault();
     this.updateData({
       ...this._data,
-      textComment: evt.target.value,
+      textComment: '',
     }, true);
   }
 
@@ -227,7 +227,7 @@ export default class PopupCard extends SmartView {
   // Перносим данные в состояние
   static parseParamToData(param) {
     return {
-      ...param, isEmojiName: null, textComment: '',
+      ...param, isEmojiName: null,
     };
   }
 
@@ -286,7 +286,6 @@ export default class PopupCard extends SmartView {
       },
       scrollPosition: this.getElement().scrollTop,
     });
-
 
     this.getElement().scrollTop = this._data.scrollPosition;
     this._callback.watchlistClick(PopupCard.parseDataToParam(this._data));
