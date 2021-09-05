@@ -158,7 +158,7 @@ export default class PopupCard extends SmartView {
   constructor(param) {
     super();
     this._data = PopupCard.parseParamToData(param);
-    this._comments = this._data.comments.sort((a, b) => dayjs(b.date).diff(dayjs(a.date)));
+    this._comments = this._data.comments.sort((a, b) => dayjs(a.date).diff(dayjs(b.date)));
 
     this._getClosePopupHandler = this._getClosePopupHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
@@ -314,22 +314,23 @@ export default class PopupCard extends SmartView {
   }
 
   _getAddClickHandler(evt) {
-    evt.preventDefault();
-    const newComment = {
-      id: createId(),
-      text: this.getElement().querySelector('.film-details__comment-input').value,
-      authorName: generateName(),
-      emoji: this._data.isEmojiName ? `${this._data.isEmojiName}.png` : 'smile.png',
-      date: dayjs(),
-    };
+    if (evt.keyCode === 13 && evt.ctrlKey) {
+      const newComment = {
+        id: createId(),
+        text: this.getElement().querySelector('.film-details__comment-input').value,
+        authorName: generateName(),
+        emoji: this._data.isEmojiName ? `${this._data.isEmojiName}.png` : 'smile.png',
+        date: dayjs(),
+      };
 
-    this._comments = [...this._comments, newComment];
-    this.updateData(
-      { ...this._data, comments: this._comments, scrollPosition: this.getElement().scrollTop },
-    );
+      this._comments = [...this._comments, newComment];
+      this.updateData(
+        { ...this._data, comments: this._comments, scrollPosition: this.getElement().scrollTop },
+      );
 
-    this.getElement().scrollTop = this._data.scrollPosition;
-    this._callback.addClick(PopupCard.parseDataToParam(this._data));
+      this.getElement().scrollTop = this._data.scrollPosition;
+      this._callback.addClick(PopupCard.parseDataToParam(this._data));
+    }
   }
 
 
