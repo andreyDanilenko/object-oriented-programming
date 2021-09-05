@@ -176,6 +176,10 @@ export default class PopupCard extends SmartView {
     return createPopupTemplate(this._data, this._comments);
   }
 
+  reset(film) {
+    return this.updateData(PopupCard.parseDataToParam(film));
+  }
+
   // Метод возврата обработчиков после перерисовки
   restoreHandlers() {
     this._setInnerHandlers();
@@ -245,7 +249,6 @@ export default class PopupCard extends SmartView {
   _getClosePopupHandler(evt) {
     evt.preventDefault();
     this._callback.closePopupFilm();
-
   }
 
   _historyClickHandler(evt) {
@@ -259,8 +262,8 @@ export default class PopupCard extends SmartView {
       scrollPosition: this.getElement().scrollTop,
     });
 
-    this._callback.historyClick();
     this.getElement().scrollTop = this._data.scrollPosition;
+    this._callback.historyClick(PopupCard.parseDataToParam(this._data));
   }
 
   _favoriteClickHandler(evt) {
@@ -274,8 +277,8 @@ export default class PopupCard extends SmartView {
       scrollPosition: this.getElement().scrollTop,
     });
 
-    this._callback.favoriteClick();
     this.getElement().scrollTop = this._data.scrollPosition;
+    this._callback.favoriteClick(PopupCard.parseDataToParam(this._data));
   }
 
   _watchlistClickHandler(evt) {
@@ -289,8 +292,9 @@ export default class PopupCard extends SmartView {
       scrollPosition: this.getElement().scrollTop,
     });
 
-    this._callback.watchlistClick();
+
     this.getElement().scrollTop = this._data.scrollPosition;
+    this._callback.watchlistClick(PopupCard.parseDataToParam(this._data));
   }
 
   _getDeleteClickHandler(evt) {
