@@ -1,13 +1,6 @@
-import Chart from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
+// import Chart from 'chart.js';
+// import ChartDataLabels from 'chartjs-plugin-datalabels';
 import SmartView from './smart.js';
-
-const BAR_HEIGHT = 50;
-const statisticCtx = document.querySelector('.statistic__chart');
-
-console.log(ChartDataLabels);
-
-
 
 export const createStatisticTemplate = () => (
   `<section class="statistic">
