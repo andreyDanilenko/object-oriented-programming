@@ -27,7 +27,8 @@ const createPopupTemplate = (data, dataComment) => {
   const { releaseCountry } = data.filmInfo.release;
   const { title, alternativeTitle, totalRating, poster, ageRating, runtime, description, director, genres } = data.filmInfo;
   const { writers, actors } = data.filmInfo;
-
+  const runtimeHourse = Math.floor(runtime / 60);
+  const runtimeMinutes = runtime % 60;
   const { watchlist, favorite, history } = data.userDetails;
   const { isEmojiName } = data;
   const comments = dataComment;
@@ -86,7 +87,7 @@ const createPopupTemplate = (data, dataComment) => {
                   </tr>
                   <tr class="film-details__row">
                     <td class="film-details__term">Runtime</td>
-                    <td class="film-details__cell">${runtime}</td>
+                    <td class="film-details__cell">${runtimeHourse}h ${runtimeMinutes}m</td>
                   </tr>
                   <tr class="film-details__row">
                     <td class="film-details__term">Country</td>

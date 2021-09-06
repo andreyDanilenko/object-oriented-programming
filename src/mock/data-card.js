@@ -105,7 +105,7 @@ const generateObject = () => (
         'date': generateReleaseDate(),
         'releaseCountry': generateCountry(),
       },
-      'runtime': `1h ${getRandomInt(10, 50)}m`,
+      'runtime': getRandomInt(70, 120),
       'genres': generateGenres(),
       'description': generateDescription(),
     },

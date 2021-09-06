@@ -6,6 +6,8 @@ import AbstractView from './abstract';
 const createFilmCardTemplate = (params) => {
   const { title, runtime, genres, poster, description } = params.filmInfo;
   const rating = params.filmInfo.totalRating;
+  const runtimeHourse = Math.floor(runtime / 60);
+  const runtimeMinutes = runtime % 60;
   const date = dayjs(params.filmInfo.release.date).format('YYYY');
   const comments = params.comments.length;
   const commentsTitle = comments === 1 ? 'Comment' : 'Comments';
@@ -16,7 +18,7 @@ const createFilmCardTemplate = (params) => {
     <p class="film-card__rating">${rating}</p>
     <p class="film-card__info">
       <span class="film-card__year">${date}</span>
-      <span class="film-card__duration">${runtime}</span>
+      <span class="film-card__duration">${runtimeHourse}h ${runtimeMinutes}m</span>
       <span class="film-card__genre">${getFirstElement(genres)}</span>
     </p>
     <img src="./images/posters/${poster}" alt="" class="film-card__poster">
