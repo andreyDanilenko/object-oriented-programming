@@ -10,7 +10,7 @@ import SortView from '../view/films-sort';
 import FilmPresenter from './film';
 import { filter } from '../utils/filters';
 import { render, remove, RenderPosition } from '../utils/render';
-import { FILM_COUNT_PER_STEP, SortType, UpdateType, FilterType } from '../utils/const';
+import { FILM_COUNT_PER_STEP, SortType, UpdateType, FilterType, StatsFilterType } from '../utils/const';
 
 export default class Films {
   constructor(filmsContainer, filmsModel, filterModel) {
@@ -20,6 +20,7 @@ export default class Films {
     this._renderedCardCount = FILM_COUNT_PER_STEP;
     this._currentSortType = SortType.DEFAULT;
     this._filterType = FilterType.ALL;
+    this._statsFilterType = StatsFilterType.ALL;
 
     this._sortComponent = null;
     this._loadMoreButtonComponent = null;
@@ -113,8 +114,13 @@ export default class Films {
       this._userStatisticComponent = null;
     }
 
-    this._userStatisticComponent = new StatisticView(this._filmsModel.getFilms());
+    this._filterType = FilterType.HISTORY;
+    const films = this._filmsModel.getFilms();
+    const filtredFilms = filter[this._filterType](films);
+
+    this._userStatisticComponent = new StatisticView(this._statsFilterType, filtredFilms);
     render(this._filmsContainer, this._userStatisticComponent, RenderPosition.BEFOREEND);
+
   }
 
   _clearFilmsList({ resetRenderedFilmCount = false, resetSortType = false,
@@ -201,7 +207,7 @@ export default class Films {
       this._renderNoFilmsList();
       return;
     }
-
+    this._renderStats();
     this._renderSort();
     this._renderFilmsContainer();
     this._renderFilms(films.slice(0, Math.min(filmCount, this._renderedCardCount)));

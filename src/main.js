@@ -8,7 +8,6 @@ import FilterModel from './model/filter';
 import { cardData } from './mock/data-card';
 import { render, RenderPosition } from './utils/render';
 
-
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
 const siteFooterElement = document.querySelector('.footer');
@@ -26,12 +25,6 @@ const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, filterMod
 
 filterPresenter.init();
 filmsPresenter.init();
-
-// filmsPresenter.destroy();
-
-// filmsPresenter.init();
-
-// render(siteMainElement, new StatisticView(), RenderPosition.BEFOREEND);
 
 render(siteFooterStatisticsElement, new MoviesInsideView(filmsModel.getFilms()), RenderPosition.BEFOREEND);
 
