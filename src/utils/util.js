@@ -58,36 +58,29 @@ export const getGenres = (films) => {
   return genres;
 };
 
-export const countGenres = (films) => {
+export const getDataGenres = (films, count) => {
   const allMoviesGenres = [];
-
   films.forEach((film) => allMoviesGenres.push(...film.filmInfo.genres));
 
-  const genres = [];
-
+  const dataGenres = [];
   getGenres(films).forEach((genre) =>
-    genres.push({
+    dataGenres.push({
       genre: genre,
       count: allMoviesGenres.filter((allMoviesgenre) => allMoviesgenre === genre).length,
     }),
   );
+  const newGenres = dataGenres.sort((a, b) => (b.count > a.count) ? 1 : -1);
 
+  const counts = [];
+  const genres = [];
+
+  newGenres.forEach((i) => {
+    counts.push(i.count);
+    genres.push(i.genre);
+  });
+
+  if (count) {
+    return counts;
+  }
   return genres;
 };
-
-export const getGenresCount = (films) => {
-  const count = [];
-
-  countGenres(films).forEach((genre) => count.push(genre.count));
-
-  return count;
-};
-
-export const getTopGenre = (films) => {
-  const topGenre = countGenres(films);
-
-  topGenre.sort((prev, next) => next.count - prev.count);
-
-  return topGenre[0].genre;
-};
-

@@ -2,11 +2,11 @@ import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import SmartView from './smart.js';
 // import { StatsFilterType } from '../utils/const';
-import { getGenres, getGenresCount, getTopGenre, getSumRuntime } from '../utils/util';
+import { getSumRuntime, getDataGenres } from '../utils/util';
 
 const renderChart = (statisticCtx, data) => {
-  const genres = Array.from(getGenres(data));
-  const genersCount = getGenresCount(data);
+  const count = getDataGenres(data, true);
+  const genres = getDataGenres(data);
 
   new Chart(statisticCtx, {
     plugins: [ChartDataLabels],
@@ -14,7 +14,7 @@ const renderChart = (statisticCtx, data) => {
     data: {
       labels: genres,
       datasets: [{
-        data: genersCount,
+        data: count,
         backgroundColor: '#ffe800',
         hoverBackgroundColor: '#ffe800',
         anchor: 'start',
@@ -70,6 +70,7 @@ export const createStatisticTemplate = (data) => {
   const sumRuntime = getSumRuntime(data);
   const hoursRuntime = Math.floor(sumRuntime / 60);
   const minutesRuntime = sumRuntime % 60;
+  const genres = getDataGenres(data);
 
   return `<section class="statistic">
   <p class="statistic__rank">
@@ -108,7 +109,7 @@ export const createStatisticTemplate = (data) => {
     </li>
     <li class="statistic__text-item">
       <h4 class="statistic__item-title">Top genre</h4>
-      <p class="statistic__item-text">${getTopGenre(data)}</p>
+      <p class="statistic__item-text">${genres[0]}</p>
     </li>
   </ul>
 
