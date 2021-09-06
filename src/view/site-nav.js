@@ -10,6 +10,7 @@ const createFilterItemTemplate = (filter, currentFilterTyp = 'all') => {
 };
 
 const createSiteNavTemplate = (filterItems, currentFilterTyp) => {
+  filterItems.pop();
   const filterItemsTemplate = filterItems
     .map((filter) => createFilterItemTemplate(filter, currentFilterTyp))
     .join('');
@@ -18,7 +19,7 @@ const createSiteNavTemplate = (filterItems, currentFilterTyp) => {
     <div class="main-navigation__items">
       ${filterItemsTemplate}
     </div>
-    <a href="#stats" class="main-navigation__additional">Stats</a>
+    <a href="#stats" data-filter="stats" class="main-navigation__additional ${'stats' === currentFilterTyp ? 'main-navigation__additional--active' : ''}">Stats</a>
   </nav>`;
 };
 
@@ -29,6 +30,7 @@ export default class Nav extends AbstractView {
     this._currentFilterType = currentFilterType;
 
     this._filterTypeChangeHandler = this._filterTypeChangeHandler.bind(this);
+    this._pageStatsChangeHandler = this._pageStatsChangeHandler.bind(this);
   }
 
   getTemplate() {
@@ -44,8 +46,18 @@ export default class Nav extends AbstractView {
     this._callback.filterTypeChange(evt.target.dataset.filter);
   }
 
+  _pageStatsChangeHandler(evt) {
+    evt.preventDefault();
+    this._callback.pageStatsChange(evt.target.dataset.filter);
+  }
+
   setFilterTypeChangeHandler(callback) {
     this._callback.filterTypeChange = callback;
-    this.getElement().addEventListener('click', this._filterTypeChangeHandler);
+    this.getElement().querySelector('.main-navigation__items').addEventListener('click', this._filterTypeChangeHandler);
+  }
+
+  setPageStatsChangeHandler(callback) {
+    this._callback.pageStatsChange = callback;
+    this.getElement().querySelector('.main-navigation__additional').addEventListener('click', this._pageStatsChangeHandler);
   }
 }

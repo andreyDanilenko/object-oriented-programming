@@ -27,7 +27,7 @@ const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, filterMod
 filterPresenter.init();
 filmsPresenter.init();
 
-render(siteMainElement, new StatisticView(), RenderPosition.BEFOREEND);
+// render(siteMainElement, new StatisticView(), RenderPosition.BEFOREEND);
 
 render(siteFooterStatisticsElement, new MoviesInsideView(cardData), RenderPosition.BEFOREEND);
 

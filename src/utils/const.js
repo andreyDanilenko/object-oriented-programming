@@ -14,10 +14,12 @@ export const FilterType = {
   FAVORITES: 'favorites',
   HISTORY: 'history',
   WATCHLIST: 'watchlist',
+  STATS: 'stats',
 };
 
 export const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  STATS: 'STATS',
 };
