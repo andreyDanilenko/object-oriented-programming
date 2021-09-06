@@ -35,12 +35,11 @@ export default class Films {
     this._handleLoadMoreButton = this._handleLoadMoreButton.bind(this);
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
-
-    this._filmsModel.addObserver(this._handleModelEvent);
-    this._filterModel.addObserver(this._handleModelEvent);
   }
 
   init() {
+    this._filmsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
     this._renderFilmsBoard();
   }
 
@@ -48,6 +47,7 @@ export default class Films {
     this._filterType = this._filterModel.getFilter();
     const films = this._filmsModel.getFilms();
     const filtredFilms = filter[this._filterType](films);
+
     switch (this._currentSortType) {
       case SortType.DATE:
         return filtredFilms.slice().sort((a, b) => dayjs(b.filmInfo.release.date).diff(dayjs(a.filmInfo.release.date)));
@@ -61,6 +61,13 @@ export default class Films {
   _handleViewAction(updateType, update) {
     this._filmsModel.updateFilms(updateType, update);
   }
+
+  // destroy() {
+  //   this._clearFilmsList();
+
+  //   this._filmsModel.removeObserver(this._handleModelEvent);
+  //   this._filterModel.removeObserver(this._handleModelEvent);
+  // }
 
   _handleModelEvent(updateType, data) {
     switch (updateType) {
@@ -106,11 +113,12 @@ export default class Films {
       this._userStatisticComponent = null;
     }
 
-    this._userStatisticComponent = new StatisticView();
+    this._userStatisticComponent = new StatisticView(this._filmsModel.getFilms());
     render(this._filmsContainer, this._userStatisticComponent, RenderPosition.BEFOREEND);
   }
 
-  _clearFilmsList({ resetRenderedFilmCount = false, resetSortType = false, saveRenderedFilm = false } = {}) {
+  _clearFilmsList({ resetRenderedFilmCount = false, resetSortType = false,
+    saveRenderedFilm = false } = {}) {
     this._newFilmData.forEach((presenter) => presenter.destroy());
     this._newFilmData.clear();
 

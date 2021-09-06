@@ -50,12 +50,12 @@ export const createStatisticTemplate = () => (
 );
 
 export default class Statistic extends AbstractView {
-  constructor(params) {
+  constructor(data) {
     super();
-    this._params = params;
+    this._data = data;
   }
 
   getTemplate() {
-    return createStatisticTemplate(this._params);
+    return createStatisticTemplate();
   }
 }
