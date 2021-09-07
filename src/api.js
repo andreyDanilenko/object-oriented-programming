@@ -1,3 +1,5 @@
+import FilmsModel from './model/films';
+
 const Method = {
   GET: 'GET',
   PUT: 'PUT',
@@ -10,18 +12,20 @@ export default class Api {
   }
 
   getFilms() {
-    return this._load({ url: 'films' })
-      .then(Api.toJSON);
+    return this._load({ url: 'movies' })
+      .then(Api.toJSON)
+      .then((movies) => movies.map(FilmsModel.adaptToClient));
   }
 
   updateFilm(film) {
     return this._load({
-      url: `films/${film.id}`,
+      url: `movies/${film.id}`,
       method: Method.PUT,
       body: JSON.stringify(film),
       headers: new Headers({ 'Content-Type': 'application/json' }),
     })
-      .then(Api.toJSON);
+      .then(Api.toJSON)
+      .then(FilmsModel.adaptToClient);
   }
 
   _load({
@@ -41,7 +45,7 @@ export default class Api {
   }
 
   static checkStatus(response) {
-    if (response.ok) {
+    if (response.status.ok) {
       throw new Error(`${response.status}: ${response.statusText}`);
     }
 
