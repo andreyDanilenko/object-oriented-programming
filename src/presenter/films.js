@@ -68,7 +68,7 @@ export default class Films {
   }
 
   _handleViewAction(updateType, update) {
-    this._api.updateFilms(UpdateType, update).then((response) => {
+    this._api.updateFilm(update).then((response) => {
       this._filmsModel.updateFilms(updateType, response);
     });
   }

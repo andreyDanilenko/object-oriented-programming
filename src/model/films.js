@@ -85,7 +85,7 @@ export default class Films extends AbstractObserver {
         genre: [...film['filmInfo']['genres']],
         description: film['filmInfo']['description'],
       },
-      userDetails: {
+      ['user_details']: {
         favorite: film['userDetails']['favorite'],
         watchlist: film['userDetails']['watchlist'],
         ['already_watched']: film['userDetails']['history'],
@@ -93,7 +93,6 @@ export default class Films extends AbstractObserver {
       },
     };
 
-    // Ненужные ключи мы удаляем
     delete adaptedFilm.filmInfo;
     delete adaptedFilm.userDetails;
 
