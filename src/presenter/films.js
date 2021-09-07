@@ -15,10 +15,12 @@ import { FILM_COUNT_PER_STEP, SortType, UpdateType, FilterType, StatsFilterType 
 import { isWatchingDate } from '../utils/util';
 
 export default class Films {
-  constructor(filmsContainer, filmsModel, filterModel) {
+  constructor(filmsContainer, filmsModel, filterModel, api) {
     this._filmsContainer = filmsContainer;
     this._filmsModel = filmsModel;
     this._filterModel = filterModel;
+    this._api = api;
+
     this._renderedCardCount = FILM_COUNT_PER_STEP;
     this._currentSortType = SortType.DEFAULT;
     this._filterType = FilterType.ALL;
@@ -66,7 +68,9 @@ export default class Films {
   }
 
   _handleViewAction(updateType, update) {
-    this._filmsModel.updateFilms(updateType, update);
+    this._api.updateFilms(UpdateType, update).then((response) => {
+      this._filmsModel.updateFilms(updateType, response);
+    });
   }
 
   _handleModelEvent(updateType, data) {
@@ -167,7 +171,7 @@ export default class Films {
   }
 
   _renderLoading() {
-    render(this._filmsContainer, this._loadingComponent, RenderPosition.AFTERBEGIN);
+    render(this._filmsContainer, this._loadingComponent, RenderPosition.BEFOREEND);
   }
 
   // отрисовка одной карточки фильма
