@@ -1,7 +1,7 @@
 export const RATED_COUNT = 8;
 export const FILM_COUNT_PER_STEP = 5;
 export const FILM_COUNT_EXTRA = 2;
-export const MAX_LENGTH_TEXT = 139;
+export const MAX_TEXT_LENGTH = 139;
 export const BAR_HEIGHT = 50;
 
 export const StatsFilterType = {
@@ -28,6 +28,8 @@ export const FilterType = {
 
 export const UpdateType = {
   PATCH: 'PATCH',
+  MINOR: 'MINOR',
   MAJOR: 'MAJOR',
   STATS: 'STATS',
+  INIT: 'INIT',
 };

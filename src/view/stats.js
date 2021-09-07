@@ -1,11 +1,11 @@
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import SmartView from './smart.js';
-import { StatsFilterType } from '../utils/const';
+import { StatsFilterType, BAR_HEIGHT } from '../utils/const';
 import { getSumRuntime, getDataGenres } from '../utils/util';
 
 const renderChart = (statisticCtx, data) => {
-  const count = getDataGenres(data, true);
+  const counts = getDataGenres(data, true);
   const genres = getDataGenres(data);
 
   new Chart(statisticCtx, {
@@ -14,7 +14,7 @@ const renderChart = (statisticCtx, data) => {
     data: {
       labels: genres,
       datasets: [{
-        data: count,
+        data: counts,
         backgroundColor: '#ffe800',
         hoverBackgroundColor: '#ffe800',
         anchor: 'start',
@@ -124,7 +124,10 @@ export const createStatisticTemplate = (currentFilterType = 'all-time', data) =>
   </ul>
 
   <div class="statistic__chart-wrap">
-    <canvas class="statistic__chart" width="1000"></canvas>
+    <canvas class="statistic__chart" width="1000"
+    width="1000"
+    height="${BAR_HEIGHT * genres.length}"
+    ></canvas>
   </div>
 
 </section>`;
@@ -138,8 +141,7 @@ export default class Statistic extends SmartView {
 
     this._filterTypeChangeHandler = this._filterTypeChangeHandler.bind(this);
 
-    this._statisticChart = this.getElement().querySelector('.statistic__chart');
-    renderChart(this._statisticChart, this._data);
+    this._getChart();
   }
 
   getTemplate() {
@@ -157,5 +159,10 @@ export default class Statistic extends SmartView {
   setFilterTypeChangeHandler(callback) {
     this._callback.filterTypeChange = callback;
     this.getElement().querySelector('.statistic__filters').addEventListener('click', this._filterTypeChangeHandler);
+  }
+
+  _getChart() {
+    this._statisticChart = this.getElement().querySelector('.statistic__chart');
+    renderChart(this._statisticChart, this._data);
   }
 }

@@ -1,16 +1,10 @@
 import * as dayjs from 'dayjs';
-import { MAX_LENGTH_TEXT, StatsFilterType } from './const';
+import { MAX_TEXT_LENGTH, StatsFilterType } from './const';
 export const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 export const getFirstElement = (arr) => arr[0];
 export const getCardClassName = (variable) => variable ? 'film-card__controls-item film-card__controls-item--active' : 'film-card__controls-item';
 export const getPopupClassName = (variable) => variable ? 'film-details__control-button film-details__control-button--active' : 'film-details__control-button';
-export const getSliceText = (text) => {
-  let newText = text.slice(0, MAX_LENGTH_TEXT);
-  if (text.length > newText.length) {
-    newText += '...';
-  }
-  return newText;
-};
+export const getSliceText = (text) => text.length > MAX_TEXT_LENGTH ? `${text.slice(0, MAX_TEXT_LENGTH)}...` : text;
 
 export const parseDate = (d) => {
   let newDate;

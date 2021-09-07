@@ -2,6 +2,7 @@ import * as dayjs from 'dayjs';
 import FilmsView from '../view/films';
 import FilmsListMainView from '../view/films-list';
 import StatisticView from '../view/stats';
+import LoadingView from '../view/loading';
 // import FilmsListCommentedView from '../view/films-list-commented';
 // import FilmsListRatedView from '../view/films-list-rated';
 import LoadMoreButtonView from '../view/button-more';
@@ -14,10 +15,12 @@ import { FILM_COUNT_PER_STEP, SortType, UpdateType, FilterType, StatsFilterType 
 import { isWatchingDate } from '../utils/util';
 
 export default class Films {
-  constructor(filmsContainer, filmsModel, filterModel) {
+  constructor(filmsContainer, filmsModel, filterModel, api) {
     this._filmsContainer = filmsContainer;
     this._filmsModel = filmsModel;
     this._filterModel = filterModel;
+    this._api = api;
+
     this._renderedCardCount = FILM_COUNT_PER_STEP;
     this._currentSortType = SortType.DEFAULT;
     this._filterType = FilterType.ALL;
@@ -27,9 +30,11 @@ export default class Films {
     this._loadMoreButtonComponent = null;
     this._filmNoCardComponent = null;
     this._userStatisticComponent = null;
+    this._isLoading = true;
 
     this._filmsComponent = new FilmsView();
     this._filmsListMainComponent = new FilmsListMainView();
+    this._loadingComponent = new LoadingView();
 
     this._newFilmData = new Map();
 
@@ -63,13 +68,19 @@ export default class Films {
   }
 
   _handleViewAction(updateType, update) {
-    this._filmsModel.updateFilms(updateType, update);
+    this._api.updateFilm(update).then((response) => {
+      this._filmsModel.updateFilms(updateType, response);
+    });
   }
 
   _handleModelEvent(updateType, data) {
     switch (updateType) {
       case UpdateType.PATCH:
         this._newFilmData.get(data.id).init(data);
+        break;
+      case UpdateType.MINOR:
+        this._clearFilmsList();
+        this._renderFilmsBoard();
         break;
       case UpdateType.MAJOR:
         this._clearFilmsList({ resetRenderedFilmCount: true, resetSortType: true });
@@ -78,6 +89,11 @@ export default class Films {
       case UpdateType.STATS:
         this._clearFilmsList();
         this._renderStats();
+        break;
+      case UpdateType.INIT:
+        this._isLoading = false;
+        remove(this._loadingComponent);
+        this._renderFilmsBoard();
         break;
     }
   }
@@ -135,6 +151,7 @@ export default class Films {
     this._newFilmData.forEach((presenter) => presenter.destroy());
     this._newFilmData.clear();
 
+    remove(this._loadingComponent);
     remove(this._sortComponent);
     remove(this._loadMoreButtonComponent);
     remove(this._userStatisticComponent);
@@ -153,7 +170,12 @@ export default class Films {
 
     if (resetSortType) {
       this._currentSortType = SortType.DEFAULT;
+      this._statsFilterType = StatsFilterType.ALL;
     }
+  }
+
+  _renderLoading() {
+    render(this._filmsContainer, this._loadingComponent, RenderPosition.BEFOREEND);
   }
 
   // отрисовка одной карточки фильма
@@ -207,6 +229,11 @@ export default class Films {
 
   // Отрисовка основного списка фильмов
   _renderFilmsBoard() {
+    if (this._isLoading) {
+      this._renderLoading();
+      return;
+    }
+
     const films = this._getFilms();
     const filmCount = films.length;
 
