@@ -153,6 +153,7 @@ export default class Films {
 
     if (resetSortType) {
       this._currentSortType = SortType.DEFAULT;
+      this._statsFilterType = StatsFilterType.ALL;
     }
   }
 

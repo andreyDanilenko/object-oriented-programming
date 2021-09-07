@@ -5,7 +5,7 @@ import { StatsFilterType } from '../utils/const';
 import { getSumRuntime, getDataGenres } from '../utils/util';
 
 const renderChart = (statisticCtx, data) => {
-  const count = getDataGenres(data, true);
+  const counts = getDataGenres(data, true);
   const genres = getDataGenres(data);
 
   new Chart(statisticCtx, {
@@ -14,7 +14,7 @@ const renderChart = (statisticCtx, data) => {
     data: {
       labels: genres,
       datasets: [{
-        data: count,
+        data: counts,
         backgroundColor: '#ffe800',
         hoverBackgroundColor: '#ffe800',
         anchor: 'start',
