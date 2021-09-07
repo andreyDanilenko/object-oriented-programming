@@ -119,7 +119,7 @@ export const createStatisticTemplate = (currentFilterType = 'all-time', data) =>
     </li>
     <li class="statistic__text-item">
       <h4 class="statistic__item-title">Top genre</h4>
-      <p class="statistic__item-text">${genres[0]}</p>
+      <p class="statistic__item-text">${genres.length ? genres[0] : ''}</p>
     </li>
   </ul>
 
