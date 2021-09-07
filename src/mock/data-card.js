@@ -84,7 +84,7 @@ const generateReleaseDate = () => {
 };
 
 const generateWatchList = () => {
-  const dayGap = getRandomInt(-1095, 0);
+  const dayGap = getRandomInt(-40, 0);
   return dayjs().add(dayGap, 'day').toDate();
 };
 
@@ -117,5 +117,5 @@ const generateObject = () => (
     },
   });
 
-const CARD_COUNT = 22;
+const CARD_COUNT = 40;
 export const cardData = new Array(CARD_COUNT).fill().map(() => generateObject());

@@ -1,5 +1,5 @@
 import * as dayjs from 'dayjs';
-import { MAX_LENGTH_TEXT } from './const';
+import { MAX_LENGTH_TEXT, StatsFilterType } from './const';
 export const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 export const getFirstElement = (arr) => arr[0];
 export const getCardClassName = (variable) => variable ? 'film-card__controls-item film-card__controls-item--active' : 'film-card__controls-item';
@@ -39,6 +39,21 @@ export const parseDate = (d) => {
   }
 
   return newDate;
+};
+
+export const isWatchingDate = (date, sortType) => {
+  switch (sortType) {
+    case StatsFilterType.ALL:
+      return date;
+    case StatsFilterType.YEAR:
+      return date = date.filter((film) => dayjs(film.userDetails.watchingDate).diff() > -31536000000);
+    case StatsFilterType.MONTH:
+      return date = date.filter((film) => dayjs(film.userDetails.watchingDate).diff() > -2592000000);
+    case StatsFilterType.WEEK:
+      return date = date.filter((film) => dayjs(film.userDetails.watchingDate).diff() > -604800000);
+    case StatsFilterType.TODAY:
+      return date = date.filter((film) => dayjs(film.userDetails.watchingDate).diff() > -86400000);
+  }
 };
 
 export const getSumRuntime = (data) => {

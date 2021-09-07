@@ -11,6 +11,7 @@ import FilmPresenter from './film';
 import { filter } from '../utils/filters';
 import { render, remove, RenderPosition } from '../utils/render';
 import { FILM_COUNT_PER_STEP, SortType, UpdateType, FilterType, StatsFilterType } from '../utils/const';
+import { isWatchingDate } from '../utils/util';
 
 export default class Films {
   constructor(filmsContainer, filmsModel, filterModel) {
@@ -33,9 +34,11 @@ export default class Films {
     this._newFilmData = new Map();
 
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+    this._handleStatsFilter = this._handleStatsFilter.bind(this);
     this._handleLoadMoreButton = this._handleLoadMoreButton.bind(this);
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
+
   }
 
   init() {
@@ -62,13 +65,6 @@ export default class Films {
   _handleViewAction(updateType, update) {
     this._filmsModel.updateFilms(updateType, update);
   }
-
-  // destroy() {
-  //   this._clearFilmsList();
-
-  //   this._filmsModel.removeObserver(this._handleModelEvent);
-  //   this._filterModel.removeObserver(this._handleModelEvent);
-  // }
 
   _handleModelEvent(updateType, data) {
     switch (updateType) {
@@ -117,10 +113,21 @@ export default class Films {
     this._filterType = FilterType.HISTORY;
     const films = this._filmsModel.getFilms();
     const filtredFilms = filter[this._filterType](films);
+    const filtredStastFilms = isWatchingDate(filtredFilms, this._statsFilterType);
 
-    this._userStatisticComponent = new StatisticView(this._statsFilterType, filtredFilms);
+    this._userStatisticComponent = new StatisticView(this._statsFilterType, filtredStastFilms);
     render(this._filmsContainer, this._userStatisticComponent, RenderPosition.BEFOREEND);
+    this._userStatisticComponent.setFilterTypeChangeHandler(this._handleStatsFilter);
+  }
 
+  _handleStatsFilter(statsFilter) {
+    if (this._statsFilterType === statsFilter) {
+      return;
+    }
+
+    this._statsFilterType = statsFilter;
+    remove(this._userStatisticComponent);
+    this._renderStats();
   }
 
   _clearFilmsList({ resetRenderedFilmCount = false, resetSortType = false,
@@ -207,7 +214,7 @@ export default class Films {
       this._renderNoFilmsList();
       return;
     }
-    this._renderStats();
+
     this._renderSort();
     this._renderFilmsContainer();
     this._renderFilms(films.slice(0, Math.min(filmCount, this._renderedCardCount)));
