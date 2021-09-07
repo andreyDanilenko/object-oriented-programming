@@ -1,4 +1,5 @@
 import AbstractObserver from '../utils/abstract-observer.js';
+import { getCardClassName } from '../utils/util.js';
 
 export default class Films extends AbstractObserver {
   constructor() {
@@ -65,9 +66,25 @@ export default class Films extends AbstractObserver {
     return adaptedFilm;
   }
 
+  static adaptCommentToClient(comment) {
+    const adaptedComment = {
+      ...comment,
+      authorName: comment.author,
+      text: comment.comment,
+      emoji: comment.emotion,
+    };
+
+    delete comment.emotion;
+    delete comment.authorName;
+    delete comment.comment;
+
+    return adaptedComment;
+  }
+
   static adaptToServer(film) {
     const adaptedFilm = {
       ...film,
+      comments: [],
       ['film_info']: {
         title: film['filmInfo'].title,
         ['alternative_title']: film['filmInfo']['alternativeTitle'],

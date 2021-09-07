@@ -9,7 +9,7 @@ const createCommentPopupTemplate = (dataComment) => {
   const dateFormat = parseDate(date);
   return `<li class="film-details__comment" value=${id}">
     <span class="film-details__comment-emoji">
-      <img src="./images/emoji/${emoji}" width="55" height="55" alt="emoji-smile">
+      <img src="./images/emoji/${emoji}.png" width="55" height="55" alt="emoji-smile">
     </span>
       <div>
         <p class="film-details__comment-text">${text}</p>
@@ -53,7 +53,7 @@ const createPopupTemplate = (data, dataComment) => {
             <div class="film-details__poster">
               <img class="film-details__poster-img" src="${poster}" alt="">
 
-                <p class="film-details__age">${ageRating}</p>
+                <p class="film-details__age">${ageRating}+</p>
           </div>
 
               <div class="film-details__info">
@@ -157,10 +157,11 @@ const createPopupTemplate = (data, dataComment) => {
 };
 
 export default class PopupCard extends SmartView {
-  constructor(param) {
+  constructor(param, comment) {
     super();
     this._data = PopupCard.parseParamToData(param);
-    this._comments = this._data.comments.sort((a, b) => dayjs(a.date).diff(dayjs(b.date)));
+    this._comments = comment;
+    console.log(comment);
 
     this._getClosePopupHandler = this._getClosePopupHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
@@ -316,9 +317,9 @@ export default class PopupCard extends SmartView {
     if (evt.keyCode === 13 && evt.ctrlKey) {
       const newComment = {
         id: createId(),
-        text: this.getElement().querySelector('.film-details__comment-input').value,
+        text: he.encode(this.getElement().querySelector('.film-details__comment-input').value),
         authorName: generateName(),
-        emoji: this._data.isEmojiName ? `${this._data.isEmojiName}.png` : 'smile.png',
+        emoji: this._data.isEmojiName ? `${this._data.isEmojiName}` : 'smile',
         date: dayjs(),
       };
 

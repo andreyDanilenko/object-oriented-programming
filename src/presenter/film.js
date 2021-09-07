@@ -2,6 +2,7 @@ import FilmCardView from '../view/film-card';
 import PopupCardView from '../view/popup';
 import { render, RenderPosition, replace, remove } from '../utils/render';
 import { UpdateType } from '../utils/const';
+import { api } from '../api';
 
 export default class Film {
   constructor(filmContainer, changeData) {
@@ -19,6 +20,7 @@ export default class Film {
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
     this._handleAddClick = this._handleAddClick.bind(this);
     this._handleEditPopup = this._handleEditPopup.bind(this);
+    this._handleCommentsLoaded = this._handleCommentsLoaded.bind(this);
   }
 
   init(card) {
@@ -48,12 +50,12 @@ export default class Film {
     remove(this._cardComponent);
   }
 
-  _renderFilmPopup() {
+  _renderFilmPopup(comments = []) {
     if (this._cardPopupComponent) {
       remove(this._cardPopupComponent);
     }
 
-    this._cardPopupComponent = new PopupCardView(this._card);
+    this._cardPopupComponent = new PopupCardView(this._card, comments);
     this._cardPopupComponent.setCloseClickHandler(this._handleClosePopupClick);
     this._cardPopupComponent.setHistoryClickHandler(this._handleEditPopup);
     this._cardPopupComponent.setFavoriteClickHandler(this._handleEditPopup);
@@ -64,6 +66,15 @@ export default class Film {
     document.body.classList.add('hide-overflow');
     document.addEventListener('keydown', this._handleCloseEscClick);
     render(document.body, this._cardPopupComponent, RenderPosition.BEFOREEND);
+  }
+
+  _handleCommentsLoaded(comments) {
+    this._changeData(
+      UpdateType.MINOR,
+      {
+        ...this._card,
+        comments,
+      });
   }
 
   _handleHistoryClick() {
@@ -130,6 +141,7 @@ export default class Film {
       document.querySelector('.film-details').remove();
     }
     this._renderFilmPopup();
+    api.getComments(this._card.id).then((comments) => this._renderFilmPopup(comments));
   }
 
   _handleClosePopupClick() {

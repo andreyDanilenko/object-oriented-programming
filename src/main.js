@@ -4,14 +4,9 @@ import FilmsPresenter from './presenter/films';
 import FilterPresenter from './presenter/filter';
 import FilmsModel from './model/films';
 import FilterModel from './model/filter';
-import Api from './api.js';
+import { api } from './api.js';
 import { UpdateType } from './utils/const';
 import { render, RenderPosition } from './utils/render';
-
-const AUTHORIZATION = 'Basic df09gdf00df9g0df9g';
-const END_POINT = 'https://15.ecmascript.pages.academy/cinemaddict';
-
-const api = new Api(END_POINT, AUTHORIZATION);
 
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
