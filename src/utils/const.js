@@ -30,4 +30,5 @@ export const UpdateType = {
   PATCH: 'PATCH',
   MAJOR: 'MAJOR',
   STATS: 'STATS',
+  INIT: 'INIT',
 };
