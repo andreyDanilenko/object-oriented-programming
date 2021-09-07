@@ -12,7 +12,7 @@ const createCommentPopupTemplate = (dataComment) => {
       <img src="./images/emoji/${emoji}" width="55" height="55" alt="emoji-smile">
     </span>
       <div>
-        <p class="film-details__comment-text">${he.encode(text)}</p>
+        <p class="film-details__comment-text">${text}</p>
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${authorName}</span>
           <span class="film-details__comment-day">${dateFormat}</span>
