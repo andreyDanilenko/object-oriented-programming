@@ -9,12 +9,12 @@ export default class Api {
     this._authorization = authorization;
   }
 
-  getTasks() {
+  getFilms() {
     return this._load({ url: 'films' })
       .then(Api.toJSON);
   }
 
-  updateTask(film) {
+  updateFilm(film) {
     return this._load({
       url: `films/${film.id}`,
       method: Method.PUT,
