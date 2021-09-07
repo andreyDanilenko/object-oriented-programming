@@ -78,6 +78,10 @@ export default class Films {
       case UpdateType.PATCH:
         this._newFilmData.get(data.id).init(data);
         break;
+      case UpdateType.MINOR:
+        this._clearFilmsList();
+        this._renderFilmsBoard();
+        break;
       case UpdateType.MAJOR:
         this._clearFilmsList({ resetRenderedFilmCount: true, resetSortType: true });
         this._renderFilmsBoard();

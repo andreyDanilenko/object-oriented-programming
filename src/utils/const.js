@@ -28,6 +28,7 @@ export const FilterType = {
 
 export const UpdateType = {
   PATCH: 'PATCH',
+  MINOR: 'MINOR',
   MAJOR: 'MAJOR',
   STATS: 'STATS',
   INIT: 'INIT',

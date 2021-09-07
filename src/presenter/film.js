@@ -68,7 +68,7 @@ export default class Film {
 
   _handleHistoryClick() {
     this._changeData(
-      UpdateType.MAJOR,
+      UpdateType.MINOR,
       {
         ...this._card,
         userDetails: {
@@ -80,7 +80,7 @@ export default class Film {
 
   _handleFavoriteClick() {
     this._changeData(
-      UpdateType.MAJOR,
+      UpdateType.MINOR,
       {
         ...this._card,
         userDetails: {
@@ -92,7 +92,7 @@ export default class Film {
 
   _handleWatchlistClick() {
     this._changeData(
-      UpdateType.MAJOR,
+      UpdateType.MINOR,
       {
         ...this._card,
         userDetails: {
@@ -107,7 +107,7 @@ export default class Film {
   // на кнопки добавлений в определенный список карточки фильма
   _handleEditPopup(card) {
     this._changeData(
-      UpdateType.MAJOR,
+      UpdateType.MINOR,
       card);
   }
 
