@@ -1,13 +1,12 @@
 import ProfileView from './view/header-profile';
 import MoviesInsideView from './view/inside';
-import StatisticView from './view/stats';
+// import StatisticView from './view/stats';
 import FilmsPresenter from './presenter/films';
 import FilterPresenter from './presenter/filter';
 import FilmsModel from './model/films';
 import FilterModel from './model/filter';
 import { cardData } from './mock/data-card';
 import { render, RenderPosition } from './utils/render';
-
 
 const siteHeaderElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
@@ -27,7 +26,5 @@ const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, filterMod
 filterPresenter.init();
 filmsPresenter.init();
 
-render(siteMainElement, new StatisticView(), RenderPosition.BEFOREEND);
-
-render(siteFooterStatisticsElement, new MoviesInsideView(cardData), RenderPosition.BEFOREEND);
+render(siteFooterStatisticsElement, new MoviesInsideView(filmsModel.getFilms()), RenderPosition.BEFOREEND);
 

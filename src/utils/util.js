@@ -1,5 +1,5 @@
 import * as dayjs from 'dayjs';
-import { MAX_LENGTH_TEXT } from './const';
+import { MAX_LENGTH_TEXT, StatsFilterType } from './const';
 export const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 export const getFirstElement = (arr) => arr[0];
 export const getCardClassName = (variable) => variable ? 'film-card__controls-item film-card__controls-item--active' : 'film-card__controls-item';
@@ -39,4 +39,63 @@ export const parseDate = (d) => {
   }
 
   return newDate;
+};
+
+export const isWatchingDate = (date, sortType) => {
+  switch (sortType) {
+    case StatsFilterType.ALL:
+      return date;
+    case StatsFilterType.YEAR:
+      return date = date.filter((film) => dayjs(film.userDetails.watchingDate).diff() > -31536000000);
+    case StatsFilterType.MONTH:
+      return date = date.filter((film) => dayjs(film.userDetails.watchingDate).diff() > -2592000000);
+    case StatsFilterType.WEEK:
+      return date = date.filter((film) => dayjs(film.userDetails.watchingDate).diff() > -604800000);
+    case StatsFilterType.TODAY:
+      return date = date.filter((film) => dayjs(film.userDetails.watchingDate).diff() > -86400000);
+  }
+};
+
+export const getSumRuntime = (data) => {
+  const runtime = [];
+  data.forEach((film) => {
+    runtime.push(film.filmInfo.runtime);
+  });
+  const sum = runtime.reduce((a, b) => a + b, 0);
+  return sum;
+};
+
+export const getGenres = (films) => {
+  const genres = new Set();
+
+  films.forEach((film) => film.filmInfo.genres.forEach((genre) => genres.add(genre)));
+
+  return genres;
+};
+
+export const getDataGenres = (films, count) => {
+  const allMoviesGenres = [];
+  films.forEach((film) => allMoviesGenres.push(...film.filmInfo.genres));
+
+  const dataGenres = [];
+  getGenres(films).forEach((genre) =>
+    dataGenres.push({
+      genre: genre,
+      count: allMoviesGenres.filter((allMoviesgenre) => allMoviesgenre === genre).length,
+    }),
+  );
+  const newGenres = dataGenres.sort((a, b) => (b.count > a.count) ? 1 : -1);
+
+  const counts = [];
+  const genres = [];
+
+  newGenres.forEach((i) => {
+    counts.push(i.count);
+    genres.push(i.genre);
+  });
+
+  if (count) {
+    return counts;
+  }
+  return genres;
 };

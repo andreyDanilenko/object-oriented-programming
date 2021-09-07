@@ -27,19 +27,10 @@ export default class Film {
     const prevCardComponent = this._cardComponent;
 
     this._cardComponent = new FilmCardView(card);
-    this._cardPopupComponent = new PopupCardView(card);
-
     this._cardComponent.setOpenClickHandler(this._handleOpenPopupClick);
     this._cardComponent.setHistoryClickHandler(this._handleHistoryClick);
     this._cardComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._cardComponent.setWatchlistClickHandler(this._handleWatchlistClick);
-
-    this._cardPopupComponent.setCloseClickHandler(this._handleClosePopupClick);
-    this._cardPopupComponent.setHistoryClickHandler(this._handleEditPopup);
-    this._cardPopupComponent.setFavoriteClickHandler(this._handleEditPopup);
-    this._cardPopupComponent.setWatchlistClickHandler(this._handleEditPopup);
-    this._cardPopupComponent.setDeleteClickHandler(this._handleDeleteClick);
-    this._cardPopupComponent.setAddClickHandler(this._handleAddClick);
 
     if (prevCardComponent === null) {
       render(this._filmContainer, this._cardComponent, RenderPosition.BEFOREEND);
@@ -55,6 +46,24 @@ export default class Film {
 
   destroy() {
     remove(this._cardComponent);
+  }
+
+  _renderFilmPopup() {
+    if (this._cardPopupComponent) {
+      remove(this._cardPopupComponent);
+    }
+
+    this._cardPopupComponent = new PopupCardView(this._card);
+    this._cardPopupComponent.setCloseClickHandler(this._handleClosePopupClick);
+    this._cardPopupComponent.setHistoryClickHandler(this._handleEditPopup);
+    this._cardPopupComponent.setFavoriteClickHandler(this._handleEditPopup);
+    this._cardPopupComponent.setWatchlistClickHandler(this._handleEditPopup);
+    this._cardPopupComponent.setDeleteClickHandler(this._handleDeleteClick);
+    this._cardPopupComponent.setAddClickHandler(this._handleAddClick);
+
+    document.body.classList.add('hide-overflow');
+    document.addEventListener('keydown', this._handleCloseEscClick);
+    render(document.body, this._cardPopupComponent, RenderPosition.BEFOREEND);
   }
 
   _handleHistoryClick() {
@@ -120,10 +129,7 @@ export default class Film {
     if (document.querySelector('.film-details')) {
       document.querySelector('.film-details').remove();
     }
-
-    document.body.classList.add('hide-overflow');
-    document.addEventListener('keydown', this._handleCloseEscClick);
-    render(document.body, this._cardPopupComponent, RenderPosition.BEFOREEND);
+    this._renderFilmPopup();
   }
 
   _handleClosePopupClick() {

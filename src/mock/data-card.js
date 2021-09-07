@@ -84,7 +84,7 @@ const generateReleaseDate = () => {
 };
 
 const generateWatchList = () => {
-  const dayGap = getRandomInt(-1095, 0);
+  const dayGap = getRandomInt(-40, 0);
   return dayjs().add(dayGap, 'day').toDate();
 };
 
@@ -105,7 +105,7 @@ const generateObject = () => (
         'date': generateReleaseDate(),
         'releaseCountry': generateCountry(),
       },
-      'runtime': `1h ${getRandomInt(10, 50)}m`,
+      'runtime': getRandomInt(70, 120),
       'genres': generateGenres(),
       'description': generateDescription(),
     },
@@ -117,5 +117,5 @@ const generateObject = () => (
     },
   });
 
-const CARD_COUNT = 7;
+const CARD_COUNT = 40;
 export const cardData = new Array(CARD_COUNT).fill().map(() => generateObject());
