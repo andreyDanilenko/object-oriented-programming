@@ -50,16 +50,25 @@ export default class FilmCard extends AbstractView {
 
   _favoriteClickHandler(evt) {
     evt.preventDefault();
+    if (document.querySelector('.film-details')) {
+      document.querySelector('.film-details').remove();
+    }
     this._callback.favoriteClick();
   }
 
   _historyClickHandler(evt) {
     evt.preventDefault();
+    if (document.querySelector('.film-details')) {
+      document.querySelector('.film-details').remove();
+    }
     this._callback.historyClick();
   }
 
   _watchlistClickHandler(evt) {
     evt.preventDefault();
+    if (document.querySelector('.film-details')) {
+      document.querySelector('.film-details').remove();
+    }
     this._callback.watchlistClick();
   }
 

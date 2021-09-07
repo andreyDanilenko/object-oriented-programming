@@ -104,7 +104,7 @@ export const createStatisticTemplate = (currentFilterType = 'all-time', data) =>
 
     <input type="radio" class="statistic__filters-input visually-hidden" name="statistic-filter" id="statistic-year"
     value="${StatsFilterType.YEAR}"
-    ${currentFilterType === StatsFilterType.YEAR ? 'checked' : ''}">
+    ${currentFilterType === StatsFilterType.YEAR ? 'checked' : ''}>
     <label for="statistic-year" class="statistic__filters-label">Year</label>
   </form>
 

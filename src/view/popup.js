@@ -228,7 +228,7 @@ export default class PopupCard extends SmartView {
   // Перносим данные в состояние
   static parseParamToData(param) {
     return {
-      ...param, isEmojiName: null,
+      ...param, isEmojiName: null, textComment: '',
     };
   }
 
