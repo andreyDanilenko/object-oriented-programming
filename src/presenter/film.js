@@ -48,6 +48,9 @@ export default class Film {
 
   destroy() {
     remove(this._cardComponent);
+    if (document.body.classList.contains('hide-overflow')) {
+      document.body.classList.remove('hide-overflow');
+    }
   }
 
   _renderFilmPopup(comments = []) {
@@ -113,9 +116,6 @@ export default class Film {
       });
   }
 
-  // Временно пока не разберусь как синхронизировать изменения попапа чс карточкой
-  // Не могу придумать как перерисовывать открытый попап при клике
-  // на кнопки добавлений в определенный список карточки фильма
   _handleEditPopup(card) {
     this._changeData(
       UpdateType.MINOR,

@@ -161,7 +161,6 @@ export default class PopupCard extends SmartView {
     super();
     this._data = PopupCard.parseParamToData(param);
     this._comments = comment;
-    console.log(comment);
 
     this._getClosePopupHandler = this._getClosePopupHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);

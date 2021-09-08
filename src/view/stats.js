@@ -2,7 +2,7 @@ import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import SmartView from './smart.js';
 import { StatsFilterType, BAR_HEIGHT } from '../utils/const';
-import { getSumRuntime, getDataGenres } from '../utils/util';
+import { getSumRuntime, getDataGenres, getUserRank } from '../utils/util';
 
 const renderChart = (statisticCtx, data) => {
   const counts = getDataGenres(data, true);
@@ -68,15 +68,16 @@ const renderChart = (statisticCtx, data) => {
 
 export const createStatisticTemplate = (currentFilterType = 'all-time', data) => {
   const sumRuntime = getSumRuntime(data);
+  const userRank = getUserRank(data.length);
+  const genres = getDataGenres(data);
   const hoursRuntime = Math.floor(sumRuntime / 60);
   const minutesRuntime = sumRuntime % 60;
-  const genres = getDataGenres(data);
 
   return `<section class="statistic">
   <p class="statistic__rank">
     Your rank
     <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-    <span class="statistic__rank-label">Movie buff</span>
+    <span class="statistic__rank-label">${userRank}</span>
   </p>
 
   <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">

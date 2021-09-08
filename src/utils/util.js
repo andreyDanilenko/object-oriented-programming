@@ -1,5 +1,6 @@
 import * as dayjs from 'dayjs';
-import { MAX_TEXT_LENGTH, StatsFilterType } from './const';
+import { MAX_TEXT_LENGTH, StatsFilterType, ProfileRank, ZERO_FILMS_COUNT, MAX_FILMS_COUNT, MIN_FILMS_COUNT } from './const';
+
 export const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 export const getFirstElement = (arr) => arr[0];
 export const getCardClassName = (variable) => variable ? 'film-card__controls-item film-card__controls-item--active' : 'film-card__controls-item';
@@ -92,4 +93,20 @@ export const getDataGenres = (films, count) => {
     return counts;
   }
   return genres;
+};
+
+export const getUserRank = (watchedCount) => {
+  const isNoviceRank = watchedCount > ZERO_FILMS_COUNT && watchedCount <= MIN_FILMS_COUNT;
+  const isFanRank = watchedCount > MIN_FILMS_COUNT && watchedCount <= MAX_FILMS_COUNT;
+  const isMovieBuffRank = watchedCount > MAX_FILMS_COUNT;
+
+  if (isNoviceRank) {
+    return ProfileRank.NOVICE;
+  } else if (isFanRank) {
+    return ProfileRank.FAN;
+  } else if (isMovieBuffRank) {
+    return ProfileRank.MOVIE_BUFF;
+  } else {
+    return '';
+  }
 };
