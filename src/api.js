@@ -1,5 +1,6 @@
 import FilmsModel from './model/films';
-const AUTHORIZATION = 'Basic df09gdf00df9g0df9g';
+import { generateToken } from './utils/const';
+const AUTHORIZATION = `Basic ${generateToken()}`;
 const END_POINT = 'https://15.ecmascript.pages.academy/cinemaddict';
 
 const Method = {

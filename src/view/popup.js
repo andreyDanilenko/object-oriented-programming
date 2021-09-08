@@ -1,6 +1,5 @@
 import * as dayjs from 'dayjs';
 import he from 'he';
-import { createId, generateName } from '../mock/data-comments';
 import { getPopupClassName, parseDate } from '../utils/util';
 import SmartView from './smart';
 
@@ -315,11 +314,8 @@ export default class PopupCard extends SmartView {
   _getAddClickHandler(evt) {
     if (evt.keyCode === 13 && evt.ctrlKey) {
       const newComment = {
-        id: createId(),
         text: he.encode(this.getElement().querySelector('.film-details__comment-input').value),
-        authorName: generateName(),
         emoji: this._data.isEmojiName ? `${this._data.isEmojiName}` : 'smile',
-        date: dayjs(),
       };
 
       this._comments = [...this._comments, newComment];
