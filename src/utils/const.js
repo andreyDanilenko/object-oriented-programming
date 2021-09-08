@@ -7,11 +7,6 @@ export const ZERO_FILMS_COUNT = 0;
 export const MIN_FILMS_COUNT = 10;
 export const MAX_FILMS_COUNT = 20;
 
-export const generateToken = () => {
-  const random = Math.random();
-  return random.toString(32).substr(2);
-};
-
 export const StatsFilterType = {
   ALL: 'all-time',
   YEAR: 'year',

@@ -1,6 +1,6 @@
 import * as dayjs from 'dayjs';
 import he from 'he';
-import { getFirstElement, getCardClassName, getSliceText } from '../utils/util';
+import { getFirstElement, getCardClassName, getSliceText } from '../utils/utils';
 import AbstractView from './abstract';
 
 const createFilmCardTemplate = (params) => {

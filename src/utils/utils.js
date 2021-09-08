@@ -110,3 +110,8 @@ export const getUserRank = (watchedCount) => {
     return '';
   }
 };
+
+export const generateToken = () => {
+  const random = Math.random();
+  return random.toString(32).substr(2);
+};

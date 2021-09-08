@@ -1,6 +1,6 @@
 import * as dayjs from 'dayjs';
 import he from 'he';
-import { getPopupClassName, parseDate } from '../utils/util';
+import { getPopupClassName, parseDate } from '../utils/utils';
 import SmartView from './smart';
 
 const createCommentPopupTemplate = (dataComment) => {

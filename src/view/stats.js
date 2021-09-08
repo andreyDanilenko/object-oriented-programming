@@ -2,7 +2,7 @@ import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import SmartView from './smart.js';
 import { StatsFilterType, BAR_HEIGHT } from '../utils/const';
-import { getSumRuntime, getDataGenres, getUserRank, isWatchingDate } from '../utils/util';
+import { getSumRuntime, getDataGenres, getUserRank, isWatchingDate } from '../utils/utils';
 
 const renderChart = (statisticCtx, data, currentFilterType = 'all-time') => {
   const filterData = isWatchingDate(data, currentFilterType);

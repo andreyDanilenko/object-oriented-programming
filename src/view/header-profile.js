@@ -1,5 +1,5 @@
 import AbstractView from './abstract';
-import { getUserRank } from '../utils/util';
+import { getUserRank } from '../utils/utils';
 
 const createSiteProfileTemplate = (rank) => `<section class="header__profile profile">
     <p class="profile__rating">${getUserRank(rank)}</p>
