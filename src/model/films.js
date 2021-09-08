@@ -65,21 +65,6 @@ export default class Films extends AbstractObserver {
     return adaptedFilm;
   }
 
-  static adaptCommentToClient(comment) {
-    const adaptedComment = {
-      ...comment,
-      authorName: comment.author,
-      text: comment.comment,
-      emoji: comment.emotion,
-    };
-
-    delete comment.emotion;
-    delete comment.authorName;
-    delete comment.comment;
-
-    return adaptedComment;
-  }
-
   static adaptToServer(film) {
     const adaptedFilm = {
       ...film,
@@ -115,4 +100,34 @@ export default class Films extends AbstractObserver {
     return adaptedFilm;
   }
 
+  static adaptCommentToClient(comment) {
+    const adaptedComment = {
+      ...comment,
+      authorName: comment.author,
+      text: comment.comment,
+      emoji: comment.emotion,
+    };
+
+    delete adaptedComment.emotion;
+    delete adaptedComment.authorName;
+    delete adaptedComment.comment;
+
+    return adaptedComment;
+  }
+
+  static adaptCommentToServer(comment) {
+    const adaptedComment = {
+      ...comment,
+      comment: comment.text,
+      emotion: comment.emoji,
+    };
+
+    delete adaptedComment.emoji;
+    delete adaptedComment.authorName;
+    delete adaptedComment.text;
+    delete adaptedComment.emotion;
+    delete adaptedComment.author;
+
+    return adaptedComment;
+  }
 }
