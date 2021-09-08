@@ -16,7 +16,7 @@ const filmsModel = new FilmsModel();
 const filterModel = new FilterModel();
 
 const filterPresenter = new FilterPresenter(siteMainElement, siteHeaderElement, filmsModel, filterModel);
-const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, filterModel, api);
+const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, filterModel);
 
 filmsPresenter.init();
 

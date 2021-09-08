@@ -1,4 +1,5 @@
 import * as dayjs from 'dayjs';
+import { api } from '../api';
 import FilmsView from '../view/films';
 import FilmsListMainView from '../view/films-list';
 import StatisticView from '../view/stats';
@@ -14,11 +15,10 @@ import { render, remove, RenderPosition } from '../utils/render';
 import { FILM_COUNT_PER_STEP, SortType, UpdateType, FilterType, StatsFilterType } from '../utils/const';
 
 export default class Films {
-  constructor(filmsContainer, filmsModel, filterModel, api) {
+  constructor(filmsContainer, filmsModel, filterModel) {
     this._filmsContainer = filmsContainer;
     this._filmsModel = filmsModel;
     this._filterModel = filterModel;
-    this._api = api;
 
     this._renderedCardCount = FILM_COUNT_PER_STEP;
     this._currentSortType = SortType.DEFAULT;
@@ -40,7 +40,7 @@ export default class Films {
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleStatsFilter = this._handleStatsFilter.bind(this);
     this._handleLoadMoreButton = this._handleLoadMoreButton.bind(this);
-    this._handleViewAction = this._handleViewAction.bind(this);
+    this._handleUpdateFilm = this._handleUpdateFilm.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
 
   }
@@ -66,8 +66,8 @@ export default class Films {
     return filtredFilms;
   }
 
-  _handleViewAction(updateType, update) {
-    this._api.updateFilm(update).then((response) => {
+  _handleUpdateFilm(updateType, update) {
+    api.updateFilm(update).then((response) => {
       this._filmsModel.updateFilms(updateType, response);
     });
   }
@@ -178,7 +178,7 @@ export default class Films {
 
   // отрисовка одной карточки фильма
   _renderFlim(card) {
-    const cardPresenter = new FilmPresenter(this.cardMainContainer, this._handleViewAction);
+    const cardPresenter = new FilmPresenter(this.cardMainContainer, this._handleUpdateFilm);
     cardPresenter.init(card);
     this._newFilmData.set(card.id, cardPresenter);
   }
