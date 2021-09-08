@@ -12,7 +12,6 @@ import FilmPresenter from './film';
 import { filter } from '../utils/filters';
 import { render, remove, RenderPosition } from '../utils/render';
 import { FILM_COUNT_PER_STEP, SortType, UpdateType, FilterType, StatsFilterType } from '../utils/const';
-import { isWatchingDate } from '../utils/util';
 
 export default class Films {
   constructor(filmsContainer, filmsModel, filterModel, api) {
@@ -129,9 +128,8 @@ export default class Films {
     this._filterType = FilterType.HISTORY;
     const films = this._filmsModel.getFilms();
     const filtredFilms = filter[this._filterType](films);
-    const filtredStastFilms = isWatchingDate(filtredFilms, this._statsFilterType);
 
-    this._userStatisticComponent = new StatisticView(this._statsFilterType, filtredStastFilms);
+    this._userStatisticComponent = new StatisticView(this._statsFilterType, filtredFilms);
     render(this._filmsContainer, this._userStatisticComponent, RenderPosition.BEFOREEND);
     this._userStatisticComponent.setFilterTypeChangeHandler(this._handleStatsFilter);
   }

@@ -58,6 +58,7 @@ export default class Film {
       remove(this._cardPopupComponent);
     }
 
+    document.removeEventListener('keydown', this._handleCloseEscClick);
     this._cardPopupComponent = new PopupCardView(this._card, comments);
     this._cardPopupComponent.setCloseClickHandler(this._handleClosePopupClick);
     this._cardPopupComponent.setHistoryClickHandler(this._handleEditPopup);

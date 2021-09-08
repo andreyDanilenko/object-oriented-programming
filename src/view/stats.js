@@ -2,11 +2,12 @@ import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import SmartView from './smart.js';
 import { StatsFilterType, BAR_HEIGHT } from '../utils/const';
-import { getSumRuntime, getDataGenres, getUserRank } from '../utils/util';
+import { getSumRuntime, getDataGenres, getUserRank, isWatchingDate } from '../utils/util';
 
-const renderChart = (statisticCtx, data) => {
-  const counts = getDataGenres(data, true);
-  const genres = getDataGenres(data);
+const renderChart = (statisticCtx, data, currentFilterType = 'all-time') => {
+  const filterData = isWatchingDate(data, currentFilterType);
+  const counts = getDataGenres(filterData, true);
+  const genres = getDataGenres(filterData);
 
   new Chart(statisticCtx, {
     plugins: [ChartDataLabels],
@@ -67,9 +68,10 @@ const renderChart = (statisticCtx, data) => {
 };
 
 export const createStatisticTemplate = (currentFilterType = 'all-time', data) => {
-  const sumRuntime = getSumRuntime(data);
+  const filterData = isWatchingDate(data, currentFilterType);
+  const sumRuntime = getSumRuntime(filterData);
   const userRank = getUserRank(data.length);
-  const genres = getDataGenres(data);
+  const genres = getDataGenres(filterData);
   const hoursRuntime = Math.floor(sumRuntime / 60);
   const minutesRuntime = sumRuntime % 60;
 
@@ -112,7 +114,7 @@ export const createStatisticTemplate = (currentFilterType = 'all-time', data) =>
   <ul class="statistic__text-list">
     <li class="statistic__text-item">
       <h4 class="statistic__item-title">You watched</h4>
-      <p class="statistic__item-text">${data.length} <span class="statistic__item-description">movies</span></p>
+      <p class="statistic__item-text">${filterData.length} <span class="statistic__item-description">movies</span></p>
     </li>
     <li class="statistic__text-item">
       <h4 class="statistic__item-title">Total duration</h4>
@@ -140,6 +142,7 @@ export default class Statistic extends SmartView {
     this._data = data;
     this._currentFilterType = currentFilterType;
 
+
     this._filterTypeChangeHandler = this._filterTypeChangeHandler.bind(this);
 
     this._getChart();
@@ -164,6 +167,6 @@ export default class Statistic extends SmartView {
 
   _getChart() {
     this._statisticChart = this.getElement().querySelector('.statistic__chart');
-    renderChart(this._statisticChart, this._data);
+    renderChart(this._statisticChart, this._data, this._currentFilterType);
   }
 }
