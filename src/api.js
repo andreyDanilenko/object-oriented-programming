@@ -2,7 +2,7 @@ import FilmsModel from './model/films';
 import { generateToken } from './utils/utils';
 const AUTHORIZATION = `Basic ${generateToken()}`;
 const END_POINT = 'https://15.ecmascript.pages.academy/cinemaddict';
-console.log(AUTHORIZATION);
+
 const Method = {
   GET: 'GET',
   PUT: 'PUT',
