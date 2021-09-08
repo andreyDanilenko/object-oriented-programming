@@ -87,10 +87,10 @@ export default class Films extends AbstractObserver {
         description: film.filmInfo.description,
       },
       ['user_details']: {
-        favorite: film['userDetails']['favorite'],
-        watchlist: film['userDetails']['watchlist'],
-        ['already_watched']: film['userDetails']['history'],
-        ['watching_date']: film['userDetails']['watchingDate'],
+        favorite: film.userDetails.favorite,
+        watchlist: film.userDetails.watchlist,
+        ['already_watched']: film.userDetails.history,
+        ['watching_date']: film.userDetails.watchingDate,
       },
     };
 
