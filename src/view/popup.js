@@ -296,19 +296,9 @@ export default class PopupCard extends SmartView {
       return;
     }
 
-    const index = this._comments.findIndex((comment) => comment.id === evt.target.value);
-    this._comments = [
-      ...this._comments.slice(0, index),
-      ...this._comments.slice(index + 1),
-    ];
-
-    this.updateData(
-      { ...this._data, comments: this._comments, scrollPosition: this.getElement().scrollTop },
-    );
-
     evt.preventDefault();
     this.getElement().scrollTop = this._data.scrollPosition;
-    this._callback.deleteClick(PopupCard.parseDataToParam(this._data));
+    this._callback.deleteClick(evt.target.value);
   }
 
   _getAddClickHandler(evt) {
@@ -324,7 +314,7 @@ export default class PopupCard extends SmartView {
       );
 
       this.getElement().scrollTop = this._data.scrollPosition;
-      this._callback.addClick(PopupCard.parseDataToParam(this._data));
+      this._callback.addClick(this._data, newComment);
     }
   }
 

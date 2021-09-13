@@ -81,14 +81,11 @@ export default class Films {
         break;
       case UserAction.ADD_COMMENT:
         console.log(update.comments);
-        api.addComment(update.id, update.comments).then((response) => {
-          console.log(response);
-
-        });
+        // this._filmsModel.updateFilms(updateType, update);
 
         break;
       case UserAction.DELETE_COMMENT:
-
+        console.log(update);
         break;
     }
   }
@@ -199,7 +196,7 @@ export default class Films {
 
   // отрисовка одной карточки фильма
   _renderFlim(card) {
-    const cardPresenter = new FilmPresenter(this.cardMainContainer, this._handleViewAction);
+    const cardPresenter = new FilmPresenter(this.cardMainContainer, this._handleViewAction, this._filmsModel);
     cardPresenter.init(card);
     this._newFilmData.set(card.id, cardPresenter);
   }

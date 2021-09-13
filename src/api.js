@@ -46,12 +46,12 @@ export default class Api {
       body: JSON.stringify(FilmsModel.adaptCommentToServer(comments)),
       headers: new Headers({ 'Content-Type': 'application/json' }),
     })
-      .then(Api.toJSON)
+      .then(Api.toJSON);
   }
 
-  deleteComment(film) {
+  deleteComment(id) {
     return this._load({
-      url: `comments/${film.id}`,
+      url: `comments/${id}`,
       method: Method.DELETE,
     });
   }

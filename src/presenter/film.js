@@ -1,15 +1,18 @@
 import FilmCardView from '../view/film-card';
 import PopupCardView from '../view/popup';
+import CommentsModel from '../model/comments';
 import { render, RenderPosition, replace, remove } from '../utils/render';
 import { UpdateType, UserAction } from '../utils/const';
 import { api } from '../api';
 
 export default class Film {
-  constructor(filmContainer, changeData) {
+  constructor(filmContainer, changeData, filmsModel) {
     this._filmContainer = filmContainer;
     this._changeData = changeData;
+    this._filmsModel = filmsModel;
 
     this._cardComponent = null;
+    this._commentsModel = new CommentsModel();
 
     this._handleOpenPopupClick = this._handleOpenPopupClick.bind(this);
     this._handleClosePopupClick = this._handleClosePopupClick.bind(this);
@@ -20,7 +23,6 @@ export default class Film {
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
     this._handleAddClick = this._handleAddClick.bind(this);
     this._handleEditPopup = this._handleEditPopup.bind(this);
-    this._handleCommentsLoaded = this._handleCommentsLoaded.bind(this);
   }
 
   init(card) {
@@ -72,15 +74,6 @@ export default class Film {
     render(document.body, this._cardPopupComponent, RenderPosition.BEFOREEND);
   }
 
-  _handleCommentsLoaded(comments) {
-    this._changeData(
-      UpdateType.MINOR,
-      {
-        ...this._card,
-        comments,
-      });
-  }
-
   _handleHistoryClick() {
     this._changeData(
       UserAction.UPDATE_FILM,
@@ -127,21 +120,24 @@ export default class Film {
       card);
   }
 
-  _handleDeleteClick(card) {
-    this._changeData(
-      UserAction.DELETE_COMMENT,
-      UpdateType.PATCH,
-      card,
-    );
+  _handleDeleteClick(id) {
+    api.deleteComment(id).then((response) => {
+      this._changeData(
+        UserAction.ADD_COMMENT,
+        UpdateType.MINOR,
+        { ...this.card, comments: response.comments },
+      );
+    });
   }
 
-  _handleAddClick(card) {
-    console.log(card.id, card.comments);
-    this._changeData(
-      UserAction.ADD_COMMENT,
-      UpdateType.PATCH,
-      card,
-    );
+  _handleAddClick(card, newComment) {
+    api.addComment(card.id, newComment).then((response) => {
+      this._changeData(
+        UserAction.ADD_COMMENT,
+        UpdateType.MINOR,
+        this.card ,
+      );
+    });
   }
 
   _handleOpenPopupClick() {
