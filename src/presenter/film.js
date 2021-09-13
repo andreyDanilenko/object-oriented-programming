@@ -1,7 +1,7 @@
 import FilmCardView from '../view/film-card';
 import PopupCardView from '../view/popup';
 import { render, RenderPosition, replace, remove } from '../utils/render';
-import { UpdateType } from '../utils/const';
+import { UpdateType, UserAction } from '../utils/const';
 import { api } from '../api';
 
 export default class Film {
@@ -83,6 +83,7 @@ export default class Film {
 
   _handleHistoryClick() {
     this._changeData(
+      UserAction.UPDATE_FILM,
       UpdateType.MINOR,
       {
         ...this._card,
@@ -95,6 +96,7 @@ export default class Film {
 
   _handleFavoriteClick() {
     this._changeData(
+      UserAction.UPDATE_FILM,
       UpdateType.MINOR,
       {
         ...this._card,
@@ -107,6 +109,7 @@ export default class Film {
 
   _handleWatchlistClick() {
     this._changeData(
+      UserAction.UPDATE_FILM,
       UpdateType.MINOR,
       {
         ...this._card,
@@ -119,19 +122,23 @@ export default class Film {
 
   _handleEditPopup(card) {
     this._changeData(
+      UserAction.UPDATE_FILM,
       UpdateType.MINOR,
       card);
   }
 
   _handleDeleteClick(card) {
     this._changeData(
+      UserAction.DELETE_COMMENT,
       UpdateType.PATCH,
       card,
     );
   }
 
   _handleAddClick(card) {
+    console.log(card.id, card.comments);
     this._changeData(
+      UserAction.ADD_COMMENT,
       UpdateType.PATCH,
       card,
     );

@@ -16,6 +16,7 @@ export default class Films extends AbstractObserver {
   }
 
   updateFilms(updateType, update) {
+    console.log(update);
     const index = this._films.findIndex((film) => film.id === update.id);
 
     if (index === -1) {
@@ -66,6 +67,8 @@ export default class Films extends AbstractObserver {
   }
 
   static adaptToServer(film) {
+
+    console.log(film);
     const adaptedFilm = {
       ...film,
       comments: [],
@@ -101,6 +104,7 @@ export default class Films extends AbstractObserver {
   }
 
   static adaptCommentToClient(comment) {
+
     const adaptedComment = {
       ...comment,
       authorName: comment.author,
@@ -116,6 +120,8 @@ export default class Films extends AbstractObserver {
   }
 
   static adaptCommentToServer(comment) {
+
+    console.log(comment);
     const adaptedComment = {
       ...comment,
       comment: comment.text,

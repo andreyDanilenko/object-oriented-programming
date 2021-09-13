@@ -12,7 +12,7 @@ import SortView from '../view/films-sort';
 import FilmPresenter from './film';
 import { filter } from '../utils/filters';
 import { render, remove, RenderPosition } from '../utils/render';
-import { FILM_COUNT_PER_STEP, SortType, UpdateType, FilterType, StatsFilterType } from '../utils/const';
+import { FILM_COUNT_PER_STEP, SortType, UpdateType, FilterType, StatsFilterType, UserAction } from '../utils/const';
 
 export default class Films {
   constructor(filmsContainer, filmsModel, filterModel) {
@@ -40,7 +40,7 @@ export default class Films {
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleStatsFilter = this._handleStatsFilter.bind(this);
     this._handleLoadMoreButton = this._handleLoadMoreButton.bind(this);
-    this._handleUpdateFilm = this._handleUpdateFilm.bind(this);
+    this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
 
   }
@@ -70,6 +70,27 @@ export default class Films {
     api.updateFilm(update).then((response) => {
       this._filmsModel.updateFilms(updateType, response);
     });
+  }
+
+  _handleViewAction(actionType, updateType, update) {
+    switch (actionType) {
+      case UserAction.UPDATE_FILM:
+        api.updateFilm(update).then((response) => {
+          this._filmsModel.updateFilms(updateType, response);
+        });
+        break;
+      case UserAction.ADD_COMMENT:
+        console.log(update.comments);
+        api.addComment(update.id, update.comments).then((response) => {
+          console.log(response);
+
+        });
+
+        break;
+      case UserAction.DELETE_COMMENT:
+
+        break;
+    }
   }
 
   _handleModelEvent(updateType, data) {
@@ -178,7 +199,7 @@ export default class Films {
 
   // отрисовка одной карточки фильма
   _renderFlim(card) {
-    const cardPresenter = new FilmPresenter(this.cardMainContainer, this._handleUpdateFilm);
+    const cardPresenter = new FilmPresenter(this.cardMainContainer, this._handleViewAction);
     cardPresenter.init(card);
     this._newFilmData.set(card.id, cardPresenter);
   }
