@@ -1,5 +1,5 @@
 import FilmsModel from './model/films';
-const AUTHORIZATION = 'Basic fjdksfj934893fd';
+const AUTHORIZATION = 'Basic df5g4d56f4g56df4';
 const END_POINT = 'https://15.ecmascript.pages.academy/cinemaddict';
 
 const Method = {
