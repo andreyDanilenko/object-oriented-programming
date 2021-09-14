@@ -6,6 +6,7 @@ import { UpdateType, UserAction } from '../utils/const';
 export const State = {
   SAVING: 'SAVING',
   DELETING: 'DELETING',
+  ABORTING: 'ABORTING',
 };
 
 export default class Film {
@@ -56,21 +57,30 @@ export default class Film {
   }
 
   setViewState(state) {
-    if (this._cardPopupComponent) {
-      switch (state) {
-        case State.SAVING:
-          this._cardPopupComponent.updateData({
-            isDisabled: true,
-            isEmojiName: null,
-          });
-          break;
-        case State.DELETING:
-          this._cardPopupComponent.updateData({
-            isDisabled: true,
-            isDeleting: true,
-          });
-          break;
-      }
+    const resetFormState = () => {
+      this._cardPopupComponent.updateData({
+        isDisabled: false,
+        isDeleting: false,
+      });
+    };
+
+    switch (state) {
+      case State.SAVING:
+        this._cardPopupComponent.updateData({
+          isDisabled: true,
+          isEmojiName: null,
+        });
+        break;
+      case State.DELETING:
+        this._cardPopupComponent.updateData({
+          isDisabled: true,
+          isDeleting: true,
+        });
+        break;
+      case State.ABORTING:
+        this._cardComponent.shake(resetFormState);
+        this._cardPopupComponent.shake(resetFormState);
+        break;
     }
   }
 

@@ -10,35 +10,36 @@
   --horizontal-gap: 20px;
   --vertical-gap: 28px;
 
-  --font:'Open Sans', 'Arial', sans-serif;
+  --font: "Open Sans", "Arial", sans-serif;
   --font-size: 16px;
   --font-size-smaller: 14px;
   --font-size-bigger: 20px;
 }
 
 @font-face {
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: 400;
-  src: local('Open Sans Regular'), local('OpenSans-Regular'), url('../fonts/OpenSans-Regular.woff2') format('woff2');
+  src: local("Open Sans Regular"), local("OpenSans-Regular"), url("../fonts/OpenSans-Regular.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: 700;
-  src: local('Open Sans Bold'), local('OpenSans-Bold'), url('../fonts/OpenSans-Bold.woff2') format('woff2');
+  src: local("Open Sans Bold"), local("OpenSans-Bold"), url("../fonts/OpenSans-Bold.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: 'Open Sans';
+  font-family: "Open Sans";
   font-style: normal;
   font-weight: 800;
-  src: local('Open Sans ExtraBold'), local('OpenSans-ExtraBold'), url('../fonts/OpenSans-ExtraBold.woff2') format('woff2');
+  src: local("Open Sans ExtraBold"), local("OpenSans-ExtraBold"),
+    url("../fonts/OpenSans-ExtraBold.woff2") format("woff2");
 }
 
 html {
-  background: #121213 url('../images/background.png') no-repeat 60% 0;
+  background: #121213 url("../images/background.png") no-repeat 60% 0;
   display: flex;
   color: var(--text-color);
   font-size: var(--font-size);
@@ -47,7 +48,7 @@ html {
   min-width: 1240px;
   position: relative;
   min-height: 100%;
-  -webkit-font-smoothing: antialiased
+  -webkit-font-smoothing: antialiased;
 }
 
 .visually-hidden {
@@ -174,7 +175,7 @@ button {
   font-size: 0;
 
   background-color: transparent;
-  border:none;
+  border: none;
 
   cursor: pointer;
   outline: none;
@@ -255,7 +256,7 @@ button {
 }
 
 .main-navigation__item-count {
-  background:rgba(0,46,255, 0.4);
+  background: rgba(0, 46, 255, 0.4);
   border-radius: 18px;
   font-weight: 500;
   padding: 0 10px;
@@ -274,11 +275,11 @@ button {
 }
 
 .result {
-    border-bottom: solid 2px var(--outline-color);
-    display: flex;
-    flex-basis: 100%;
-    font-size: var(--font-size-bigger);
-    font-weight: 800;
+  border-bottom: solid 2px var(--outline-color);
+  display: flex;
+  flex-basis: 100%;
+  font-size: var(--font-size-bigger);
+  font-weight: 800;
 }
 
 .result__text {
@@ -338,7 +339,6 @@ button {
 .films-list .film-card {
   margin-top: 50px;
 }
-
 
 .film-card {
   flex-basis: 230px;
@@ -456,32 +456,31 @@ button {
 }
 
 .film-card__controls-item--add-to-watchlist {
-  background-image: url('../images/icons/icon-watchlist.svg');
+  background-image: url("../images/icons/icon-watchlist.svg");
   background-size: 17px 15px;
 }
 
 .film-card__controls-item--mark-as-watched {
-  background-image: url('../images/icons/icon-watched.svg');
+  background-image: url("../images/icons/icon-watched.svg");
   background-size: 14px 10px;
 }
 
 .film-card__controls-item--favorite {
-  background-image: url('../images/icons/icon-favorite.svg');
+  background-image: url("../images/icons/icon-favorite.svg");
   background-size: 18px 18px;
 }
 
 .film-card__controls-item--active.film-card__controls-item--add-to-watchlist {
-  background-image: url('../images/icons/icon-watchlist-active.svg')
+  background-image: url("../images/icons/icon-watchlist-active.svg");
 }
 
 .film-card__controls-item--active.film-card__controls-item--mark-as-watched {
-  background-image: url('../images/icons/icon-watched-active.svg')
+  background-image: url("../images/icons/icon-watched-active.svg");
 }
 
 .film-card__controls-item--active.film-card__controls-item--favorite {
-  background-image: url('../images/icons/icon-favorite-active.svg')
+  background-image: url("../images/icons/icon-favorite-active.svg");
 }
-
 
 .film-card .film-card__poster {
   bottom: calc(100% - 340px);
@@ -490,8 +489,6 @@ button {
 .film-card .film-card__controls {
   height: 50px;
 }
-
-
 
 .films-list__show-more {
   background: none;
@@ -526,7 +523,7 @@ button {
 .films-list--extra:last-of-type::before {
   border-left: solid 1px var(--outline-color);
   bottom: 20px;
-  content: '';
+  content: "";
   height: calc(100% - 20px * 2);
   left: calc(-1 * var(--horizontal-gap) * 1.5);
   position: absolute;
@@ -540,7 +537,7 @@ button {
 
 .footer {
   align-items: center;
-  background: url('../images/background.png') no-repeat 50% 0;
+  background: url("../images/background.png") no-repeat 50% 0;
   display: flex;
   height: 100px;
 }
@@ -672,7 +669,7 @@ button {
 .film-details__user-rating {
   margin: 0;
   font-size: 21px;
-  color: #687fad
+  color: #687fad;
 }
 .film-details__row {
   margin: 7px 0;
@@ -727,13 +724,13 @@ button {
   cursor: pointer;
 }
 .film-details__control-button:not(:first-of-type) {
-  border-left: 1px solid #31353f
+  border-left: 1px solid #31353f;
 }
 .film-details__control-button:hover {
   opacity: 0.7;
 }
 .film-details__control-button::before {
-  content: '';
+  content: "";
   width: 17px;
   height: 17px;
   position: absolute;
@@ -845,7 +842,7 @@ button {
   position: relative;
 }
 .film-details__comment-author::after {
-  content: '';
+  content: "";
   position: absolute;
   right: 5px;
   top: 8px;
@@ -859,7 +856,7 @@ button {
   position: relative;
 }
 .film-details__comment-day::after {
-  content: '';
+  content: "";
   position: absolute;
   right: 5px;
   top: 8px;
@@ -966,7 +963,7 @@ button {
   width: 546px;
 }
 .film-details__user-rating-score::before {
-  content: '';
+  content: "";
 
   position: absolute;
   top: 0;
@@ -975,13 +972,13 @@ button {
   width: 30px;
   height: 30px;
 
-  background-image: url('../images/emoji/puke.png');
+  background-image: url("../images/emoji/puke.png");
   background-size: 90%;
   background-position: center;
   background-repeat: no-repeat;
 }
 .film-details__user-rating-score::after {
-  content: '';
+  content: "";
 
   position: absolute;
   top: 0;
@@ -990,7 +987,7 @@ button {
   width: 30px;
   height: 30px;
 
-  background-image: url('../images/emoji/trophy.png');
+  background-image: url("../images/emoji/trophy.png");
   background-size: 90%;
   background-position: center;
   background-repeat: no-repeat;
@@ -1065,7 +1062,7 @@ button {
   position: relative;
 }
 .statistic__filters-input:checked + .statistic__filters-label::before {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -2px;
   width: 100%;
@@ -1105,3 +1102,30 @@ button {
   padding-top: 50px;
   padding-bottom: 50px;
 }
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+.shake {
+  animation: shake 0.6s;
+}
+

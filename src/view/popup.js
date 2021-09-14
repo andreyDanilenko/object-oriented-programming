@@ -5,7 +5,6 @@ import SmartView from './smart';
 
 const createCommentPopupTemplate = (dataComment, isDeleting, isDisabled) => {
   const { text, authorName, emoji, date, id } = dataComment;
-  // const dateFormat = parseDate(date);
   const dateFormat = dayjs(date).format('DD MMMM YYYY hh:mm');
 
   return `<li class="film-details__comment" value=${id}">

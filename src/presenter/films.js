@@ -83,12 +83,16 @@ export default class Films {
         this._newFilmData.get(update.card.id).setViewState(FilmPresenterViewState.SAVING);
         api.addComment(update.card.id, update.newComment).then((response) => {
           this._filmsModel.addComment(updateType, response);
+        }).catch(() => {
+          this._newFilmData.get(update.card.id).setViewState(FilmPresenterViewState.ABORTING);
         });
         break;
       case UserAction.DELETE_COMMENT:
         this._newFilmData.get(update.filmId).setViewState(FilmPresenterViewState.DELETING);
         api.deleteComment(update.commentId).then(() => {
           this._filmsModel.deleteComment(updateType, update);
+        }).catch(() => {
+          this._newFilmData.get(update.filmId).setViewState(FilmPresenterViewState.ABORTING);
         });
         break;
     }
