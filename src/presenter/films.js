@@ -9,7 +9,7 @@ import LoadingView from '../view/loading';
 import LoadMoreButtonView from '../view/button-more';
 import FilmNoCardView from '../view/film-no-card';
 import SortView from '../view/films-sort';
-import FilmPresenter from './film';
+import FilmPresenter, { State as FilmPresenterViewState } from './film';
 import { filter } from '../utils/filters';
 import { render, remove, RenderPosition } from '../utils/render';
 import { FILM_COUNT_PER_STEP, SortType, UpdateType, FilterType, StatsFilterType, UserAction } from '../utils/const';
@@ -80,11 +80,13 @@ export default class Films {
         });
         break;
       case UserAction.ADD_COMMENT:
+        this._newFilmData.get(update.card.id).setViewState(FilmPresenterViewState.SAVING);
         api.addComment(update.card.id, update.newComment).then((response) => {
           this._filmsModel.addComment(updateType, response);
         });
         break;
       case UserAction.DELETE_COMMENT:
+        this._newFilmData.get(update.filmId).setViewState(FilmPresenterViewState.DELETING);
         api.deleteComment(update.commentId).then(() => {
           this._filmsModel.deleteComment(updateType, update);
         });

@@ -3,7 +3,7 @@ import he from 'he';
 import { getPopupClassName } from '../utils/utils';
 import SmartView from './smart';
 
-const createCommentPopupTemplate = (dataComment) => {
+const createCommentPopupTemplate = (dataComment, isDeleting, isDisabled) => {
   const { text, authorName, emoji, date, id } = dataComment;
   // const dateFormat = parseDate(date);
   const dateFormat = dayjs(date).format('DD MMMM YYYY hh:mm');
@@ -17,7 +17,7 @@ const createCommentPopupTemplate = (dataComment) => {
         <p class="film-details__comment-info">
           <span class="film-details__comment-author">${authorName}</span>
           <span class="film-details__comment-day">${dateFormat}</span>
-          <button class="film-details__comment-delete" value=${id}>Delete</button>
+          <button class="film-details__comment-delete" value=${id} ${isDisabled ? 'disabled' : ''}>${isDeleting ? 'deleting...' : 'delete'}</button>
         </p>
       </div>
 </li>`;
@@ -31,17 +31,20 @@ const createPopupTemplate = (data, dataComment) => {
   const runtimeHourse = Math.floor(runtime / 60);
   const runtimeMinutes = runtime % 60;
   const { watchlist, favorite, history } = data.userDetails;
-  const { isEmojiName } = data;
+  const { isEmojiName, isDeleting, isDisabled } = data;
   const comments = dataComment;
   const countComments = comments.length;
   const genreTitle = genres.length > 1 ? 'Genres' : 'Genre';
   const commentsTitle = countComments === 1 ? 'Comment' : 'Comments';
+  const emoji = isEmojiName;
+  isEmojiName === null ? isDisabled === true : emoji;
+
   const getGenres = (genresFilm) => genresFilm.map(
     (genre) =>
       `<span class="film-details__genre">${genre}</span>`,
   ).join('');
   const filterItemsTemplate = comments
-    .map((comment) => createCommentPopupTemplate(comment))
+    .map((comment) => createCommentPopupTemplate(comment, isDeleting, isDisabled))
     .join('');
 
   return `<section class="film-details">
@@ -124,27 +127,32 @@ const createPopupTemplate = (data, dataComment) => {
                 </div>
 
                 <label class="film-details__comment-label">
-                  <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
+                  <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"
+                  ${isDisabled ? 'disabled' : ''}></textarea>
                 </label>
 
                 <div class="film-details__emoji-list">
                   <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-smile" value="smile"
-                  ${isEmojiName === 'smile' ? 'checked' : ''} >
+                  ${isEmojiName === 'smile' ? 'checked' : ''}
+                  ${isDisabled ? 'disabled' : ''}>
                   <label class="film-details__emoji-label" for="emoji-smile">
                     <img src="./images/emoji/smile.png" width="30" height="30" alt="emoji">
                   </label>
                   <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-sleeping" value="sleeping"
-                  ${isEmojiName === 'sleeping' ? 'checked' : ''}>
+                  ${isEmojiName === 'sleeping' ? 'checked' : ''}
+                  ${isDisabled ? 'disabled' : ''}>
                   <label class="film-details__emoji-label" for="emoji-sleeping">
                     <img src="./images/emoji/sleeping.png" width="30" height="30" alt="emoji">
                   </label>
                   <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-puke" value="puke"
-                  ${isEmojiName === 'puke' ? 'checked' : ''}>
+                  ${isEmojiName === 'puke' ? 'checked' : ''}
+                  ${isDisabled ? 'disabled' : ''}>
                   <label class="film-details__emoji-label" for="emoji-puke">
                     <img src="./images/emoji/puke.png" width="30" height="30" alt="emoji">
                   </label>
                   <input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-angry" value="angry"
-                  ${isEmojiName === 'angry' ? 'checked' : ''}>
+                  ${isEmojiName === 'angry' ? 'checked' : ''}
+                  ${isDisabled ? 'disabled' : ''}>
                   <label class="film-details__emoji-label" for="emoji-angry">
                     <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
                   </label>
@@ -229,7 +237,11 @@ export default class PopupCard extends SmartView {
   // Перносим данные в состояние
   static parseParamToData(param) {
     return {
-      ...param, isEmojiName: null, textComment: '',
+      ...param,
+      isEmojiName: null,
+      textComment: '',
+      isDisabled: false,
+      isDeleting: false,
     };
   }
 
@@ -239,6 +251,8 @@ export default class PopupCard extends SmartView {
     delete data.textComment;
     delete data.isEmojiName;
     delete data.scrollPosition;
+    delete data.isDisabled;
+    delete data.isDeleting;
 
     return data;
   }
@@ -260,17 +274,7 @@ export default class PopupCard extends SmartView {
 
   _historyClickHandler(evt) {
     evt.preventDefault();
-    this.updateData({
-      ...this._data,
-      userDetails: {
-        ...this._data.userDetails,
-        history: !this._data.userDetails.history,
-      },
-      scrollPosition: this.getElement().scrollTop,
-    });
-
-    this.getElement().scrollTop = this._data.scrollPosition;
-    this._callback.historyClick(PopupCard.parseDataToParam(this._data));
+    this._callback.historyClick();
   }
 
   _favoriteClickHandler(evt) {
@@ -300,7 +304,7 @@ export default class PopupCard extends SmartView {
     });
 
     this.getElement().scrollTop = this._data.scrollPosition;
-    this._callback.watchlistClick(PopupCard.parseDataToParam(this._data));
+    this._callback.watchlistClick(this._data);
   }
 
   _deleteClickHandler(evt) {

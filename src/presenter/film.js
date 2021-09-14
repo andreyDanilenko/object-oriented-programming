@@ -3,6 +3,11 @@ import PopupCardView from '../view/popup';
 import { render, RenderPosition, replace, remove } from '../utils/render';
 import { UpdateType, UserAction } from '../utils/const';
 
+export const State = {
+  SAVING: 'SAVING',
+  DELETING: 'DELETING',
+};
+
 export default class Film {
   constructor(filmContainer, changeData) {
     this._filmContainer = filmContainer;
@@ -50,6 +55,25 @@ export default class Film {
     remove(prevCardComponent);
   }
 
+  setViewState(state) {
+    if (this._cardPopupComponent) {
+      switch (state) {
+        case State.SAVING:
+          this._cardPopupComponent.updateData({
+            isDisabled: true,
+            isEmojiName: null,
+          });
+          break;
+        case State.DELETING:
+          this._cardPopupComponent.updateData({
+            isDisabled: true,
+            isDeleting: true,
+          });
+          break;
+      }
+    }
+  }
+
   destroy() {
     remove(this._cardComponent);
   }
@@ -62,7 +86,7 @@ export default class Film {
     document.removeEventListener('keydown', this._handleCloseEscClick);
     this._cardPopupComponent = new PopupCardView(this._card, comments);
     this._cardPopupComponent.setCloseClickHandler(this._handleClosePopupClick);
-    this._cardPopupComponent.setHistoryClickHandler(this._handleEditPopup);
+    this._cardPopupComponent.setHistoryClickHandler(this._handleHistoryClick);
     this._cardPopupComponent.setFavoriteClickHandler(this._handleEditPopup);
     this._cardPopupComponent.setWatchlistClickHandler(this._handleEditPopup);
     this._cardPopupComponent.setDeleteClickHandler(this._handleDeleteClick);
