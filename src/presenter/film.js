@@ -122,26 +122,18 @@ export default class Film {
   }
 
   _handleDeleteClick(commentId, filmId) {
-    api.deleteComment(commentId).then(() => {
-      this._changeData(
-        UserAction.DELETE_COMMENT,
-        UpdateType.PATCH_COMMENTS,
-        {
-          commentId,
-          filmId,
-        },
-      );
-    });
+    this._changeData(
+      UserAction.DELETE_COMMENT,
+      UpdateType.PATCH_COMMENTS,
+      { commentId, filmId },
+    );
   }
 
   _handleAddClick(card, newComment) {
-    api.addComment(card.id, newComment).then((response) => {
-      this._changeData(
-        UserAction.ADD_COMMENT,
-        UpdateType.PATCH_COMMENTS,
-        response ,
-      );
-    }).catch(
+    this._changeData(
+      UserAction.ADD_COMMENT,
+      UpdateType.PATCH_COMMENTS,
+      { card, newComment } ,
     );
   }
 
@@ -152,7 +144,7 @@ export default class Film {
     this._renderFilmPopup();
     api.getComments(this._card.id).then((comments) => {
       this._changeData(
-        UserAction.ADD_COMMENT,
+        UserAction.LOAD_COMMENTS,
         UpdateType.PATCH_COMMENTS,
         {
           film: this._card,

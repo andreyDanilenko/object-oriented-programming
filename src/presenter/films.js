@@ -74,16 +74,23 @@ export default class Films {
 
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
+      case UserAction.LOAD_COMMENTS:
+        this._filmsModel.addComment(updateType, update);
+        break;
       case UserAction.UPDATE_FILM:
         api.updateFilm(update).then((response) => {
           this._filmsModel.updateFilms(updateType, response);
         });
         break;
       case UserAction.ADD_COMMENT:
-        this._filmsModel.addComment(updateType, update);
+        api.addComment(update.card.id, update.newComment).then((response) => {
+          this._filmsModel.addComment(updateType, response);
+        });
         break;
       case UserAction.DELETE_COMMENT:
-        this._filmsModel.deleteComment(updateType, update);
+        api.deleteComment(update.commentId).then(() => {
+          this._filmsModel.deleteComment(updateType, update);
+        });
         break;
     }
   }
