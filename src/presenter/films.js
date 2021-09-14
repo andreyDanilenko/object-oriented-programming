@@ -66,12 +66,6 @@ export default class Films {
     return filtredFilms;
   }
 
-  _handleUpdateFilm(updateType, update) {
-    api.updateFilm(update).then((response) => {
-      this._filmsModel.updateFilms(updateType, response);
-    });
-  }
-
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.LOAD_COMMENTS:
