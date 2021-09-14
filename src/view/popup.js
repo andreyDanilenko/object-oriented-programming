@@ -275,6 +275,16 @@ export default class PopupCard extends SmartView {
 
   _favoriteClickHandler(evt) {
     evt.preventDefault();
+    this.updateData({
+      ...this._data,
+      userDetails: {
+        ...this._data.userDetails,
+        favorite: !this._data.userDetails.favorite,
+      },
+      scrollPosition: this.getElement().scrollTop,
+    });
+
+    this.getElement().scrollTop = this._data.scrollPosition;
     this._callback.favoriteClick(this._data);
   }
 
