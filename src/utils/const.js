@@ -37,6 +37,7 @@ export const FilterType = {
 };
 
 export const UpdateType = {
+  PATCH: 'PATCH',
   PATCH_COMMENTS: 'PATCH_COMMENTS',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',

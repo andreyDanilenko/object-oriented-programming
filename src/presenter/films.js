@@ -100,6 +100,9 @@ export default class Films {
 
   _handleModelEvent(updateType, data) {
     switch (updateType) {
+      case UpdateType.PATCH:
+        this._newFilmData.get(data.id).init(data);
+        break;
       case UpdateType.PATCH_COMMENTS:
         this._newFilmData.get(data.film.id).init(data.film, data.comments);
         break;
