@@ -25,12 +25,18 @@ export default class Film {
     this._handleEditPopup = this._handleEditPopup.bind(this);
   }
 
-  init(card) {
+  init(card, comments = []) {
     this._card = card;
+    this._comments = comments;
 
     const prevCardComponent = this._cardComponent;
 
     this._cardComponent = new FilmCardView(card);
+
+    if (this._cardPopupComponent) {
+      this._renderFilmPopup(this._comments);
+    }
+
     this._cardComponent.setOpenClickHandler(this._handleOpenPopupClick);
     this._cardComponent.setHistoryClickHandler(this._handleHistoryClick);
     this._cardComponent.setFavoriteClickHandler(this._handleFavoriteClick);
@@ -50,9 +56,6 @@ export default class Film {
 
   destroy() {
     remove(this._cardComponent);
-    if (document.body.classList.contains('hide-overflow')) {
-      document.body.classList.remove('hide-overflow');
-    }
   }
 
   _renderFilmPopup(comments = []) {
@@ -87,15 +90,15 @@ export default class Film {
       });
   }
 
-  _handleFavoriteClick() {
+  _handleFavoriteClick(card) {
     this._changeData(
       UserAction.UPDATE_FILM,
       UpdateType.MINOR,
       {
-        ...this._card,
+        ...card,
         userDetails: {
-          ...this._card.userDetails,
-          favorite: !this._card.userDetails.favorite,
+          ...card.userDetails,
+          favorite: !card.userDetails.favorite,
         },
       });
   }
@@ -120,12 +123,15 @@ export default class Film {
       card);
   }
 
-  _handleDeleteClick(id) {
-    api.deleteComment(id).then((response) => {
+  _handleDeleteClick(commentId, filmId) {
+    api.deleteComment(commentId).then(() => {
       this._changeData(
-        UserAction.ADD_COMMENT,
-        UpdateType.MINOR,
-        { ...this.card, comments: response.comments },
+        UserAction.DELETE_COMMENT,
+        UpdateType.PATCH_COMMENTS,
+        {
+          commentId,
+          filmId,
+        },
       );
     });
   }
@@ -134,10 +140,11 @@ export default class Film {
     api.addComment(card.id, newComment).then((response) => {
       this._changeData(
         UserAction.ADD_COMMENT,
-        UpdateType.MINOR,
-        this.card ,
+        UpdateType.PATCH_COMMENTS,
+        response ,
       );
-    });
+    }).catch(
+    );
   }
 
   _handleOpenPopupClick() {
@@ -145,7 +152,16 @@ export default class Film {
       document.querySelector('.film-details').remove();
     }
     this._renderFilmPopup();
-    api.getComments(this._card.id).then((comments) => this._renderFilmPopup(comments));
+    api.getComments(this._card.id).then((comments) => {
+      this._changeData(
+        UserAction.ADD_COMMENT,
+        UpdateType.PATCH_COMMENTS,
+        {
+          film: this._card,
+          comments,
+        } ,
+      );
+    });
   }
 
   _handleClosePopupClick() {

@@ -43,11 +43,11 @@ export default class Films {
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
 
+    this._filmsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
   }
 
   init() {
-    this._filmsModel.addObserver(this._handleModelEvent);
-    this._filterModel.addObserver(this._handleModelEvent);
     this._renderFilmsBoard();
   }
 
@@ -80,12 +80,10 @@ export default class Films {
         });
         break;
       case UserAction.ADD_COMMENT:
-        console.log(update.comments);
-        // this._filmsModel.updateFilms(updateType, update);
-
+        this._filmsModel.addComment(updateType, update);
         break;
       case UserAction.DELETE_COMMENT:
-        console.log(update);
+        this._filmsModel.deleteComment(updateType, update);
         break;
     }
   }
@@ -94,6 +92,9 @@ export default class Films {
     switch (updateType) {
       case UpdateType.PATCH:
         this._newFilmData.get(data.id).init(data);
+        break;
+      case UpdateType.PATCH_COMMENTS:
+        this._newFilmData.get(data.film.id).init(data.film, data.comments);
         break;
       case UpdateType.MINOR:
         this._clearFilmsList();

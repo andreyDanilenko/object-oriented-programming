@@ -53,7 +53,7 @@ export default class FilmCard extends AbstractView {
     if (document.querySelector('.film-details')) {
       document.querySelector('.film-details').remove();
     }
-    this._callback.favoriteClick();
+    this._callback.favoriteClick(this._params);
   }
 
   _historyClickHandler(evt) {

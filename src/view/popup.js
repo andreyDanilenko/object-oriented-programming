@@ -1,11 +1,13 @@
 import * as dayjs from 'dayjs';
 import he from 'he';
-import { getPopupClassName, parseDate } from '../utils/utils';
+import { getPopupClassName } from '../utils/utils';
 import SmartView from './smart';
 
 const createCommentPopupTemplate = (dataComment) => {
   const { text, authorName, emoji, date, id } = dataComment;
-  const dateFormat = parseDate(date);
+  // const dateFormat = parseDate(date);
+  const dateFormat = dayjs(date).format('DD MMMM YYYY hh:mm');
+
   return `<li class="film-details__comment" value=${id}">
     <span class="film-details__comment-emoji">
       <img src="./images/emoji/${emoji}.png" width="55" height="55" alt="emoji-smile">
@@ -167,8 +169,8 @@ export default class PopupCard extends SmartView {
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._emojiInputHandler = this._emojiInputHandler.bind(this);
     this._textAreaHandler = this._textAreaHandler.bind(this);
-    this._getDeleteClickHandler = this._getDeleteClickHandler.bind(this);
-    this._getAddClickHandler = this._getAddClickHandler.bind(this);
+    this._deleteClickHandler = this._deleteClickHandler.bind(this);
+    this._addClickHandler = this._addClickHandler.bind(this);
 
     this._setInnerHandlers();
   }
@@ -243,6 +245,16 @@ export default class PopupCard extends SmartView {
 
   _getClosePopupHandler(evt) {
     evt.preventDefault();
+    this.updateData({
+      ...this._data,
+      userDetails: {
+        ...this._data.userDetails,
+        favorite: !this._data.userDetails.favorite,
+      },
+      scrollPosition: this.getElement().scrollTop,
+    });
+
+    this.getElement().scrollTop = this._data.scrollPosition;
     this._callback.closePopupFilm();
   }
 
@@ -263,17 +275,7 @@ export default class PopupCard extends SmartView {
 
   _favoriteClickHandler(evt) {
     evt.preventDefault();
-    this.updateData({
-      ...this._data,
-      userDetails: {
-        ...this._data.userDetails,
-        favorite: !this._data.userDetails.favorite,
-      },
-      scrollPosition: this.getElement().scrollTop,
-    });
-
-    this.getElement().scrollTop = this._data.scrollPosition;
-    this._callback.favoriteClick(PopupCard.parseDataToParam(this._data));
+    this._callback.favoriteClick(this._data);
   }
 
   _watchlistClickHandler(evt) {
@@ -291,29 +293,23 @@ export default class PopupCard extends SmartView {
     this._callback.watchlistClick(PopupCard.parseDataToParam(this._data));
   }
 
-  _getDeleteClickHandler(evt) {
+  _deleteClickHandler(evt) {
     if (evt.target.tagName !== 'BUTTON') {
       return;
     }
 
     evt.preventDefault();
-    this.getElement().scrollTop = this._data.scrollPosition;
-    this._callback.deleteClick(evt.target.value);
+
+    this._callback.deleteClick(evt.target.value, this._data.id);
   }
 
-  _getAddClickHandler(evt) {
+  _addClickHandler(evt) {
     if (evt.keyCode === 13 && evt.ctrlKey) {
       const newComment = {
         text: he.encode(this.getElement().querySelector('.film-details__comment-input').value),
         emoji: this._data.isEmojiName ? `${this._data.isEmojiName}` : 'smile',
       };
 
-      this._comments = [...this._comments, newComment];
-      this.updateData(
-        { ...this._data, comments: this._comments, scrollPosition: this.getElement().scrollTop },
-      );
-
-      this.getElement().scrollTop = this._data.scrollPosition;
       this._callback.addClick(this._data, newComment);
     }
   }
@@ -321,12 +317,12 @@ export default class PopupCard extends SmartView {
 
   setAddClickHandler(callback) {
     this._callback.addClick = callback;
-    this.getElement().querySelector('.film-details__comments-wrap').addEventListener('keydown', this._getAddClickHandler);
+    this.getElement().querySelector('.film-details__comments-wrap').addEventListener('keydown', this._addClickHandler);
   }
 
   setDeleteClickHandler(callback) {
     this._callback.deleteClick = callback;
-    this.getElement().querySelector('.film-details__comments-wrap').addEventListener('click', this._getDeleteClickHandler);
+    this.getElement().querySelector('.film-details__comments-wrap').addEventListener('click', this._deleteClickHandler);
   }
 
   setHistoryClickHandler(callback) {

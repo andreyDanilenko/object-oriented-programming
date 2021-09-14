@@ -4,6 +4,7 @@ export default class Films extends AbstractObserver {
   constructor() {
     super();
     this._films = [];
+    this._comments = new Map();
   }
 
   setFilms(updateType, films) {
@@ -11,12 +12,38 @@ export default class Films extends AbstractObserver {
     this._notify(updateType);
   }
 
+  addComment(updateType, data) {
+    this._comments.set(data.film.id, data.comments);
+    this._notify(updateType, data);
+  }
+
+  deleteComment(updateType, data) {
+    const prevComments = this._comments.get(data.filmId).slice();
+    const commentIndex = prevComments.findIndex((comment) => comment.id === data.commentId);
+
+    if (commentIndex === -1) {
+      throw new Error('Can\'t delete unexisting comment');
+    }
+    prevComments.splice(commentIndex, 1);
+    this._comments.set(data.filmId, prevComments);
+    const filmIndex = this._films.findIndex((film) => film.id === data.filmId);
+
+    if (filmIndex === -1) {
+      throw new Error('Can\'t delete comment from unexisting film');
+    }
+
+    this._notify(updateType, {
+      film: this._films[filmIndex],
+      comments: prevComments,
+    });
+  }
+
   getFilms() {
     return this._films;
   }
 
+
   updateFilms(updateType, update) {
-    console.log(update);
     const index = this._films.findIndex((film) => film.id === update.id);
 
     if (index === -1) {
@@ -67,8 +94,6 @@ export default class Films extends AbstractObserver {
   }
 
   static adaptToServer(film) {
-
-    console.log(film);
     const adaptedFilm = {
       ...film,
       comments: [],
@@ -104,7 +129,6 @@ export default class Films extends AbstractObserver {
   }
 
   static adaptCommentToClient(comment) {
-
     const adaptedComment = {
       ...comment,
       authorName: comment.author,
@@ -113,15 +137,14 @@ export default class Films extends AbstractObserver {
     };
 
     delete adaptedComment.emotion;
-    delete adaptedComment.authorName;
+    delete adaptedComment.author;
     delete adaptedComment.comment;
+    delete adaptedComment.movie;
 
     return adaptedComment;
   }
 
   static adaptCommentToServer(comment) {
-
-    console.log(comment);
     const adaptedComment = {
       ...comment,
       comment: comment.text,
@@ -131,7 +154,6 @@ export default class Films extends AbstractObserver {
     delete adaptedComment.emoji;
     delete adaptedComment.authorName;
     delete adaptedComment.text;
-    delete adaptedComment.emotion;
     delete adaptedComment.author;
 
     return adaptedComment;

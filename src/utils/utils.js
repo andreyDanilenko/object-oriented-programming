@@ -16,12 +16,12 @@ export const parseDate = (d) => {
       newDate = '1 day ago';
     }
     if (newDate === '0 days ago') {
-      newDate = `${Math.floor(dayjs(d).diff() / -3600000)} hours ago`;
+      newDate = `${Math.floor(dayjs(d).diff() / 3600000)} hours ago`;
       if (newDate === '1 hours ago') {
         newDate = '1 hour ago';
       }
       if (newDate === '0 hours ago') {
-        newDate = `${Math.floor(dayjs(d).diff() / -60000)} min ago`;
+        newDate = `${Math.floor(dayjs(d).diff() / 60000)} min ago`;
         if (newDate === '0 min ago') {
           newDate = 'now';
         }
