@@ -32,6 +32,8 @@ export default class Films extends AbstractObserver {
       throw new Error('Can\'t delete comment from unexisting film');
     }
 
+    this._films[filmIndex] = { ...this._films[filmIndex], comments: prevComments };
+
     this._notify(updateType, {
       film: this._films[filmIndex],
       comments: prevComments,

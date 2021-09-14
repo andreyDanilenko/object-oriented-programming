@@ -1,6 +1,5 @@
 import FilmCardView from '../view/film-card';
 import PopupCardView from '../view/popup';
-import CommentsModel from '../model/comments';
 import { render, RenderPosition, replace, remove } from '../utils/render';
 import { UpdateType, UserAction } from '../utils/const';
 import { api } from '../api';
@@ -12,7 +11,6 @@ export default class Film {
     this._filmsModel = filmsModel;
 
     this._cardComponent = null;
-    this._commentsModel = new CommentsModel();
 
     this._handleOpenPopupClick = this._handleOpenPopupClick.bind(this);
     this._handleClosePopupClick = this._handleClosePopupClick.bind(this);

@@ -309,7 +309,6 @@ export default class PopupCard extends SmartView {
     }
 
     evt.preventDefault();
-
     this._callback.deleteClick(evt.target.value, this._data.id);
   }
 
@@ -323,7 +322,6 @@ export default class PopupCard extends SmartView {
       this._callback.addClick(this._data, newComment);
     }
   }
-
 
   setAddClickHandler(callback) {
     this._callback.addClick = callback;
