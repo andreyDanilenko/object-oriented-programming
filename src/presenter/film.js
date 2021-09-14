@@ -2,13 +2,11 @@ import FilmCardView from '../view/film-card';
 import PopupCardView from '../view/popup';
 import { render, RenderPosition, replace, remove } from '../utils/render';
 import { UpdateType, UserAction } from '../utils/const';
-import { api } from '../api';
 
 export default class Film {
-  constructor(filmContainer, changeData, filmsModel) {
+  constructor(filmContainer, changeData) {
     this._filmContainer = filmContainer;
     this._changeData = changeData;
-    this._filmsModel = filmsModel;
 
     this._cardComponent = null;
 
@@ -142,16 +140,13 @@ export default class Film {
       document.querySelector('.film-details').remove();
     }
     this._renderFilmPopup();
-    api.getComments(this._card.id).then((comments) => {
-      this._changeData(
-        UserAction.LOAD_COMMENTS,
-        UpdateType.PATCH_COMMENTS,
-        {
-          film: this._card,
-          comments,
-        } ,
-      );
-    });
+    this._changeData(
+      UserAction.LOAD_COMMENTS,
+      UpdateType.PATCH_COMMENTS,
+      {
+        film: this._card,
+      } ,
+    );
   }
 
   _handleClosePopupClick() {

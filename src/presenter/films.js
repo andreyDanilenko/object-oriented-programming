@@ -75,7 +75,10 @@ export default class Films {
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.LOAD_COMMENTS:
-        this._filmsModel.addComment(updateType, update);
+        api.getComments(update.film.id).then((comments) => {
+          update.comments = comments;
+          this._filmsModel.addComment(updateType, update);
+        });
         break;
       case UserAction.UPDATE_FILM:
         api.updateFilm(update).then((response) => {
@@ -204,7 +207,7 @@ export default class Films {
 
   // отрисовка одной карточки фильма
   _renderFlim(card) {
-    const cardPresenter = new FilmPresenter(this.cardMainContainer, this._handleViewAction, this._filmsModel);
+    const cardPresenter = new FilmPresenter(this.cardMainContainer, this._handleViewAction);
     cardPresenter.init(card);
     this._newFilmData.set(card.id, cardPresenter);
   }
