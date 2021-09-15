@@ -10,9 +10,10 @@ export const State = {
 };
 
 export default class Film {
-  constructor(filmContainer, changeData) {
+  constructor(filmContainer, changeData, filterType) {
     this._filmContainer = filmContainer;
     this._changeData = changeData;
+    this._filterType = filterType;
 
     this._cardComponent = null;
 
@@ -24,7 +25,6 @@ export default class Film {
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
     this._handleAddClick = this._handleAddClick.bind(this);
-    this._handleEditPopup = this._handleEditPopup.bind(this);
   }
 
   init(card, comments = []) {
@@ -38,6 +38,7 @@ export default class Film {
     if (this._cardPopupComponent) {
       this._renderFilmPopup(this._comments);
     }
+
 
     this._cardComponent.setOpenClickHandler(this._handleOpenPopupClick);
     this._cardComponent.setHistoryClickHandler(this._handleHistoryClick);
@@ -86,6 +87,9 @@ export default class Film {
 
   destroy() {
     remove(this._cardComponent);
+    if (document.querySelector('.film-details')) {
+      this._handleClosePopupClick();
+    }
   }
 
   _renderFilmPopup(comments = []) {
@@ -96,9 +100,9 @@ export default class Film {
     document.removeEventListener('keydown', this._handleCloseEscClick);
     this._cardPopupComponent = new PopupCardView(this._card, comments);
     this._cardPopupComponent.setCloseClickHandler(this._handleClosePopupClick);
-    this._cardPopupComponent.setHistoryClickHandler(this._handleEditPopup);
-    this._cardPopupComponent.setFavoriteClickHandler(this._handleEditPopup);
-    this._cardPopupComponent.setWatchlistClickHandler(this._handleEditPopup);
+    this._cardPopupComponent.setHistoryClickHandler(this._handleHistoryClick);
+    this._cardPopupComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._cardPopupComponent.setWatchlistClickHandler(this._handleWatchlistClick);
     this._cardPopupComponent.setDeleteClickHandler(this._handleDeleteClick);
     this._cardPopupComponent.setAddClickHandler(this._handleAddClick);
 
@@ -108,9 +112,10 @@ export default class Film {
   }
 
   _handleHistoryClick() {
+    const currentFilterType = this._filterType === 'all' || this._filterType !== 'history';
     this._changeData(
       UserAction.UPDATE_FILM,
-      UpdateType.MINOR,
+      currentFilterType ? UpdateType.PATCH : UpdateType.MINOR,
       {
         ...this._card,
         userDetails: {
@@ -120,23 +125,25 @@ export default class Film {
       });
   }
 
-  _handleFavoriteClick(card) {
+  _handleFavoriteClick() {
+    const currentFilterType = this._filterType === 'all' || this._filterType !== 'favorites';
     this._changeData(
       UserAction.UPDATE_FILM,
-      UpdateType.MINOR,
+      currentFilterType ? UpdateType.PATCH : UpdateType.MINOR,
       {
-        ...card,
+        ...this._card,
         userDetails: {
-          ...card.userDetails,
-          favorite: !card.userDetails.favorite,
+          ...this._card.userDetails,
+          favorite: !this._card.userDetails.favorite,
         },
       });
   }
 
   _handleWatchlistClick() {
+    const currentFilterType = this._filterType === 'all' || this._filterType !== 'watchlist';
     this._changeData(
       UserAction.UPDATE_FILM,
-      UpdateType.MINOR,
+      currentFilterType ? UpdateType.PATCH : UpdateType.MINOR,
       {
         ...this._card,
         userDetails: {
@@ -146,17 +153,10 @@ export default class Film {
       });
   }
 
-  _handleEditPopup(card) {
-    this._changeData(
-      UserAction.UPDATE_FILM,
-      UpdateType.MINOR,
-      card);
-  }
-
   _handleDeleteClick(commentId, filmId) {
     this._changeData(
       UserAction.DELETE_COMMENT,
-      UpdateType.PATCH_COMMENTS,
+      UpdateType.PATCH,
       { commentId, filmId },
     );
   }
@@ -164,7 +164,7 @@ export default class Film {
   _handleAddClick(card, newComment) {
     this._changeData(
       UserAction.ADD_COMMENT,
-      UpdateType.PATCH_COMMENTS,
+      UpdateType.PATCH,
       { card, newComment } ,
     );
   }

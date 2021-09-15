@@ -75,8 +75,11 @@ export default class Films {
         });
         break;
       case UserAction.UPDATE_FILM:
-        api.updateFilm(update).then((response) => {
-          this._filmsModel.updateFilms(updateType, response);
+        api.updateFilm(update).then((film) => {
+          api.getComments(update.id).then((comments) => {
+            this._comments = comments;
+            this._filmsModel.updateFilms(updateType, { film, comments });
+          });
         });
         break;
       case UserAction.ADD_COMMENT:
@@ -101,9 +104,6 @@ export default class Films {
   _handleModelEvent(updateType, data) {
     switch (updateType) {
       case UpdateType.PATCH:
-        this._newFilmData.get(data.id).init(data);
-        break;
-      case UpdateType.PATCH_COMMENTS:
         this._newFilmData.get(data.film.id).init(data.film, data.comments);
         break;
       case UpdateType.MINOR:
@@ -207,8 +207,8 @@ export default class Films {
 
   // отрисовка одной карточки фильма
   _renderFlim(card) {
-    const cardPresenter = new FilmPresenter(this.cardMainContainer, this._handleViewAction);
-    cardPresenter.init(card);
+    const cardPresenter = new FilmPresenter(this.cardMainContainer, this._handleViewAction, this._filterType);
+    cardPresenter.init(card, this._comments);
     this._newFilmData.set(card.id, cardPresenter);
   }
 
@@ -263,7 +263,6 @@ export default class Films {
 
     const films = this._getFilms();
     const filmCount = films.length;
-
     if (filmCount === 0) {
       this._renderNoFilmsList();
       return;

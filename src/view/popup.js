@@ -273,47 +273,17 @@ export default class PopupCard extends SmartView {
 
   _historyClickHandler(evt) {
     evt.preventDefault();
-    this.updateData({
-      ...this._data,
-      userDetails: {
-        ...this._data.userDetails,
-        history: !this._data.userDetails.history,
-      },
-      scrollPosition: this.getElement().scrollTop,
-    });
-
-    this.getElement().scrollTop = this._data.scrollPosition;
-    this._callback.historyClick(this._data);
+    this._callback.historyClick();
   }
 
   _favoriteClickHandler(evt) {
     evt.preventDefault();
-    this.updateData({
-      ...this._data,
-      userDetails: {
-        ...this._data.userDetails,
-        favorite: !this._data.userDetails.favorite,
-      },
-      scrollPosition: this.getElement().scrollTop,
-    });
-
-    this.getElement().scrollTop = this._data.scrollPosition;
-    this._callback.favoriteClick(this._data);
+    this._callback.favoriteClick();
   }
 
   _watchlistClickHandler(evt) {
     evt.preventDefault();
-    this.updateData({
-      ...this._data,
-      userDetails: {
-        ...this._data.userDetails,
-        watchlist: !this._data.userDetails.watchlist,
-      },
-      scrollPosition: this.getElement().scrollTop,
-    });
-
-    this.getElement().scrollTop = this._data.scrollPosition;
-    this._callback.watchlistClick(this._data);
+    this._callback.watchlistClick();
   }
 
   _deleteClickHandler(evt) {

@@ -46,7 +46,7 @@ export default class Films extends AbstractObserver {
 
 
   updateFilms(updateType, update) {
-    const index = this._films.findIndex((film) => film.id === update.id);
+    const index = this._films.findIndex((film) => film.id === update.film.id);
 
     if (index === -1) {
       throw new Error('Can\'t update unexisting film');
@@ -54,7 +54,7 @@ export default class Films extends AbstractObserver {
 
     this._films = [
       ...this._films.slice(0, index),
-      update,
+      update.film,
       ...this._films.slice(index + 1),
     ];
 
