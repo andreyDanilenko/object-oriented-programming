@@ -24,6 +24,7 @@ export default class Films extends AbstractObserver {
     if (commentIndex === -1) {
       throw new Error('Can\'t delete unexisting comment');
     }
+
     prevComments.splice(commentIndex, 1);
     this._comments.set(data.filmId, prevComments);
     const filmIndex = this._films.findIndex((film) => film.id === data.filmId);
@@ -43,7 +44,6 @@ export default class Films extends AbstractObserver {
   getFilms() {
     return this._films;
   }
-
 
   updateFilms(updateType, update) {
     const index = this._films.findIndex((film) => film.id === update.film.id);
