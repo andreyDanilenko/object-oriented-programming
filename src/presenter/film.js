@@ -176,7 +176,7 @@ export default class Film {
     this._renderFilmPopup();
     this._changeData(
       UserAction.LOAD_COMMENTS,
-      UpdateType.PATCH_COMMENTS,
+      UpdateType.PATCH,
       {
         film: this._card,
       } ,
