@@ -287,6 +287,7 @@ export default class PopupCard extends SmartView {
   }
 
   _deleteClickHandler(evt) {
+    evt.preventDefault();
     if (evt.target.tagName !== 'BUTTON') {
       return;
     }
@@ -296,6 +297,7 @@ export default class PopupCard extends SmartView {
   }
 
   _addClickHandler(evt) {
+    evt.preventDefault();
     if (evt.keyCode === 13 && evt.ctrlKey) {
       const newComment = {
         text: he.encode(this.getElement().querySelector('.film-details__comment-input').value),

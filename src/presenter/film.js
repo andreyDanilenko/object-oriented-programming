@@ -39,7 +39,6 @@ export default class Film {
       this._renderFilmPopup(this._comments);
     }
 
-
     this._cardComponent.setOpenClickHandler(this._handleOpenPopupClick);
     this._cardComponent.setHistoryClickHandler(this._handleHistoryClick);
     this._cardComponent.setFavoriteClickHandler(this._handleFavoriteClick);
@@ -114,6 +113,9 @@ export default class Film {
 
   _handleHistoryClick() {
     const currentFilterType = this._filterType === 'all' || this._filterType !== 'history';
+    if (!currentFilterType && this._cardPopupComponent) {
+      this._handleClosePopupClick();
+    }
     this._changeData(
       UserAction.UPDATE_FILM,
       currentFilterType ? UpdateType.PATCH : UpdateType.MINOR,
