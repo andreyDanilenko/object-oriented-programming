@@ -90,6 +90,7 @@ export default class Film {
     if (document.querySelector('.film-details')) {
       this._handleClosePopupClick();
     }
+    document.body.classList.remove('hide-overflow');
   }
 
   _renderFilmPopup(comments = []) {
@@ -177,9 +178,7 @@ export default class Film {
     this._changeData(
       UserAction.LOAD_COMMENTS,
       UpdateType.PATCH,
-      {
-        film: this._card,
-      } ,
+      { film: this._card },
     );
   }
 
