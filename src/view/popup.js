@@ -197,6 +197,10 @@ export default class PopupCard extends SmartView {
     this.setAddClickHandler(this._callback.addClick);
   }
 
+  getScroll() {
+    return this._scroll;
+  }
+
   // метод хранящий внутренние обработчики
   _setInnerHandlers() {
     this.getElement()
@@ -273,37 +277,38 @@ export default class PopupCard extends SmartView {
 
   _historyClickHandler(evt) {
     evt.preventDefault();
+    this._scroll = this.getElement().scrollTop;
     this._callback.historyClick();
   }
 
   _favoriteClickHandler(evt) {
     evt.preventDefault();
+    this._scroll = this.getElement().scrollTop;
     this._callback.favoriteClick();
   }
 
   _watchlistClickHandler(evt) {
     evt.preventDefault();
+    this._scroll = this.getElement().scrollTop;
     this._callback.watchlistClick();
   }
 
   _deleteClickHandler(evt) {
-    evt.preventDefault();
     if (evt.target.tagName !== 'BUTTON') {
       return;
     }
-
+    this._scroll = this.getElement().scrollTop;
     evt.preventDefault();
     this._callback.deleteClick(evt.target.value, this._data.id);
   }
 
   _addClickHandler(evt) {
-    evt.preventDefault();
     if (evt.keyCode === 13 && evt.ctrlKey) {
       const newComment = {
         text: he.encode(this.getElement().querySelector('.film-details__comment-input').value),
         emoji: this._data.isEmojiName ? `${this._data.isEmojiName}` : 'smile',
       };
-
+      this._scroll = this.getElement().scrollTop;
       this._callback.addClick(this._data, newComment);
     }
   }

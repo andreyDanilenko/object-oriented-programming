@@ -36,7 +36,7 @@ export default class Film {
     this._cardComponent = new FilmCardView(card);
 
     if (this._cardPopupComponent) {
-      this._renderFilmPopup(this._comments);
+      this._renderFilmPopup(this._comments, this._cardPopupComponent.getScroll());
     }
 
     this._cardComponent.setOpenClickHandler(this._handleOpenPopupClick);
@@ -92,7 +92,7 @@ export default class Film {
     document.body.classList.remove('hide-overflow');
   }
 
-  _renderFilmPopup(comments = []) {
+  _renderFilmPopup(comments = [], scroll) {
     if (this._cardPopupComponent) {
       remove(this._cardPopupComponent);
     }
@@ -109,6 +109,7 @@ export default class Film {
     document.body.classList.add('hide-overflow');
     document.addEventListener('keydown', this._handleCloseEscClick);
     render(document.body, this._cardPopupComponent, RenderPosition.BEFOREEND);
+    this._cardPopupComponent.getElement().scrollTop = scroll;
   }
 
   _handleHistoryClick() {

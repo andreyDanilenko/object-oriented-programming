@@ -156,6 +156,7 @@ export default class Statistic extends SmartView {
     if (evt.target.tagName !== 'INPUT') {
       return;
     }
+
     evt.preventDefault();
     this._callback.filterTypeChange(evt.target.value);
   }
