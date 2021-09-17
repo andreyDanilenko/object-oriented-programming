@@ -2,12 +2,7 @@ import FilmCardView from '../view/film-card';
 import PopupCardView from '../view/popup';
 import { render, RenderPosition, replace, remove } from '../utils/render';
 import { UpdateType, UserAction } from '../utils/const';
-
-export const State = {
-  SAVING: 'SAVING',
-  DELETING: 'DELETING',
-  ABORTING: 'ABORTING',
-};
+import { api } from '../api';
 
 export default class Film {
   constructor(filmContainer, changeData, filterType) {
@@ -25,6 +20,7 @@ export default class Film {
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
     this._handleAddClick = this._handleAddClick.bind(this);
+    this._resetFormState = this._resetFormState.bind(this);
   }
 
   init(card, comments = []) {
@@ -36,6 +32,9 @@ export default class Film {
     this._cardComponent = new FilmCardView(card);
 
     if (this._cardPopupComponent) {
+      if (document.querySelector('.film-details')) {
+        document.querySelector('.film-details').remove();
+      }
       this._renderFilmPopup(this._comments, this._cardPopupComponent.getScroll());
     }
 
@@ -56,32 +55,11 @@ export default class Film {
     remove(prevCardComponent);
   }
 
-  setViewState(state) {
-    const resetFormState = () => {
-      this._cardPopupComponent.updateData({
-        isDisabled: false,
-        isDeleting: false,
-      });
-    };
-
-    switch (state) {
-      case State.SAVING:
-        this._cardPopupComponent.updateData({
-          isDisabled: true,
-          isEmojiName: null,
-        });
-        break;
-      case State.DELETING:
-        this._cardPopupComponent.updateData({
-          isDisabled: true,
-          isDeleting: true,
-        });
-        break;
-      case State.ABORTING:
-        this._cardComponent.shake(resetFormState);
-        this._cardPopupComponent.shake(resetFormState);
-        break;
-    }
+  _resetFormState() {
+    this._cardPopupComponent.updateData({
+      isDisabled: false,
+      isDeleting: false,
+    });
   }
 
   destroy() {
@@ -158,19 +136,33 @@ export default class Film {
   }
 
   _handleDeleteClick(commentId, filmId) {
-    this._changeData(
-      UserAction.DELETE_COMMENT,
-      UpdateType.PATCH,
-      { commentId, filmId },
-    );
+    this._cardPopupComponent.updateData({ isDisabled: true, isDeleting: true });
+
+    api.deleteComment(commentId).then(() => {
+      this._changeData(
+        UserAction.DELETE_COMMENT,
+        UpdateType.PATCH,
+        { commentId, filmId },
+      );
+    }).catch(() => {
+      this._cardPopupComponent.updateData({ isDisabled: false, isDeleting: false });
+      this._cardPopupComponent.shake(this._resetFormState);
+    });
   }
 
   _handleAddClick(card, newComment) {
-    this._changeData(
-      UserAction.ADD_COMMENT,
-      UpdateType.PATCH,
-      { card, newComment } ,
-    );
+    this._cardPopupComponent.updateData({ isDisabled: true, isEmojiName: null });
+
+    api.addComment(card.id, newComment).then((response) => {
+      this._changeData(
+        UserAction.ADD_COMMENT,
+        UpdateType.PATCH,
+        response ,
+      );
+    }).catch(() => {
+      this._cardPopupComponent.updateData({ isDisabled: false });
+      this._cardPopupComponent.shake(this._resetFormState);
+    });
   }
 
   _handleOpenPopupClick() {
