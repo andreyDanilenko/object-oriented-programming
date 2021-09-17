@@ -1,4 +1,3 @@
-import ProfileView from './view/header-profile';
 import MoviesInsideView from './view/inside';
 import FilmsPresenter from './presenter/films';
 import FilterPresenter from './presenter/filter';
@@ -16,15 +15,14 @@ const siteFooterStatisticsElement = siteFooterElement.querySelector('.footer__st
 const filmsModel = new FilmsModel();
 const filterModel = new FilterModel();
 
-const filterPresenter = new FilterPresenter(siteMainElement, filmsModel, filterModel);
-const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, filterModel, api);
+const filterPresenter = new FilterPresenter(siteMainElement, siteHeaderElement, filmsModel, filterModel);
+const filmsPresenter = new FilmsPresenter(siteMainElement, filmsModel, filterModel);
 
 filmsPresenter.init();
 
 api.getFilms()
   .then((films) => {
     filmsModel.setFilms(UpdateType.INIT, films);
-    render(siteHeaderElement, new ProfileView(), RenderPosition.BEFOREEND);
     filterPresenter.init();
     render(siteFooterStatisticsElement, new MoviesInsideView(films), RenderPosition.BEFOREEND);
   })

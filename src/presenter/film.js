@@ -1,13 +1,14 @@
 import FilmCardView from '../view/film-card';
 import PopupCardView from '../view/popup';
 import { render, RenderPosition, replace, remove } from '../utils/render';
-import { UpdateType } from '../utils/const';
+import { UpdateType, UserAction } from '../utils/const';
 import { api } from '../api';
 
 export default class Film {
-  constructor(filmContainer, changeData) {
+  constructor(filmContainer, changeData, filterType) {
     this._filmContainer = filmContainer;
     this._changeData = changeData;
+    this._filterType = filterType;
 
     this._cardComponent = null;
 
@@ -19,16 +20,24 @@ export default class Film {
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
     this._handleAddClick = this._handleAddClick.bind(this);
-    this._handleEditPopup = this._handleEditPopup.bind(this);
-    this._handleCommentsLoaded = this._handleCommentsLoaded.bind(this);
+    this._resetFormState = this._resetFormState.bind(this);
   }
 
-  init(card) {
+  init(card, comments = []) {
     this._card = card;
+    this._comments = comments;
 
     const prevCardComponent = this._cardComponent;
 
     this._cardComponent = new FilmCardView(card);
+
+    if (this._cardPopupComponent) {
+      if (document.querySelector('.film-details')) {
+        document.querySelector('.film-details').remove();
+      }
+      this._renderFilmPopup(this._comments, this._cardPopupComponent.getScroll());
+    }
+
     this._cardComponent.setOpenClickHandler(this._handleOpenPopupClick);
     this._cardComponent.setHistoryClickHandler(this._handleHistoryClick);
     this._cardComponent.setFavoriteClickHandler(this._handleFavoriteClick);
@@ -46,40 +55,49 @@ export default class Film {
     remove(prevCardComponent);
   }
 
-  destroy() {
-    remove(this._cardComponent);
+  _resetFormState() {
+    this._cardPopupComponent.updateData({
+      isDisabled: false,
+      isDeleting: false,
+    });
   }
 
-  _renderFilmPopup(comments = []) {
+  destroy() {
+    remove(this._cardComponent);
+    if (document.querySelector('.film-details')) {
+      this._handleClosePopupClick();
+    }
+    document.body.classList.remove('hide-overflow');
+  }
+
+  _renderFilmPopup(comments = [], scroll) {
     if (this._cardPopupComponent) {
       remove(this._cardPopupComponent);
     }
 
+    document.removeEventListener('keydown', this._handleCloseEscClick);
     this._cardPopupComponent = new PopupCardView(this._card, comments);
     this._cardPopupComponent.setCloseClickHandler(this._handleClosePopupClick);
-    this._cardPopupComponent.setHistoryClickHandler(this._handleEditPopup);
-    this._cardPopupComponent.setFavoriteClickHandler(this._handleEditPopup);
-    this._cardPopupComponent.setWatchlistClickHandler(this._handleEditPopup);
+    this._cardPopupComponent.setHistoryClickHandler(this._handleHistoryClick);
+    this._cardPopupComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._cardPopupComponent.setWatchlistClickHandler(this._handleWatchlistClick);
     this._cardPopupComponent.setDeleteClickHandler(this._handleDeleteClick);
     this._cardPopupComponent.setAddClickHandler(this._handleAddClick);
 
     document.body.classList.add('hide-overflow');
     document.addEventListener('keydown', this._handleCloseEscClick);
     render(document.body, this._cardPopupComponent, RenderPosition.BEFOREEND);
-  }
-
-  _handleCommentsLoaded(comments) {
-    this._changeData(
-      UpdateType.MINOR,
-      {
-        ...this._card,
-        comments,
-      });
+    this._cardPopupComponent.getElement().scrollTop = scroll;
   }
 
   _handleHistoryClick() {
+    const currentFilterType = this._filterType === 'all' || this._filterType !== 'history';
+    if (!currentFilterType && this._cardPopupComponent) {
+      this._handleClosePopupClick();
+    }
     this._changeData(
-      UpdateType.MINOR,
+      UserAction.UPDATE_FILM,
+      currentFilterType ? UpdateType.PATCH : UpdateType.MINOR,
       {
         ...this._card,
         userDetails: {
@@ -90,8 +108,10 @@ export default class Film {
   }
 
   _handleFavoriteClick() {
+    const currentFilterType = this._filterType === 'all' || this._filterType !== 'favorites';
     this._changeData(
-      UpdateType.MINOR,
+      UserAction.UPDATE_FILM,
+      currentFilterType ? UpdateType.PATCH : UpdateType.MINOR,
       {
         ...this._card,
         userDetails: {
@@ -102,8 +122,10 @@ export default class Film {
   }
 
   _handleWatchlistClick() {
+    const currentFilterType = this._filterType === 'all' || this._filterType !== 'watchlist';
     this._changeData(
-      UpdateType.MINOR,
+      UserAction.UPDATE_FILM,
+      currentFilterType ? UpdateType.PATCH : UpdateType.MINOR,
       {
         ...this._card,
         userDetails: {
@@ -113,27 +135,34 @@ export default class Film {
       });
   }
 
-  // Временно пока не разберусь как синхронизировать изменения попапа чс карточкой
-  // Не могу придумать как перерисовывать открытый попап при клике
-  // на кнопки добавлений в определенный список карточки фильма
-  _handleEditPopup(card) {
-    this._changeData(
-      UpdateType.MINOR,
-      card);
+  _handleDeleteClick(commentId, filmId) {
+    this._cardPopupComponent.updateData({ isDisabled: true, isDeleting: true });
+
+    api.deleteComment(commentId).then(() => {
+      this._changeData(
+        UserAction.DELETE_COMMENT,
+        UpdateType.PATCH,
+        { commentId, filmId },
+      );
+    }).catch(() => {
+      this._cardPopupComponent.updateData({ isDisabled: false, isDeleting: false });
+      this._cardPopupComponent.shake(this._resetFormState);
+    });
   }
 
-  _handleDeleteClick(card) {
-    this._changeData(
-      UpdateType.PATCH,
-      card,
-    );
-  }
+  _handleAddClick(card, newComment) {
+    this._cardPopupComponent.updateData({ isDisabled: true, isEmojiName: null });
 
-  _handleAddClick(card) {
-    this._changeData(
-      UpdateType.PATCH,
-      card,
-    );
+    api.addComment(card.id, newComment).then((response) => {
+      this._changeData(
+        UserAction.ADD_COMMENT,
+        UpdateType.PATCH,
+        response ,
+      );
+    }).catch(() => {
+      this._cardPopupComponent.updateData({ isDisabled: false });
+      this._cardPopupComponent.shake(this._resetFormState);
+    });
   }
 
   _handleOpenPopupClick() {
@@ -141,7 +170,11 @@ export default class Film {
       document.querySelector('.film-details').remove();
     }
     this._renderFilmPopup();
-    api.getComments(this._card.id).then((comments) => this._renderFilmPopup(comments));
+    this._changeData(
+      UserAction.LOAD_COMMENTS,
+      UpdateType.PATCH,
+      { film: this._card },
+    );
   }
 
   _handleClosePopupClick() {

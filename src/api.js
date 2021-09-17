@@ -1,10 +1,12 @@
 import FilmsModel from './model/films';
-const AUTHORIZATION = 'Basic df09gdf00df9g0df9g';
+const AUTHORIZATION = 'Basic df5ggidfsdfds9f8956df4';
 const END_POINT = 'https://15.ecmascript.pages.academy/cinemaddict';
 
 const Method = {
   GET: 'GET',
   PUT: 'PUT',
+  POST: 'POST',
+  DELETE: 'DELETE',
 };
 
 export default class Api {
@@ -20,6 +22,7 @@ export default class Api {
   }
 
   getComments(filmId) {
+
     return this._load({ url: `comments/${filmId}` })
       .then(Api.toJSON)
       .then((comments) => comments.map(FilmsModel.adaptCommentToClient));
@@ -34,6 +37,27 @@ export default class Api {
     })
       .then(Api.toJSON)
       .then(FilmsModel.adaptToClient);
+  }
+
+  addComment(filmId, comments) {
+    return this._load({
+      url: `comments/${filmId}`,
+      method: Method.POST,
+      body: JSON.stringify(FilmsModel.adaptCommentToServer(comments)),
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+    })
+      .then(Api.toJSON)
+      .then((response) => ({
+        film: FilmsModel.adaptToClient(response.movie),
+        comments: response.comments.map(FilmsModel.adaptCommentToClient),
+      }));
+  }
+
+  deleteComment(id) {
+    return this._load({
+      url: `comments/${id}`,
+      method: Method.DELETE,
+    });
   }
 
   _load({

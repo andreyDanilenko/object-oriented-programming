@@ -1,13 +1,15 @@
+import ProfileView from '../view/header-profile';
 import NavView from '../view/site-nav';
 import { RenderPosition, render, replace, remove } from '../utils/render';
 import { filter } from '../utils/filters';
 import { FilterType, UpdateType } from '../utils/const';
 
 export default class Filter {
-  constructor(filterContainer, filmsModel, filterModel) {
+  constructor(filterContainer, siteHeaderElement, filmsModel, filterModel) {
     this._filterContainer = filterContainer;
     this._filterModel = filterModel;
     this._filmsModel = filmsModel;
+    this._siteHeaderElement = siteHeaderElement;
 
     this._filterComponent = null;
 
@@ -21,20 +23,32 @@ export default class Filter {
 
   init() {
     const filters = this._getFilter();
+
     const prevFilterComponent = this._filterComponent;
+    const prevProfileComponent = this._profileComponent;
 
     this._filterComponent = new NavView(filters, this._filterModel.getFilter());
+    this._profileComponent = new ProfileView(this._getHistoryFilmsCount());
+
     this._filterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
     this._filterComponent.setPageStatsChangeHandler(this._handleStatsPageChange);
 
-    if (prevFilterComponent === null) {
+    if (prevFilterComponent === null || prevFilterComponent === null) {
       render(this._filterContainer, this._filterComponent, RenderPosition.BEFOREEND);
+      render(this._siteHeaderElement, this._profileComponent, RenderPosition.BEFOREEND);
       return;
     }
 
+    replace(this._profileComponent, prevProfileComponent);
     replace(this._filterComponent, prevFilterComponent);
     remove(prevFilterComponent);
+    remove(prevProfileComponent);
   }
+
+  _getHistoryFilmsCount() {
+    return filter[FilterType.HISTORY](this._filmsModel.getFilms()).length;
+  }
+
 
   _handleModelEvent() {
     this.init();

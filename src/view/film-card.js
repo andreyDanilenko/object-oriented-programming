@@ -1,6 +1,6 @@
 import * as dayjs from 'dayjs';
 import he from 'he';
-import { getFirstElement, getCardClassName, getSliceText } from '../utils/util';
+import { getFirstElement, getCardClassName, getSliceText } from '../utils/utils';
 import AbstractView from './abstract';
 
 const createFilmCardTemplate = (params) => {
@@ -41,7 +41,7 @@ export default class FilmCard extends AbstractView {
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
     this._historyClickHandler = this._historyClickHandler.bind(this);
     this._watchlistClickHandler = this._watchlistClickHandler.bind(this);
-    this._getOpenClickHandler = this._getOpenClickHandler.bind(this);
+    this._openClickHandler = this._openClickHandler.bind(this);
   }
 
   getTemplate() {
@@ -53,7 +53,7 @@ export default class FilmCard extends AbstractView {
     if (document.querySelector('.film-details')) {
       document.querySelector('.film-details').remove();
     }
-    this._callback.favoriteClick();
+    this._callback.favoriteClick(this._params);
   }
 
   _historyClickHandler(evt) {
@@ -72,7 +72,7 @@ export default class FilmCard extends AbstractView {
     this._callback.watchlistClick();
   }
 
-  _getOpenClickHandler(evt) {
+  _openClickHandler(evt) {
     evt.preventDefault();
     this._callback.openPopupFilm();
   }
@@ -94,8 +94,8 @@ export default class FilmCard extends AbstractView {
 
   setOpenClickHandler(callback) {
     this._callback.openPopupFilm = callback;
-    this._filmCard.querySelector('.film-card__poster').addEventListener('click', this._getOpenClickHandler);
-    this._filmCard.querySelector('.film-card__comments').addEventListener('click', this._getOpenClickHandler);
-    this._filmCard.querySelector('.film-card__title').addEventListener('click', this._getOpenClickHandler);
+    this._filmCard.querySelector('.film-card__poster').addEventListener('click', this._openClickHandler);
+    this._filmCard.querySelector('.film-card__comments').addEventListener('click', this._openClickHandler);
+    this._filmCard.querySelector('.film-card__title').addEventListener('click', this._openClickHandler);
   }
 }

@@ -1,39 +1,11 @@
 import * as dayjs from 'dayjs';
-import { MAX_TEXT_LENGTH, StatsFilterType } from './const';
+import { MAX_TEXT_LENGTH, StatsFilterType, ProfileRank, ZERO_FILMS_COUNT, MAX_FILMS_COUNT, MIN_FILMS_COUNT } from './const';
+
 export const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 export const getFirstElement = (arr) => arr[0];
 export const getCardClassName = (variable) => variable ? 'film-card__controls-item film-card__controls-item--active' : 'film-card__controls-item';
 export const getPopupClassName = (variable) => variable ? 'film-details__control-button film-details__control-button--active' : 'film-details__control-button';
 export const getSliceText = (text) => text.length > MAX_TEXT_LENGTH ? `${text.slice(0, MAX_TEXT_LENGTH)}...` : text;
-
-export const parseDate = (d) => {
-  let newDate;
-
-  if (-604800000 < dayjs(d).diff()) {
-    newDate = `${Math.floor(dayjs(d).diff() / -86400000)} days ago`;
-    if (newDate === '1 days ago') {
-      newDate = '1 day ago';
-    }
-    if (newDate === '0 days ago') {
-      newDate = `${Math.floor(dayjs(d).diff() / -3600000)} hours ago`;
-      if (newDate === '1 hours ago') {
-        newDate = '1 hour ago';
-      }
-      if (newDate === '0 hours ago') {
-        newDate = `${Math.floor(dayjs(d).diff() / -60000)} min ago`;
-        if (newDate === '0 min ago') {
-          newDate = 'now';
-        }
-      }
-    }
-  }
-
-  if (-604800000 > dayjs(d).diff()) {
-    newDate = dayjs(d).format('DD/MM/YYYY HH:mm');
-  }
-
-  return newDate;
-};
 
 export const isWatchingDate = (date, sortType) => {
   switch (sortType) {
@@ -92,4 +64,25 @@ export const getDataGenres = (films, count) => {
     return counts;
   }
   return genres;
+};
+
+export const getUserRank = (watchedCount) => {
+  const isNoviceRank = watchedCount > ZERO_FILMS_COUNT && watchedCount <= MIN_FILMS_COUNT;
+  const isFanRank = watchedCount > MIN_FILMS_COUNT && watchedCount <= MAX_FILMS_COUNT;
+  const isMovieBuffRank = watchedCount > MAX_FILMS_COUNT;
+
+  if (isNoviceRank) {
+    return ProfileRank.NOVICE;
+  } else if (isFanRank) {
+    return ProfileRank.FAN;
+  } else if (isMovieBuffRank) {
+    return ProfileRank.MOVIE_BUFF;
+  } else {
+    return '';
+  }
+};
+
+export const generateToken = () => {
+  const random = Math.random();
+  return random.toString(32).substr(2);
 };
