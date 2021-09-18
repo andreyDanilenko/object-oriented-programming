@@ -7,7 +7,7 @@ const createButtonMoreTemplate = () => (
 export default class LoadMoreButton extends AbstractView {
   constructor() {
     super();
-    this._clickHundler = this._getClickHundler.bind(this);
+    this._clickHundler = this._getClickHandler.bind(this);
 
   }
 
@@ -15,7 +15,7 @@ export default class LoadMoreButton extends AbstractView {
     return createButtonMoreTemplate();
   }
 
-  _getClickHundler(evt) {
+  _getClickHandler(evt) {
     evt.preventDefault();
     this._callback.click();
   }

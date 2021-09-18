@@ -33,7 +33,7 @@ export default class Filter {
     this._filterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
     this._filterComponent.setPageStatsChangeHandler(this._handleStatsPageChange);
 
-    if (prevFilterComponent === null || prevFilterComponent === null) {
+    if (prevFilterComponent === null) {
       render(this._filterContainer, this._filterComponent, RenderPosition.BEFOREEND);
       render(this._siteHeaderElement, this._profileComponent, RenderPosition.BEFOREEND);
       return;

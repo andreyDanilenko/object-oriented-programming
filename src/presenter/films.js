@@ -212,7 +212,7 @@ export default class Films {
   }
 
   // отрисовка одной карточки фильма
-  _renderFlim(card, container, data) {
+  _renderFilm(card, container, data) {
     const cardPresenter = new FilmPresenter(container, this._handleViewAction, this._filterType);
     cardPresenter.init(card);
     data.set(card.id, cardPresenter);
@@ -220,7 +220,7 @@ export default class Films {
 
   // отрисовка заданого массива карточек
   _renderFilms(cards, container, data) {
-    cards.forEach((card) => this._renderFlim(card, container, data));
+    cards.forEach((card) => this._renderFilm(card, container, data));
   }
 
   // Отрисовка контенера листа фильма и контейнера в листе фильма

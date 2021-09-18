@@ -248,18 +248,6 @@ export default class PopupCard extends SmartView {
     };
   }
 
-  static parseDataToParam(data) {
-    data = { ...data };
-
-    delete data.textComment;
-    delete data.isEmojiName;
-    delete data.scrollPosition;
-    delete data.isDisabled;
-    delete data.isDeleting;
-
-    return data;
-  }
-
   _getClosePopupHandler(evt) {
     evt.preventDefault();
     this.updateData({
